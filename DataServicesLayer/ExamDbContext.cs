@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OnlineExamSystem.DataServicesLayer.Model
+namespace OnlineExamSystem.DataServicesLayer
 {
     public class ExamDbContext : DbContext
     {
@@ -20,7 +20,7 @@ namespace OnlineExamSystem.DataServicesLayer.Model
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=tcp:db.dutlearning.koding.tk,1433;Database=OnlineExamsSystem_Test4;User ID=sa;Password=68RsyRjLfc5uqSsGYA3x;TrustServerCertificate=True;");
+            optionsBuilder.UseSqlServer(@"Server=tcp:db.dutlearning.koding.tk,1433;Database=OnlineExamSystem;User ID=sa;Password=68RsyRjLfc5uqSsGYA3x;TrustServerCertificate=True;");
         }
     }
 }
