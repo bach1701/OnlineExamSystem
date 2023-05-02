@@ -12,8 +12,8 @@ using OnlineExamSystem.DataServicesLayer;
 namespace OnlineExamSystem.Migrations
 {
     [DbContext(typeof(ExamDbContext))]
-    [Migration("20230412163809_ClassUpdate")]
-    partial class ClassUpdate
+    [Migration("20230502164334_Refactor")]
+    partial class Refactor
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -116,7 +116,7 @@ namespace OnlineExamSystem.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("MSSV")
+                    b.Property<string>("NumericIdentification")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -179,6 +179,37 @@ namespace OnlineExamSystem.Migrations
                     b.ToTable("Questions");
                 });
 
+            modelBuilder.Entity("OnlineExamSystem.DataServicesLayer.Model.Tests.StudentAnswerResponse", b =>
+                {
+                    b.Property<int>("StudentAnswerResponseId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StudentAnswerResponseId"));
+
+                    b.Property<int>("QuestionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SelectedOption")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TestId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("StudentAnswerResponseId");
+
+                    b.HasIndex("QuestionId");
+
+                    b.HasIndex("TestId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("StudentAnswerResponses");
+                });
+
             modelBuilder.Entity("OnlineExamSystem.DataServicesLayer.Model.Tests.Test", b =>
                 {
                     b.Property<int>("TestId")
@@ -224,13 +255,25 @@ namespace OnlineExamSystem.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TestTakerId"));
 
+                    b.Property<int>("CorrectAnswerCount")
+                        .HasColumnType("int");
+
+                    b.Property<float>("FinalScore")
+                        .HasColumnType("real");
+
                     b.Property<int>("Role")
                         .HasColumnType("int");
 
                     b.Property<int>("StudentUserId")
                         .HasColumnType("int");
 
+                    b.Property<int>("SubmitedAnswerCount")
+                        .HasColumnType("int");
+
                     b.Property<int>("TestId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TimeTakenSeconds")
                         .HasColumnType("int");
 
                     b.HasKey("TestTakerId");
@@ -280,6 +323,33 @@ namespace OnlineExamSystem.Migrations
                     b.HasOne("OnlineExamSystem.DataServicesLayer.Model.Tests.Test", null)
                         .WithMany("Questions")
                         .HasForeignKey("TestId");
+                });
+
+            modelBuilder.Entity("OnlineExamSystem.DataServicesLayer.Model.Tests.StudentAnswerResponse", b =>
+                {
+                    b.HasOne("OnlineExamSystem.DataServicesLayer.Model.Tests.Question", "Question")
+                        .WithMany()
+                        .HasForeignKey("QuestionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("OnlineExamSystem.DataServicesLayer.Model.Tests.Test", "Test")
+                        .WithMany()
+                        .HasForeignKey("TestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("OnlineExamSystem.DataServicesLayer.Model.School.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Question");
+
+                    b.Navigation("Test");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("OnlineExamSystem.DataServicesLayer.Model.Tests.TestTaker", b =>

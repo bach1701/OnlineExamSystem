@@ -6,26 +6,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace OnlineExamSystem.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class Refactor : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "Classes",
-                columns: table => new
-                {
-                    ClassId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CourseName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    StudentCount = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Classes", x => x.ClassId);
-                });
-
             migrationBuilder.CreateTable(
                 name: "Tests",
                 columns: table => new
@@ -51,8 +36,7 @@ namespace OnlineExamSystem.Migrations
                 {
                     UserId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ClassId = table.Column<int>(type: "int", nullable: false),
-                    MSSV = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NumericIdentification = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     HashedPassword = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AccRole = table.Column<int>(type: "int", nullable: false),
@@ -66,12 +50,6 @@ namespace OnlineExamSystem.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.UserId);
-                    table.ForeignKey(
-                        name: "FK_Users_Classes_ClassId",
-                        column: x => x.ClassId,
-                        principalTable: "Classes",
-                        principalColumn: "ClassId",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -96,6 +74,27 @@ namespace OnlineExamSystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Classes",
+                columns: table => new
+                {
+                    ClassId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CourseName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    StudentCount = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Classes", x => x.ClassId);
+                    table.ForeignKey(
+                        name: "FK_Classes_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "UserId");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "TestTakers",
                 columns: table => new
                 {
@@ -103,7 +102,11 @@ namespace OnlineExamSystem.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     StudentUserId = table.Column<int>(type: "int", nullable: false),
                     TestId = table.Column<int>(type: "int", nullable: false),
-                    Role = table.Column<int>(type: "int", nullable: false)
+                    Role = table.Column<int>(type: "int", nullable: false),
+                    FinalScore = table.Column<float>(type: "real", nullable: false),
+                    TimeTakenSeconds = table.Column<int>(type: "int", nullable: false),
+                    SubmitedAnswerCount = table.Column<int>(type: "int", nullable: false),
+                    CorrectAnswerCount = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -142,15 +145,105 @@ namespace OnlineExamSystem.Migrations
                         principalColumn: "QuestionId");
                 });
 
+            migrationBuilder.CreateTable(
+                name: "StudentAnswerResponses",
+                columns: table => new
+                {
+                    StudentAnswerResponseId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    TestId = table.Column<int>(type: "int", nullable: false),
+                    QuestionId = table.Column<int>(type: "int", nullable: false),
+                    SelectedOption = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StudentAnswerResponses", x => x.StudentAnswerResponseId);
+                    table.ForeignKey(
+                        name: "FK_StudentAnswerResponses_Questions_QuestionId",
+                        column: x => x.QuestionId,
+                        principalTable: "Questions",
+                        principalColumn: "QuestionId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_StudentAnswerResponses_Tests_TestId",
+                        column: x => x.TestId,
+                        principalTable: "Tests",
+                        principalColumn: "TestId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_StudentAnswerResponses_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ClassStudent",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    ClassId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ClassStudent", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ClassStudent_Classes_ClassId",
+                        column: x => x.ClassId,
+                        principalTable: "Classes",
+                        principalColumn: "ClassId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ClassStudent_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Answer_QuestionId",
                 table: "Answer",
                 column: "QuestionId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Classes_UserId",
+                table: "Classes",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ClassStudent_ClassId",
+                table: "ClassStudent",
+                column: "ClassId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ClassStudent_UserId",
+                table: "ClassStudent",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Questions_TestId",
                 table: "Questions",
                 column: "TestId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StudentAnswerResponses_QuestionId",
+                table: "StudentAnswerResponses",
+                column: "QuestionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StudentAnswerResponses_TestId",
+                table: "StudentAnswerResponses",
+                column: "TestId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StudentAnswerResponses_UserId",
+                table: "StudentAnswerResponses",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TestTakers_StudentUserId",
@@ -161,12 +254,6 @@ namespace OnlineExamSystem.Migrations
                 name: "IX_TestTakers_TestId",
                 table: "TestTakers",
                 column: "TestId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Users_ClassId",
-                table: "Users",
-                column: "ClassId",
-                unique: true);
         }
 
         /// <inheritdoc />
@@ -176,7 +263,16 @@ namespace OnlineExamSystem.Migrations
                 name: "Answer");
 
             migrationBuilder.DropTable(
+                name: "ClassStudent");
+
+            migrationBuilder.DropTable(
+                name: "StudentAnswerResponses");
+
+            migrationBuilder.DropTable(
                 name: "TestTakers");
+
+            migrationBuilder.DropTable(
+                name: "Classes");
 
             migrationBuilder.DropTable(
                 name: "Questions");
@@ -186,9 +282,6 @@ namespace OnlineExamSystem.Migrations
 
             migrationBuilder.DropTable(
                 name: "Tests");
-
-            migrationBuilder.DropTable(
-                name: "Classes");
         }
     }
 }

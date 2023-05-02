@@ -43,7 +43,7 @@ namespace OnlineExamSystem.DataServicesLayer
         }
         public User GetUserByUsername(string username)
         { 
-            return DbCtx.Users.FirstOrDefault(x => x.MSSV == username); 
+            return DbCtx.Users.FirstOrDefault(x => x.NumericIdentification == username); 
         } 
     }
 }

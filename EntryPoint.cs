@@ -1,4 +1,5 @@
 ﻿using OnlineExamSystem.DataServicesLayer;
+using OnlineExamSystem.PresentationLayer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,9 @@ namespace OnlineExamSystem
         {
             MessageBox.Show("Login successful");
             LoginForm.Hide();
+
+            MainPage mainForm = new MainPage();
+            mainForm.Show();
         }
 
         private void OnFormClosed(object sender, FormClosedEventArgs e)

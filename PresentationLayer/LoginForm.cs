@@ -1,6 +1,9 @@
+#define TEST_LOGIN
+
 using OnlineExamSystem.BusinessServicesLayer;
 using OnlineExamSystem.DataServicesLayer;
 using OnlineExamSystem.DataServicesLayer.Model.School;
+
 
 namespace OnlineExamSystem
 {
@@ -15,6 +18,11 @@ namespace OnlineExamSystem
 
         private void OnLoginButtonClicked(object sender, EventArgs e)
         {
+
+            // test data
+#if TEST_LOGIN
+            LoginSuccessful?.Invoke(this, EventArgs.Empty);
+#else
             var InMSSV = TxtUsername.Text;
             var InPassword = TxtPassword.Text;
             if (InMSSV.Length < 4 || InPassword.Length < 4)
@@ -26,6 +34,7 @@ namespace OnlineExamSystem
             {
                 LoginSuccessful?.Invoke(this, EventArgs.Empty);
             }
+#endif
             return;
         }
     }

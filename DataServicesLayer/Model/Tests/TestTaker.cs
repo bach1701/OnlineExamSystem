@@ -18,5 +18,18 @@ namespace OnlineExamSystem.DataServicesLayer.Model.Tests
         public virtual Test Test { get; set; }
         public AccRole Role { get; set; }
 
+        // pending DB changes
+
+        // score
+
+        public float FinalScore { get; set; }
+
+        public int TimeTakenSeconds { get; set; }
+
+        // total question answered
+        public int SubmitedAnswerCount { get; set; }
+
+        public int CorrectAnswerCount { get; set; }
+        
     }
 }

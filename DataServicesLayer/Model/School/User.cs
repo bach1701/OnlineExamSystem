@@ -17,8 +17,9 @@ namespace OnlineExamSystem.DataServicesLayer.Model.School
        
         public ICollection<ClassStudent> Classes { get; set; }
 
+        // can be: MSSV, ma so can bo
         [Required]
-        public string MSSV { get; set; }
+        public string NumericIdentification { get; set; }
 
         [Required]
         public string HashedPassword { get; set; }
@@ -50,7 +51,7 @@ namespace OnlineExamSystem.DataServicesLayer.Model.School
         public User(int id, string mSSV, string hashedPassword, string email, int accRole, string firstName, string lastName, Gender gender, DateTime birthday, DateTime createdAt, DateTime infoUpdatedAt)
         {
             UserId = id;
-            MSSV = mSSV;
+            NumericIdentification = mSSV;
             HashedPassword = hashedPassword;
             Email = email;
             AccRole = accRole;

@@ -113,7 +113,7 @@ namespace OnlineExamSystem.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("MSSV")
+                    b.Property<string>("NumericIdentification")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -252,13 +252,25 @@ namespace OnlineExamSystem.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TestTakerId"));
 
+                    b.Property<int>("CorrectAnswerCount")
+                        .HasColumnType("int");
+
+                    b.Property<float>("FinalScore")
+                        .HasColumnType("real");
+
                     b.Property<int>("Role")
                         .HasColumnType("int");
 
                     b.Property<int>("StudentUserId")
                         .HasColumnType("int");
 
+                    b.Property<int>("SubmitedAnswerCount")
+                        .HasColumnType("int");
+
                     b.Property<int>("TestId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TimeTakenSeconds")
                         .HasColumnType("int");
 
                     b.HasKey("TestTakerId");
