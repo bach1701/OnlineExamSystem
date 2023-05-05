@@ -1,6 +1,6 @@
 ﻿namespace OnlineExamSystem.PresentationLayer
 {
-    partial class TestManagment
+    partial class StudentViewUpcomingTest
     {
         /// <summary> 
         /// Required designer variable.
@@ -34,20 +34,20 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label1.Location = new System.Drawing.Point(315, 281);
+            this.label1.Font = new System.Drawing.Font("Arial", 30F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label1.Location = new System.Drawing.Point(317, 557);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(359, 46);
+            this.label1.Size = new System.Drawing.Size(640, 67);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Danh sach bai kiem tra";
+            this.label1.Text = "Danh sách bài kiểm tra";
             // 
-            // TestManagment
+            // StudentViewUpcomingTest
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.label1);
-            this.Name = "TestManagment";
-            this.Size = new System.Drawing.Size(1143, 780);
+            this.Name = "StudentViewUpcomingTest";
+            this.Size = new System.Drawing.Size(1352, 1221);
             this.ResumeLayout(false);
             this.PerformLayout();
 

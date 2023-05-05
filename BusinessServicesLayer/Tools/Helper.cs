@@ -1,4 +1,5 @@
 ﻿using OnlineExamSystem.BusinessServicesLayer;
+using OnlineExamSystem.DataServicesLayer.Model.School;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +28,16 @@ namespace OnlineExamSystem
             string hashedPassword = BC.HashPassword(password);
 
             return hashedPassword;
+        }
+
+        public static string GetAccRoleString(int Role)
+        {
+            AccRole x = (AccRole)Enum.ToObject(typeof(AccRole), Role);
+            return x.ToString();
+        }
+        public static void ExitProcess()
+        {
+            Environment.Exit(0);
         }
     }
 }

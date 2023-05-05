@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnlineExamSystem.DataServicesLayer;
 
@@ -11,9 +12,11 @@ using OnlineExamSystem.DataServicesLayer;
 namespace OnlineExamSystem.Migrations
 {
     [DbContext(typeof(ExamDbContext))]
-    partial class ExamDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230504170329_avatar field + remove account control")]
+    partial class avatarfieldremoveaccountcontrol
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

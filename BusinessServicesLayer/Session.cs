@@ -34,25 +34,29 @@ namespace OnlineExamSystem.BusinessServicesLayer
                 var Account = OEDB.Instance.GetUserByUsername(username);
                 if (Account == null)
                 {
-                    MessageBox.Show("Khong tim thay tai khoan.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Tài khoản không tồn tại trên hệ thống.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return false;
                 }
                 else
                 {
                     if (Helper.VerifyPassword(password, Account.HashedPassword))
                     {
+                        CurrentUser = Account;
                         return true;
                     }
                     else
                     {
-                        MessageBox.Show("Sai mat khau.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Sai mật khẩu. Vui lòng kiểm tra lại.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return false;
                     }
                 }
             }
             return false;
         }
-
+        public User GetCurrentUser()
+        {
+            return CurrentUser;
+        }
 
     }
 }

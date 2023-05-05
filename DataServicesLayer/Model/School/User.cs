@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -44,6 +45,9 @@ namespace OnlineExamSystem.DataServicesLayer.Model.School
         [Required]
         public DateTime InfoUpdatedAt { get; set; }
 
+        public string AvatarURL { get; set; }
+        public bool IsBlocked { get; set; }
+
         public User()
         {
 
@@ -62,12 +66,16 @@ namespace OnlineExamSystem.DataServicesLayer.Model.School
             CreatedAt = createdAt;
             InfoUpdatedAt = infoUpdatedAt;
         }
+        public AccRole GetRole()
+        {
+            return (AccRole)Enum.ToObject(typeof(AccRole), AccRole);
+        }
     }
     public enum AccRole
     {
-        Student,
+        Administrator,
         Teacher,
-        Administrator
+        Student
     }
     public enum Gender
     {

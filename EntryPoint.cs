@@ -24,7 +24,7 @@ namespace OnlineExamSystem
         }
         private void OnLoginSuccessful(object sender, EventArgs e)
         {
-            MessageBox.Show("Login successful");
+            //MessageBox.Show("Login successful");
             LoginForm.Hide();
 
             MainPage mainForm = new MainPage();
