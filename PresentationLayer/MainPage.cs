@@ -1,4 +1,5 @@
 ﻿using OnlineExamSystem.BusinessServicesLayer;
+using OnlineExamSystem.DataServicesLayer;
 using OnlineExamSystem.DataServicesLayer.Model.School;
 using System;
 using System.Collections.Generic;
@@ -104,7 +105,7 @@ namespace OnlineExamSystem.PresentationLayer
         }
         private void CreateDockFormBasedOnRole()
         {
-            User CurrentLoggedUserInfo = Session.Instance.GetCurrentUser();
+            User CurrentLoggedUserInfo = UserData.Instance.GetUser();
             switch (CurrentLoggedUserInfo.GetRole())
             {
                 case AccRole.Administrator:
@@ -124,10 +125,10 @@ namespace OnlineExamSystem.PresentationLayer
        
         private void LoadUserInformation()
         {
-            if (Session.Instance.GetCurrentUser() == null)
+            if (!UserData.Instance.IsLoggedIn())
                 return;
            
-            User CurrentLoggedUserInfo = Session.Instance.GetCurrentUser();
+            User CurrentLoggedUserInfo = UserData.Instance.GetUser();
 
             txtName.Text = CurrentLoggedUserInfo.FirstName + " " + CurrentLoggedUserInfo.LastName;
             txtRole.Text = Helper.GetAccRoleString(CurrentLoggedUserInfo.AccRole);

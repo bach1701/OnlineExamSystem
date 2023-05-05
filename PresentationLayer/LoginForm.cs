@@ -21,7 +21,7 @@ namespace OnlineExamSystem
 #if TEST_LOGIN
             // LoginSuccessful?.Invoke(this, EventArgs.Empty);
             TxtUsername.Text = "joebiden@example.com";
-            TxtPassword.Text = "123456";
+            TxtPassword.Text = "12345678";
 #endif
             var InMSSV = TxtUsername.Text;
             var InPassword = TxtPassword.Text;

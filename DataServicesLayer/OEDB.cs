@@ -33,7 +33,10 @@ namespace OnlineExamSystem.DataServicesLayer
         public void Dummy()
         {
         }
-
+        public ExamDbContext GetDatabaseContext()
+        {
+            return DbCtx;
+        }
         private void InitDatabaseConnection()
         {
             var DummyQuery = DbCtx.Users.Take(1);
@@ -41,9 +44,5 @@ namespace OnlineExamSystem.DataServicesLayer
             {
             }
         }
-        public User GetUserByUsername(string username)
-        { 
-            return DbCtx.Users.FirstOrDefault(x => x.NumericIdentification == username || x.Email == username); 
-        } 
     }
 }

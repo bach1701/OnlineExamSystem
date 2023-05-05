@@ -1,4 +1,5 @@
 ﻿using OnlineExamSystem.BusinessServicesLayer;
+using OnlineExamSystem.DataServicesLayer;
 using OnlineExamSystem.DataServicesLayer.Model.School;
 using System;
 using System.Collections.Generic;
@@ -21,9 +22,9 @@ namespace OnlineExamSystem.PresentationLayer
 
         private void UserInformation_Load(object sender, EventArgs e)
         {
-            if (Session.Instance.GetCurrentUser() != null) 
+            if (UserData.Instance.IsLoggedIn()) 
             { 
-                User CurrentLoggedUserInfo = Session.Instance.GetCurrentUser(); 
+                User CurrentLoggedUserInfo = UserData.Instance.GetUser(); 
 
                 txtName.Text = CurrentLoggedUserInfo.FirstName + " " + CurrentLoggedUserInfo.LastName;
                 txtBirthday.Text = CurrentLoggedUserInfo.Birthday.ToShortDateString();
@@ -86,6 +87,36 @@ namespace OnlineExamSystem.PresentationLayer
         private void label17_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void ChangePasswordOK_Click(object sender, EventArgs e)
+        {
+            if (InputOldPassword.Text.Length < 4 ||
+                InputNewPassword.Text.Length < 4 ||
+                InputRetypeNewPassword.Text.Length < 4
+                )
+            {
+                MessageBox.Show("Mật khẩu nhập không hợp lệ.");
+                return;
+            }
+            if ( InputNewPassword.Text != InputRetypeNewPassword.Text)
+            {
+                MessageBox.Show("Nhập lại mật khẩu không khớp.");
+                return;
+            }
+            if (!Session.Instance.ChangePassword(InputOldPassword.Text, InputNewPassword.Text))
+            {
+                MessageBox.Show("Mật khẩu cũ không đúng.");
+                return;
+            }
+            MessageBox.Show("Đổi mật khẩu thành công.");
+        }
+
+        private void ChangePasswordResetAll_Click(object sender, EventArgs e)
+        {
+            InputOldPassword.Text = "";
+            InputNewPassword.Text = "";
+            InputRetypeNewPassword.Text = "";
         }
     }
 }

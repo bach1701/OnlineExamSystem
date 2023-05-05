@@ -25,13 +25,11 @@ namespace OnlineExamSystem.BusinessServicesLayer
             }
         }
 
-        private User? CurrentUser;
-
         public bool Login(string username, string password)
         {
-            if (CurrentUser == null)
+            if (!UserData.Instance.IsLoggedIn())
             {
-                var Account = OEDB.Instance.GetUserByUsername(username);
+                var Account = UserData.Instance.GetUserByUsername(username);
                 if (Account == null)
                 {
                     MessageBox.Show("Tài khoản không tồn tại trên hệ thống.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -41,7 +39,7 @@ namespace OnlineExamSystem.BusinessServicesLayer
                 {
                     if (Helper.VerifyPassword(password, Account.HashedPassword))
                     {
-                        CurrentUser = Account;
+                        UserData.Instance.SetUser(Account);
                         return true;
                     }
                     else
@@ -53,10 +51,17 @@ namespace OnlineExamSystem.BusinessServicesLayer
             }
             return false;
         }
-        public User GetCurrentUser()
+        public bool ChangePassword(string OldPassword, string NewPassword) 
         {
-            return CurrentUser;
-        }
+            if (!UserData.Instance.IsLoggedIn())
+                return false;
 
+            if (!Helper.VerifyPassword(OldPassword, UserData.Instance.GetUser().HashedPassword))
+                return false;
+
+            string NewPasswordHash = Helper.HashPassword(NewPassword);
+            UserData.Instance.ChangePasswordHash(NewPasswordHash);
+            return true;
+        }
     }
 }

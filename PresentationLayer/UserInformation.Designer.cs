@@ -48,11 +48,11 @@
             this.label15 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.ChangePasswordOK = new System.Windows.Forms.Button();
+            this.ChangePasswordResetAll = new System.Windows.Forms.Button();
+            this.InputOldPassword = new System.Windows.Forms.TextBox();
+            this.InputNewPassword = new System.Windows.Forms.TextBox();
+            this.InputRetypeNewPassword = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -319,67 +319,69 @@
             this.label17.Text = "Nhập lại mật khẩu mới:";
             this.label17.Click += new System.EventHandler(this.label17_Click);
             // 
-            // button2
+            // ChangePasswordOK
             // 
-            this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-            this.button2.Location = new System.Drawing.Point(650, 1039);
-            this.button2.Margin = new System.Windows.Forms.Padding(4);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(188, 62);
-            this.button2.TabIndex = 13;
-            this.button2.Text = "Lưu";
-            this.button2.UseVisualStyleBackColor = false;
+            this.ChangePasswordOK.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+            this.ChangePasswordOK.Location = new System.Drawing.Point(650, 1039);
+            this.ChangePasswordOK.Margin = new System.Windows.Forms.Padding(4);
+            this.ChangePasswordOK.Name = "ChangePasswordOK";
+            this.ChangePasswordOK.Size = new System.Drawing.Size(188, 62);
+            this.ChangePasswordOK.TabIndex = 13;
+            this.ChangePasswordOK.Text = "Lưu";
+            this.ChangePasswordOK.UseVisualStyleBackColor = false;
+            this.ChangePasswordOK.Click += new System.EventHandler(this.ChangePasswordOK_Click);
             // 
-            // button3
+            // ChangePasswordResetAll
             // 
-            this.button3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
-            this.button3.Location = new System.Drawing.Point(394, 1039);
-            this.button3.Margin = new System.Windows.Forms.Padding(4);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(188, 62);
-            this.button3.TabIndex = 16;
-            this.button3.Text = "Hủy";
-            this.button3.UseVisualStyleBackColor = false;
+            this.ChangePasswordResetAll.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.ChangePasswordResetAll.Location = new System.Drawing.Point(394, 1039);
+            this.ChangePasswordResetAll.Margin = new System.Windows.Forms.Padding(4);
+            this.ChangePasswordResetAll.Name = "ChangePasswordResetAll";
+            this.ChangePasswordResetAll.Size = new System.Drawing.Size(188, 62);
+            this.ChangePasswordResetAll.TabIndex = 16;
+            this.ChangePasswordResetAll.Text = "Hủy";
+            this.ChangePasswordResetAll.UseVisualStyleBackColor = false;
+            this.ChangePasswordResetAll.Click += new System.EventHandler(this.ChangePasswordResetAll_Click);
             // 
-            // textBox1
+            // InputOldPassword
             // 
-            this.textBox1.Font = new System.Drawing.Font("Arial", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.textBox1.Location = new System.Drawing.Point(644, 830);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(0);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.PasswordChar = '*';
-            this.textBox1.Size = new System.Drawing.Size(452, 49);
-            this.textBox1.TabIndex = 17;
+            this.InputOldPassword.Font = new System.Drawing.Font("Arial", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.InputOldPassword.Location = new System.Drawing.Point(644, 830);
+            this.InputOldPassword.Margin = new System.Windows.Forms.Padding(0);
+            this.InputOldPassword.Name = "InputOldPassword";
+            this.InputOldPassword.PasswordChar = '*';
+            this.InputOldPassword.Size = new System.Drawing.Size(452, 49);
+            this.InputOldPassword.TabIndex = 17;
             // 
-            // textBox2
+            // InputNewPassword
             // 
-            this.textBox2.Font = new System.Drawing.Font("Arial", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.textBox2.Location = new System.Drawing.Point(644, 892);
-            this.textBox2.Margin = new System.Windows.Forms.Padding(0);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.PasswordChar = '*';
-            this.textBox2.Size = new System.Drawing.Size(452, 49);
-            this.textBox2.TabIndex = 18;
+            this.InputNewPassword.Font = new System.Drawing.Font("Arial", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.InputNewPassword.Location = new System.Drawing.Point(644, 892);
+            this.InputNewPassword.Margin = new System.Windows.Forms.Padding(0);
+            this.InputNewPassword.Name = "InputNewPassword";
+            this.InputNewPassword.PasswordChar = '*';
+            this.InputNewPassword.Size = new System.Drawing.Size(452, 49);
+            this.InputNewPassword.TabIndex = 18;
             // 
-            // textBox3
+            // InputRetypeNewPassword
             // 
-            this.textBox3.Font = new System.Drawing.Font("Arial", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.textBox3.Location = new System.Drawing.Point(644, 955);
-            this.textBox3.Margin = new System.Windows.Forms.Padding(0);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.PasswordChar = '*';
-            this.textBox3.Size = new System.Drawing.Size(452, 49);
-            this.textBox3.TabIndex = 19;
+            this.InputRetypeNewPassword.Font = new System.Drawing.Font("Arial", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.InputRetypeNewPassword.Location = new System.Drawing.Point(644, 955);
+            this.InputRetypeNewPassword.Margin = new System.Windows.Forms.Padding(0);
+            this.InputRetypeNewPassword.Name = "InputRetypeNewPassword";
+            this.InputRetypeNewPassword.PasswordChar = '*';
+            this.InputRetypeNewPassword.Size = new System.Drawing.Size(452, 49);
+            this.InputRetypeNewPassword.TabIndex = 19;
             // 
             // UserInformation
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.textBox3);
-            this.Controls.Add(this.textBox2);
-            this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.InputRetypeNewPassword);
+            this.Controls.Add(this.InputNewPassword);
+            this.Controls.Add(this.InputOldPassword);
+            this.Controls.Add(this.ChangePasswordResetAll);
+            this.Controls.Add(this.ChangePasswordOK);
             this.Controls.Add(this.label17);
             this.Controls.Add(this.label16);
             this.Controls.Add(this.label15);
@@ -420,10 +422,10 @@
         private Label label15;
         private Label label16;
         private Label label17;
-        private Button button2;
-        private Button button3;
-        private TextBox textBox1;
-        private TextBox textBox2;
-        private TextBox textBox3;
+        private Button ChangePasswordOK;
+        private Button ChangePasswordResetAll;
+        private TextBox InputOldPassword;
+        private TextBox InputNewPassword;
+        private TextBox InputRetypeNewPassword;
     }
 }
