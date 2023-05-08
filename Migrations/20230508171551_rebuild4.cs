@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace OnlineExamSystem.Migrations
 {
     /// <inheritdoc />
-    public partial class Refactor : Migration
+    public partial class rebuild4 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -45,7 +45,9 @@ namespace OnlineExamSystem.Migrations
                     Gender = table.Column<int>(type: "int", nullable: false),
                     Birthday = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    InfoUpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    InfoUpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    AvatarURL = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsBlocked = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -81,17 +83,17 @@ namespace OnlineExamSystem.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CourseName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    StudentCount = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: true)
+                    OwnedTeacherId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Classes", x => x.ClassId);
                     table.ForeignKey(
-                        name: "FK_Classes_Users_UserId",
-                        column: x => x.UserId,
+                        name: "FK_Classes_Users_OwnedTeacherId",
+                        column: x => x.OwnedTeacherId,
                         principalTable: "Users",
-                        principalColumn: "UserId");
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -183,14 +185,13 @@ namespace OnlineExamSystem.Migrations
                 name: "ClassStudent",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ClassId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
-                    ClassId = table.Column<int>(type: "int", nullable: false)
+                    ClassStudentId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ClassStudent", x => x.Id);
+                    table.PrimaryKey("PK_ClassStudent", x => new { x.ClassId, x.UserId });
                     table.ForeignKey(
                         name: "FK_ClassStudent_Classes_ClassId",
                         column: x => x.ClassId,
@@ -202,7 +203,7 @@ namespace OnlineExamSystem.Migrations
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -211,14 +212,9 @@ namespace OnlineExamSystem.Migrations
                 column: "QuestionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Classes_UserId",
+                name: "IX_Classes_OwnedTeacherId",
                 table: "Classes",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ClassStudent_ClassId",
-                table: "ClassStudent",
-                column: "ClassId");
+                column: "OwnedTeacherId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ClassStudent_UserId",

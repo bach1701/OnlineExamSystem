@@ -14,10 +14,6 @@ namespace OnlineExamSystem.DataServicesLayer.Model.School
         [Key]
         public int UserId { get; set; }
 
-        public ICollection<Class> OwnedClasses { get; set; }
-       
-        public ICollection<ClassStudent> Classes { get; set; }
-
         // can be: MSSV, ma so can bo
         [Required]
         public string NumericIdentification { get; set; }
@@ -46,11 +42,15 @@ namespace OnlineExamSystem.DataServicesLayer.Model.School
         public DateTime InfoUpdatedAt { get; set; }
 
         public string AvatarURL { get; set; }
+
         public bool IsBlocked { get; set; }
+
+
+        public virtual ICollection<ClassStudent> ClassStudents { get; set; }
+
 
         public User()
         {
-
         }
         public User(int id, string mSSV, string hashedPassword, string email, int accRole, string firstName, string lastName, Gender gender, DateTime birthday, DateTime createdAt, DateTime infoUpdatedAt)
         {

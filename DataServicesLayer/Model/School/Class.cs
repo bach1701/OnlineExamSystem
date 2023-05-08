@@ -15,22 +15,27 @@ namespace OnlineExamSystem.DataServicesLayer.Model.School
 
         public string Name { get; set; }
         public string CourseName { get; set; }
-        public int StudentCount { get; set; }
 
+        [ForeignKey("OwnedTeacher")]
+        public int OwnedTeacherId { get; set; }
+        public virtual User? OwnedTeacher { get; set; }
 
-        public ICollection<ClassStudent> Students { get; set; }
+        public virtual ICollection<ClassStudent> Students { get; set; }
+        
+        public int StudentsCount => Students?.Count ?? 0;
     }
     public class ClassStudent
     {
         [Key]
-        public int Id { get; set; }
-
-        [ForeignKey("User")]
-        public int UserId { get; set; }
-        public User SUser { get; set; }
+        public int ClassStudentId { get; set; }
 
         [ForeignKey("Class")]
         public int ClassId { get; set; }
-        public Class Class { get; set; }
+
+        [ForeignKey("Student")]
+        public int UserId { get; set; }
+
+        public virtual Class Class { get; set; }
+        public virtual User Student { get; set; }
     }
 }

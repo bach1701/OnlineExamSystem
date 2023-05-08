@@ -24,7 +24,7 @@ namespace OnlineExamSystem.PresentationLayer
         {
             if (UserData.Instance.IsLoggedIn()) 
             { 
-                User CurrentLoggedUserInfo = UserData.Instance.GetUser(); 
+                User CurrentLoggedUserInfo = UserData.Instance.GetCurrentUser(); 
 
                 txtName.Text = CurrentLoggedUserInfo.FirstName + " " + CurrentLoggedUserInfo.LastName;
                 txtBirthday.Text = CurrentLoggedUserInfo.Birthday.ToShortDateString();

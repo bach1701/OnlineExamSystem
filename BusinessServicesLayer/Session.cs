@@ -56,7 +56,7 @@ namespace OnlineExamSystem.BusinessServicesLayer
             if (!UserData.Instance.IsLoggedIn())
                 return false;
 
-            if (!Helper.VerifyPassword(OldPassword, UserData.Instance.GetUser().HashedPassword))
+            if (!Helper.VerifyPassword(OldPassword, UserData.Instance.GetCurrentUser().HashedPassword))
                 return false;
 
             string NewPasswordHash = Helper.HashPassword(NewPassword);

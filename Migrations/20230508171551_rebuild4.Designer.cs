@@ -12,8 +12,8 @@ using OnlineExamSystem.DataServicesLayer;
 namespace OnlineExamSystem.Migrations
 {
     [DbContext(typeof(ExamDbContext))]
-    [Migration("20230504170329_avatar field + remove account control")]
-    partial class avatarfieldremoveaccountcontrol
+    [Migration("20230508171551_rebuild4")]
+    partial class rebuild4
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -41,36 +41,28 @@ namespace OnlineExamSystem.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("StudentCount")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("UserId")
+                    b.Property<int>("OwnedTeacherId")
                         .HasColumnType("int");
 
                     b.HasKey("ClassId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("OwnedTeacherId");
 
                     b.ToTable("Classes");
                 });
 
             modelBuilder.Entity("OnlineExamSystem.DataServicesLayer.Model.School.ClassStudent", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
                     b.Property<int>("ClassId")
                         .HasColumnType("int");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.Property<int>("ClassStudentId")
+                        .HasColumnType("int");
 
-                    b.HasIndex("ClassId");
+                    b.HasKey("ClassId", "UserId");
 
                     b.HasIndex("UserId");
 
@@ -294,9 +286,13 @@ namespace OnlineExamSystem.Migrations
 
             modelBuilder.Entity("OnlineExamSystem.DataServicesLayer.Model.School.Class", b =>
                 {
-                    b.HasOne("OnlineExamSystem.DataServicesLayer.Model.School.User", null)
-                        .WithMany("OwnedClasses")
-                        .HasForeignKey("UserId");
+                    b.HasOne("OnlineExamSystem.DataServicesLayer.Model.School.User", "OwnedTeacher")
+                        .WithMany()
+                        .HasForeignKey("OwnedTeacherId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("OwnedTeacher");
                 });
 
             modelBuilder.Entity("OnlineExamSystem.DataServicesLayer.Model.School.ClassStudent", b =>
@@ -307,15 +303,15 @@ namespace OnlineExamSystem.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("OnlineExamSystem.DataServicesLayer.Model.School.User", "SUser")
-                        .WithMany("Classes")
+                    b.HasOne("OnlineExamSystem.DataServicesLayer.Model.School.User", "Student")
+                        .WithMany("ClassStudents")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Class");
 
-                    b.Navigation("SUser");
+                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("OnlineExamSystem.DataServicesLayer.Model.Tests.Answer", b =>
@@ -385,9 +381,7 @@ namespace OnlineExamSystem.Migrations
 
             modelBuilder.Entity("OnlineExamSystem.DataServicesLayer.Model.School.User", b =>
                 {
-                    b.Navigation("Classes");
-
-                    b.Navigation("OwnedClasses");
+                    b.Navigation("ClassStudents");
                 });
 
             modelBuilder.Entity("OnlineExamSystem.DataServicesLayer.Model.Tests.Question", b =>

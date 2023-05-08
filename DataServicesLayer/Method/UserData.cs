@@ -1,4 +1,6 @@
-﻿using OnlineExamSystem.BusinessServicesLayer;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
+using OnlineExamSystem.BusinessServicesLayer;
 using OnlineExamSystem.DataServicesLayer.Model.School;
 using System;
 using System.Collections.Generic;
@@ -16,7 +18,9 @@ namespace OnlineExamSystem.DataServicesLayer
             get
             {
                 if (_obj == null)
+                {
                     _obj = new UserData();
+                }
                 return _obj;
             }
             private set
@@ -24,14 +28,13 @@ namespace OnlineExamSystem.DataServicesLayer
 
             }
         }
-
         private User? CurrentUser;
 
         public void SetUser(User user) 
         {
             CurrentUser = user;
         }
-        public User GetUser() 
+        public User GetCurrentUser() 
         { 
             return CurrentUser; 
         }
@@ -43,6 +46,10 @@ namespace OnlineExamSystem.DataServicesLayer
         {
             return OEDB.Instance.GetDatabaseContext()
                 .Users.FirstOrDefault(x => x.NumericIdentification == username || x.Email == username);
+        }
+        public int GetUserId()
+        { 
+            return CurrentUser.UserId;
         }
         public bool ChangePasswordHash(string NewHash)
         {

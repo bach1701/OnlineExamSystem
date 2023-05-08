@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 namespace OnlineExamSystem.DataServicesLayer
 {
@@ -20,7 +21,30 @@ namespace OnlineExamSystem.DataServicesLayer
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=tcp:db.dutlearning.koding.tk,1433;Database=OnlineExamSystem_Dev;User ID=sa;Password=68RsyRjLfc5uqSsGYA3x;TrustServerCertificate=True;");
+            optionsBuilder.UseSqlServer(@"Server=tcp:db.dutlearning.koding.tk,1433;Database=OnlineExamSystem_Dev2;User ID=sa;Password=68RsyRjLfc5uqSsGYA3x;TrustServerCertificate=True;");
+        }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<ClassStudent>()
+                .HasKey(cs => new { cs.ClassId, cs.UserId });
+
+            modelBuilder.Entity<ClassStudent>()
+                .HasOne(cs => cs.Class)
+                .WithMany(c => c.Students)
+                .HasForeignKey(cs => cs.ClassId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<ClassStudent>()
+                .HasOne(cs => cs.Student)
+                .WithMany(u => u.ClassStudents)
+                .HasForeignKey(cs => cs.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Class>()
+                .HasOne(c => c.OwnedTeacher)
+                .WithMany()
+                .HasForeignKey(c => c.OwnedTeacherId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

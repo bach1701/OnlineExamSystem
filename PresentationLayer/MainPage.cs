@@ -20,7 +20,7 @@ namespace OnlineExamSystem.PresentationLayer
         private UserInformation UserInfoDock;
         private TestManagment TestManagmentDock;
         private TeacherManagment TeacherManagerDock;
-        private ClassManagment ClassManagerDock;
+        private UIClassManagment ClassManagerDock;
         private StudentViewUpcomingTest StudentViewTestDock;
         
         ButtonFunction[] ButtonFunctions = new ButtonFunction[5];
@@ -69,7 +69,7 @@ namespace OnlineExamSystem.PresentationLayer
             button2.Text = "Bài kiểm tra";
             button2.Visible = true;
 
-            ClassManagerDock = new ClassManagment();
+            ClassManagerDock = new UIClassManagment();
             ClassManagerDock.Dock = DockStyle.Fill;
             button3.Text = "Quản lý lớp học";
             button3.Visible = true;
@@ -105,7 +105,7 @@ namespace OnlineExamSystem.PresentationLayer
         }
         private void CreateDockFormBasedOnRole()
         {
-            User CurrentLoggedUserInfo = UserData.Instance.GetUser();
+            User CurrentLoggedUserInfo = UserData.Instance.GetCurrentUser();
             switch (CurrentLoggedUserInfo.GetRole())
             {
                 case AccRole.Administrator:
@@ -128,7 +128,7 @@ namespace OnlineExamSystem.PresentationLayer
             if (!UserData.Instance.IsLoggedIn())
                 return;
            
-            User CurrentLoggedUserInfo = UserData.Instance.GetUser();
+            User CurrentLoggedUserInfo = UserData.Instance.GetCurrentUser();
 
             txtName.Text = CurrentLoggedUserInfo.FirstName + " " + CurrentLoggedUserInfo.LastName;
             txtRole.Text = Helper.GetAccRoleString(CurrentLoggedUserInfo.AccRole);
