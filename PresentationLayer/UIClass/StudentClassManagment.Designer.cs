@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.TxtSearchStudentByName = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.NewStudentButton = new System.Windows.Forms.Button();
@@ -40,16 +40,16 @@
             ((System.ComponentModel.ISupportInitialize)(this.StudentListView)).BeginInit();
             this.SuspendLayout();
             // 
-            // textBox1
+            // TxtSearchStudentByName
             // 
-            this.textBox1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.textBox1.ForeColor = System.Drawing.SystemColors.GrayText;
-            this.textBox1.Location = new System.Drawing.Point(243, 138);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(4, 8, 4, 8);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(327, 39);
-            this.textBox1.TabIndex = 6;
-            this.textBox1.Text = "Tìm kiếm theo tên học sinh";
+            this.TxtSearchStudentByName.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.TxtSearchStudentByName.ForeColor = System.Drawing.SystemColors.GrayText;
+            this.TxtSearchStudentByName.Location = new System.Drawing.Point(243, 138);
+            this.TxtSearchStudentByName.Margin = new System.Windows.Forms.Padding(4, 8, 4, 8);
+            this.TxtSearchStudentByName.Name = "TxtSearchStudentByName";
+            this.TxtSearchStudentByName.Size = new System.Drawing.Size(327, 39);
+            this.TxtSearchStudentByName.TabIndex = 6;
+            this.TxtSearchStudentByName.TextChanged += new System.EventHandler(this.TxtSearchStudentByName_Enter);
             // 
             // label2
             // 
@@ -137,6 +137,7 @@
             this.StudentListView.RowTemplate.Height = 33;
             this.StudentListView.Size = new System.Drawing.Size(1236, 901);
             this.StudentListView.TabIndex = 11;
+            this.StudentListView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.StudentListView_CellContentClick);
             // 
             // StudentClassManagment
             // 
@@ -147,7 +148,7 @@
             this.Controls.Add(this.lbClassName);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.TxtSearchStudentByName);
             this.Controls.Add(this.NewStudentButton);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -164,7 +165,7 @@
         private Label label2;
         private Label label3;
         private Button NewStudentButton;
-        private TextBox textBox1;
+        private TextBox TxtSearchStudentByName;
         private Label label1;
         private Label label4;
         private Label lbClassName;

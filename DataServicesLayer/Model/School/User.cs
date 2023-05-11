@@ -70,6 +70,20 @@ namespace OnlineExamSystem.DataServicesLayer.Model.School
         {
             return (AccRole)Enum.ToObject(typeof(AccRole), AccRole);
         }
+        public string GenderToString()
+        {
+            switch (Gender)
+            {
+                case Gender.None:
+                    return "Không";
+                case Gender.Male:
+                    return "Nam";
+                case Gender.Female:
+                    return "Nữ";
+                default:
+                    return "N/A";
+            }
+        }
     }
     public enum AccRole
     {
@@ -82,5 +96,6 @@ namespace OnlineExamSystem.DataServicesLayer.Model.School
         None,
         Male,
         Female
+        
     }
 }

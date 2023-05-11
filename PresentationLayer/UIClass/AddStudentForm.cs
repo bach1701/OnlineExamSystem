@@ -1,4 +1,5 @@
 ﻿using OnlineExamSystem.BusinessServicesLayer;
+using OnlineExamSystem.DataServicesLayer.Model.School;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -35,9 +36,10 @@ namespace OnlineExamSystem.PresentationLayer
         {
             DateTime StudentBirthday = TxtStudentBirthday.Value;
 
-            if (TxtStudentName.Text.Length <= 0 ||
+            if (TxtStudentFirstName.Text.Length <= 0 ||
+                TxtStudentLastName.Text.Length <=0 ||
                 StudentBirthday.CompareTo(DateTime.Now) > 0 ||
-                TxtStudentMSSV.Text.Length <= 0)
+                TxtStudentMSSV.Text.Length <= 4)
             {
                 MessageBox.Show("Vui lòng nhập đủ các trường dữ liệu.");
                 return;
@@ -49,12 +51,53 @@ namespace OnlineExamSystem.PresentationLayer
                 MessageBox.Show("Vui lòng nhập đúng MSSV.");
                 return;
             }
+
+            if(StudentMgr.IsStudentInClass(TxtStudentMSSV.Text) == true)
+            {
+                MessageBox.Show("Hoc sinh da ton tai trong lop!");
+                return;
+            }
+
             // code here
-            bool success = StudentMgr.AddStudentToCurrentClass(TxtStudentName.Text, TxtStudentMSSV.Text, StudentBirthday);
+            bool success = StudentMgr.AddStudentToCurrentClass(TxtStudentFirstName.Text,
+                TxtStudentLastName.Text,
+                TxtStudentMSSV.Text,
+                StudentBirthday,
+                (Gender)CbStudentGender.SelectedIndex
+                );
             if (success)
             {
                 CreateStudentSuccessful?.Invoke(this, EventArgs.Empty);
             }
+
+        }
+
+        private void TxtStudentMSSV_Leave(object sender, EventArgs e)
+        {
+            int num;
+            if (TxtStudentMSSV.Text.Length <= 0 || int.TryParse(TxtStudentMSSV.Text, out num) == false)
+                return;
+
+            User Student = StudentMgr.GetUserByNumericID(TxtStudentMSSV.Text);
+
+            if (Student != null)
+            {
+                TxtStudentFirstName.Enabled = false;
+                TxtStudentLastName.Enabled = false;
+                TxtStudentBirthday.Enabled = false;
+
+                TxtStudentFirstName.Text = Student.FirstName;
+                TxtStudentLastName.Text = Student.LastName;
+                TxtStudentBirthday.Text = Student.Birthday.ToString();
+            }
+            else
+            {
+                TxtStudentFirstName.Enabled = true;
+                TxtStudentLastName.Enabled = true;
+                TxtStudentBirthday.Enabled = true;
+            }
+
+
         }
     }
 }

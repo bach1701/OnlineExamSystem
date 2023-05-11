@@ -44,5 +44,9 @@ namespace OnlineExamSystem.DataServicesLayer
             {
             }
         }
+        public bool Commit()
+        {
+            return DbCtx.SaveChanges() == 1;
+        }
     }
 }

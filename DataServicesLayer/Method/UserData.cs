@@ -62,19 +62,19 @@ namespace OnlineExamSystem.DataServicesLayer
             OEDB.Instance.GetDatabaseContext().Users.Add(user);
             return OEDB.Instance.GetDatabaseContext().SaveChanges() == 1;
         }
-        public User CreateNewStudentAccount(string Name, string Identification, string Password, DateTime Birthday)
+        public User CreateNewStudentAccount(string FirstName,string LastName, string Identification, string Password, DateTime Birthday, Gender InGender)
         {
             // new student object
             User NewStudent = new User();
             NewStudent.InfoUpdatedAt = DateTime.Now;
             NewStudent.CreatedAt = DateTime.Now;
             NewStudent.AccRole = (int)AccRole.Student;
-            NewStudent.FirstName = Name;
-            NewStudent.LastName = "";
+            NewStudent.FirstName = FirstName;
+            NewStudent.LastName = LastName;
             NewStudent.NumericIdentification = Identification;
             NewStudent.Email = "";
             NewStudent.AvatarURL = "";
-            NewStudent.Gender = Gender.None;
+            NewStudent.Gender = InGender;
             NewStudent.Birthday = Birthday;
             NewStudent.HashedPassword = Helper.HashPassword(Password);
             // call

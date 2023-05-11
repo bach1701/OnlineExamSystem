@@ -10,10 +10,11 @@ namespace OnlineExamSystem.BusinessServicesLayer
 {
     public class StudentListForDisplay
     {
-        public int Id { get; set; }
+        public int Index { get; set; }
         public string Name { get; set; }
         public string NumericIdentification { get; set; }
         public DateTime Birthday { get; set; }
+        public string GenderText { get; set; }
 
         public StudentListForDisplay()
         {
@@ -33,18 +34,20 @@ namespace OnlineExamSystem.BusinessServicesLayer
             if (CurrentClasses.Students == null)
                 return StudentListForDisplays;
 
+            int i = 0;
             foreach (var classStudent in CurrentClasses.Students)
             {
                 StudentListForDisplay Ens = new StudentListForDisplay();
+                Ens.Index = ++i;
                 Ens.Name = classStudent.Student.FirstName + " " + classStudent.Student.LastName;
                 Ens.Birthday = classStudent.Student.Birthday;
                 Ens.NumericIdentification = classStudent.Student.NumericIdentification;
-
+                Ens.GenderText = classStudent.Student.GenderToString();
                 StudentListForDisplays.Add(Ens);
             }
             return StudentListForDisplays;
         }
-        public bool AddStudentToCurrentClass(string Name, string MSSV, DateTime Birthday)
+        public bool AddStudentToCurrentClass(string FirstName, String LastName, string MSSV, DateTime Birthday, Gender StdGender)
         {
             // check if student already have an account
 
@@ -59,7 +62,7 @@ namespace OnlineExamSystem.BusinessServicesLayer
                 // create an account first
                 NumericIdentification = MSSV;
                 Password = MSSV;
-                Student = UserData.Instance.CreateNewStudentAccount(Name, NumericIdentification, Password, Birthday);
+                Student = UserData.Instance.CreateNewStudentAccount(FirstName, LastName, NumericIdentification, Password, Birthday, StdGender);
                 if (Student == null)
                     throw new Exception("An error occured, at CreateNewStudentAccount.");
 
@@ -68,7 +71,6 @@ namespace OnlineExamSystem.BusinessServicesLayer
             }
 
             // add to class
-
             ClassStudent classStudent = new ClassStudent
             {
                 ClassId = CurrentClasses.ClassId,
@@ -83,6 +85,31 @@ namespace OnlineExamSystem.BusinessServicesLayer
             }
             return AddSuccess;
         }
+
+        public ClassStudent FindStudentEntry(string MSSV)
+        {
+            foreach (var Row in CurrentClasses.Students)
+            {
+                if (MSSV == Row.Student.NumericIdentification)
+                    return Row;
+            }
+            return null;
+        }
+        public bool IsStudentInClass(string MSSV)
+        {
+            return FindStudentEntry(MSSV) != null;
+        }
+        public bool RemoveStudentFromCurrentClass(string MSSV)
+        {
+            ClassStudent Entry = FindStudentEntry(MSSV);
+            if (Entry == null) 
+                return false;
+
+            CurrentClasses.Students.Remove(Entry);
+            return OEDB.Instance.Commit();
+
+        }
+
         public string GetClassName()
         {
             return CurrentClasses.Name;
@@ -90,6 +117,11 @@ namespace OnlineExamSystem.BusinessServicesLayer
         public string GetClassCourseName()
         {
             return CurrentClasses.CourseName;
+        }
+
+        public User GetUserByNumericID(string NumID)
+        {
+            return UserData.Instance.GetUserByUsername(NumID);    
         }
     }
 }
