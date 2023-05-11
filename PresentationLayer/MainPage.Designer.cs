@@ -57,7 +57,7 @@
             this.panel1.Controls.Add(this.button1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Margin = new System.Windows.Forms.Padding(4);
+            this.panel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(439, 1221);
             this.panel1.TabIndex = 0;
@@ -69,7 +69,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
             this.label1.ForeColor = System.Drawing.Color.Gray;
-            this.label1.Location = new System.Drawing.Point(103, 1187);
+            this.label1.Location = new System.Drawing.Point(102, 1188);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(217, 25);
@@ -158,7 +158,7 @@
             // 
             this.pictureBox1.BackColor = System.Drawing.Color.White;
             this.pictureBox1.Location = new System.Drawing.Point(46, 50);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(138, 138);
             this.pictureBox1.TabIndex = 1;
@@ -182,10 +182,11 @@
             // 
             this.PanelContent.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PanelContent.Location = new System.Drawing.Point(439, 0);
-            this.PanelContent.Margin = new System.Windows.Forms.Padding(4);
+            this.PanelContent.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.PanelContent.Name = "PanelContent";
             this.PanelContent.Size = new System.Drawing.Size(1339, 1221);
             this.PanelContent.TabIndex = 1;
+            this.PanelContent.Paint += new System.Windows.Forms.PaintEventHandler(this.PanelContent_Paint);
             // 
             // MainPage
             // 
@@ -195,8 +196,9 @@
             this.ClientSize = new System.Drawing.Size(1778, 1221);
             this.Controls.Add(this.PanelContent);
             this.Controls.Add(this.panel1);
-            this.Margin = new System.Windows.Forms.Padding(4);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "MainPage";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "MainPage";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainPage_FormClosed);
             this.Load += new System.EventHandler(this.MainPage_Load);

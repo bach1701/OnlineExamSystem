@@ -22,7 +22,7 @@ namespace OnlineExamSystem.PresentationLayer
         private TeacherManagment TeacherManagerDock;
         private UIClassManagment ClassManagerDock;
         private StudentViewUpcomingTest StudentViewTestDock;
-        
+
         ButtonFunction[] ButtonFunctions = new ButtonFunction[5];
 
         public MainPage()
@@ -122,12 +122,12 @@ namespace OnlineExamSystem.PresentationLayer
             }
         }
 
-       
+
         private void LoadUserInformation()
         {
             if (!UserData.Instance.IsLoggedIn())
                 return;
-           
+
             User CurrentLoggedUserInfo = UserData.Instance.GetCurrentUser();
 
             txtName.Text = CurrentLoggedUserInfo.FirstName + " " + CurrentLoggedUserInfo.LastName;
@@ -154,10 +154,19 @@ namespace OnlineExamSystem.PresentationLayer
         {
             BringUpFrontDock(StudentViewTestDock);
         }
-        private void BringUpFrontDock(object sender)
+        public void BringUpFrontDock(object sender)
         {
             PanelContent.Controls.Clear();
             PanelContent.Controls.Add((Control)sender);
+        }
+        public void AddNewPanelToQueue(object sender)
+        {
+            PanelContent.Controls.Add((Control)sender);
+            PanelContent.Controls[PanelContent.Controls.Count - 1].BringToFront();
+        }
+        public void GoBack()
+        {
+            PanelContent.Controls.RemoveAt(0);
         }
         private void MainPage_Load(object sender, EventArgs e)
         {
@@ -194,10 +203,14 @@ namespace OnlineExamSystem.PresentationLayer
         {
             ButtonFunctions[4]();
         }
-
         private void MainPage_FormClosed(object sender, FormClosedEventArgs e)
         {
             Helper.ExitProcess();
+        }
+
+        private void PanelContent_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

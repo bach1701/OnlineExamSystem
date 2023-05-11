@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace OnlineExamSystem.DataServicesLayer
 {
@@ -55,6 +56,33 @@ namespace OnlineExamSystem.DataServicesLayer
         {
             CurrentUser.HashedPassword = NewHash;
             return OEDB.Instance.GetDatabaseContext().SaveChanges() == 1;
+        }
+        public bool CreateNewUser(User user)
+        {
+            OEDB.Instance.GetDatabaseContext().Users.Add(user);
+            return OEDB.Instance.GetDatabaseContext().SaveChanges() == 1;
+        }
+        public User CreateNewStudentAccount(string Name, string Identification, string Password, DateTime Birthday)
+        {
+            // new student object
+            User NewStudent = new User();
+            NewStudent.InfoUpdatedAt = DateTime.Now;
+            NewStudent.CreatedAt = DateTime.Now;
+            NewStudent.AccRole = (int)AccRole.Student;
+            NewStudent.FirstName = Name;
+            NewStudent.LastName = "";
+            NewStudent.NumericIdentification = Identification;
+            NewStudent.Email = "";
+            NewStudent.AvatarURL = "";
+            NewStudent.Gender = Gender.None;
+            NewStudent.Birthday = Birthday;
+            NewStudent.HashedPassword = Helper.HashPassword(Password);
+            // call
+
+            if (CreateNewUser(NewStudent))
+                return NewStudent;
+
+            return null;
         }
     }
 }

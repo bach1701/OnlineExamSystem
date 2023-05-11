@@ -23,6 +23,14 @@ namespace OnlineExamSystem.DataServicesLayer.Model.School
         public virtual ICollection<ClassStudent> Students { get; set; }
         
         public int StudentsCount => Students?.Count ?? 0;
+
+        public bool IsDeleted { get; set; }
+
+        public Class()
+        {
+            Students = new HashSet<ClassStudent>();
+        }
+
     }
     public class ClassStudent
     {

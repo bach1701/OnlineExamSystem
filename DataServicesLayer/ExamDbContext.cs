@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Proxies;
 using OnlineExamSystem.DataServicesLayer.Model.School;
 using OnlineExamSystem.DataServicesLayer.Model.Tests;
 using System;
@@ -21,7 +22,11 @@ namespace OnlineExamSystem.DataServicesLayer
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=tcp:db.dutlearning.koding.tk,1433;Database=OnlineExamSystem_Dev2;User ID=sa;Password=68RsyRjLfc5uqSsGYA3x;TrustServerCertificate=True;");
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseLazyLoadingProxies()
+                              .UseSqlServer(@"Server=tcp:db.dutlearning.koding.tk,1433;Database=OnlineExamSystem_Dev2;User ID=sa;Password=68RsyRjLfc5uqSsGYA3x;TrustServerCertificate=True;");
+            }
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -44,6 +49,12 @@ namespace OnlineExamSystem.DataServicesLayer
                 .HasOne(c => c.OwnedTeacher)
                 .WithMany()
                 .HasForeignKey(c => c.OwnedTeacherId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Question>()
+                .HasOne(t => t.Test)
+                .WithMany()
+                .HasForeignKey(t => t.TestId)
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

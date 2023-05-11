@@ -28,95 +28,106 @@
         /// </summary>
         private void InitializeComponent()
         {
-            LoginButton = new Button();
-            groupBox1 = new GroupBox();
-            TxtPassword = new TextBox();
-            label3 = new Label();
-            TxtUsername = new TextBox();
-            label2 = new Label();
-            label1 = new Label();
-            groupBox1.SuspendLayout();
-            SuspendLayout();
+            this.LoginButton = new System.Windows.Forms.Button();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.TxtPassword = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.TxtUsername = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.groupBox1.SuspendLayout();
+            this.SuspendLayout();
             // 
             // LoginButton
             // 
-            LoginButton.Location = new Point(225, 208);
-            LoginButton.Name = "LoginButton";
-            LoginButton.Size = new Size(150, 46);
-            LoginButton.TabIndex = 0;
-            LoginButton.Text = "Dang nhap";
-            LoginButton.UseVisualStyleBackColor = true;
-            LoginButton.Click += OnLoginButtonClicked;
+            this.LoginButton.Location = new System.Drawing.Point(139, 135);
+            this.LoginButton.Margin = new System.Windows.Forms.Padding(2);
+            this.LoginButton.Name = "LoginButton";
+            this.LoginButton.Size = new System.Drawing.Size(185, 88);
+            this.LoginButton.TabIndex = 0;
+            this.LoginButton.Text = "Đăng nhập";
+            this.LoginButton.UseVisualStyleBackColor = true;
+            this.LoginButton.Click += new System.EventHandler(this.OnLoginButtonClicked);
             // 
             // groupBox1
             // 
-            groupBox1.Controls.Add(TxtPassword);
-            groupBox1.Controls.Add(label3);
-            groupBox1.Controls.Add(TxtUsername);
-            groupBox1.Controls.Add(label2);
-            groupBox1.Controls.Add(LoginButton);
-            groupBox1.Location = new Point(34, 60);
-            groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(619, 326);
-            groupBox1.TabIndex = 1;
-            groupBox1.TabStop = false;
+            this.groupBox1.Controls.Add(this.TxtPassword);
+            this.groupBox1.Controls.Add(this.label3);
+            this.groupBox1.Controls.Add(this.TxtUsername);
+            this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Controls.Add(this.LoginButton);
+            this.groupBox1.Location = new System.Drawing.Point(26, 48);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(2);
+            this.groupBox1.Size = new System.Drawing.Size(476, 258);
+            this.groupBox1.TabIndex = 1;
+            this.groupBox1.TabStop = false;
             // 
             // TxtPassword
             // 
-            TxtPassword.Location = new Point(201, 99);
-            TxtPassword.Name = "TxtPassword";
-            TxtPassword.PasswordChar = '*';
-            TxtPassword.Size = new Size(342, 39);
-            TxtPassword.TabIndex = 4;
+            this.TxtPassword.Location = new System.Drawing.Point(155, 78);
+            this.TxtPassword.Margin = new System.Windows.Forms.Padding(2);
+            this.TxtPassword.Name = "TxtPassword";
+            this.TxtPassword.PasswordChar = '*';
+            this.TxtPassword.Size = new System.Drawing.Size(264, 31);
+            this.TxtPassword.TabIndex = 4;
             // 
             // label3
             // 
-            label3.AutoSize = true;
-            label3.Location = new Point(16, 102);
-            label3.Name = "label3";
-            label3.Size = new Size(120, 32);
-            label3.TabIndex = 3;
-            label3.Text = "Mat khau:";
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(12, 80);
+            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(90, 25);
+            this.label3.TabIndex = 3;
+            this.label3.Text = "Mật khẩu:";
             // 
             // TxtUsername
             // 
-            TxtUsername.Location = new Point(201, 32);
-            TxtUsername.Name = "TxtUsername";
-            TxtUsername.Size = new Size(342, 39);
-            TxtUsername.TabIndex = 2;
+            this.TxtUsername.Location = new System.Drawing.Point(155, 25);
+            this.TxtUsername.Margin = new System.Windows.Forms.Padding(2);
+            this.TxtUsername.Name = "TxtUsername";
+            this.TxtUsername.Size = new System.Drawing.Size(264, 31);
+            this.TxtUsername.TabIndex = 2;
             // 
             // label2
             // 
-            label2.AutoSize = true;
-            label2.Location = new Point(16, 35);
-            label2.Name = "label2";
-            label2.Size = new Size(179, 32);
-            label2.TabIndex = 1;
-            label2.Text = "Ten dang nhap:";
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(12, 28);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(133, 25);
+            this.label2.TabIndex = 1;
+            this.label2.Text = "Tên đăng nhập:";
             // 
             // label1
             // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Arial", 18F, FontStyle.Regular, GraphicsUnit.Point);
-            label1.Location = new Point(50, 8);
-            label1.Name = "label1";
-            label1.Size = new Size(261, 55);
-            label1.TabIndex = 2;
-            label1.Text = "Dang nhap";
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Arial", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label1.Location = new System.Drawing.Point(39, 6);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(191, 41);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "Đăng nhập";
             // 
             // LoginForm
             // 
-            AutoScaleDimensions = new SizeF(13F, 32F);
-            AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(674, 408);
-            Controls.Add(label1);
-            Controls.Add(groupBox1);
-            Name = "LoginForm";
-            Text = "Form1";
-            groupBox1.ResumeLayout(false);
-            groupBox1.PerformLayout();
-            ResumeLayout(false);
-            PerformLayout();
+            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(519, 319);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.groupBox1);
+            this.Margin = new System.Windows.Forms.Padding(2);
+            this.Name = "LoginForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Login";
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
         }
 
         #endregion

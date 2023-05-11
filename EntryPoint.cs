@@ -1,4 +1,5 @@
-﻿using OnlineExamSystem.DataServicesLayer;
+﻿using OnlineExamSystem.BusinessServicesLayer;
+using OnlineExamSystem.DataServicesLayer;
 using OnlineExamSystem.PresentationLayer;
 using System;
 using System.Collections.Generic;
@@ -28,6 +29,8 @@ namespace OnlineExamSystem
             LoginForm.Hide();
 
             MainPage mainForm = new MainPage();
+            Globals.MainForm = mainForm;
+
             mainForm.Show();
         }
 

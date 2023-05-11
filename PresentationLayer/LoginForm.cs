@@ -14,19 +14,17 @@ namespace OnlineExamSystem
         public LoginForm()
         {
             InitializeComponent();
+#if TEST_LOGIN
+            //TxtUsername.Text = "joebiden@example.com";
+            //TxtPassword.Text = "12345678";
+
+            TxtUsername.Text = "jane.smith@example.com";
+            TxtPassword.Text = "123456";
+#endif
         }
 
         private void OnLoginButtonClicked(object sender, EventArgs e)
         {
-#if TEST_LOGIN
-            // LoginSuccessful?.Invoke(this, EventArgs.Empty);
-            //TxtUsername.Text = "joebiden@example.com";
-            //TxtPassword.Text = "12345678";
-
-            // teacher
-            TxtUsername.Text = "jane.smith@example.com";
-            TxtPassword.Text = "123456";
-#endif
             var InMSSV = TxtUsername.Text;
             var InPassword = TxtPassword.Text;
             if (InMSSV.Length < 4 || InPassword.Length < 4)

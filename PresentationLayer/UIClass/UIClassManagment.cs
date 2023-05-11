@@ -19,17 +19,15 @@ namespace OnlineExamSystem.PresentationLayer
 
         public UIClassManagment()
         {
+            ClassMgr = ClassManagment.Instance;
             InitializeComponent();
         }
 
 
         private void ClassManagment_Load(object sender, EventArgs e)
         {
-            ClassMgr = ClassManagment.Instance;
             InitClassListDGV();
             SetClassListSource();
-
-
         }
         private void InitClassListDGV()
         {
@@ -51,9 +49,7 @@ namespace OnlineExamSystem.PresentationLayer
             DeleteClass.Name = "DeleteClass";
             DeleteClass.Text = "Xóa";
             DeleteClass.UseColumnTextForButtonValue = true;
-            ClassListview.Columns.Add(DeleteClass);
-           
-
+            ClassListview.Columns.Add(DeleteClass);        
         }
         private void SetClassListSource()
         {
@@ -61,29 +57,52 @@ namespace OnlineExamSystem.PresentationLayer
         }
         private void NewClassBtn_Click(object sender, EventArgs e)
         {
-            Class NewClass = new Class();
-            NewClass.Name = "21TCLC_DT2";
-            NewClass.CourseName = "PBL 4";
-           
-
-            bool success = ClassMgr.AddNewClass(NewClass);
-            if (success)
-            {
-                SetClassListSource();
-            }
+            PopupAddNewClass AddClassForm = new PopupAddNewClass();
+            AddClassForm.Dock = DockStyle.Fill;
+            AddClassForm.CreateClassSuccessful += OnAddClassSuccessful;
+            Globals.MainForm.AddNewPanelToQueue(AddClassForm);
         }
 
+        private void OnAddClassSuccessful(object sender, EventArgs e)
+        {
+            SetClassListSource();
+            Globals.MainForm.GoBack();
+        }
         private void ClassListview_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.ColumnIndex == ClassListview.Columns["ManageStudents"].Index && e.RowIndex >= 0)
             {
-                MessageBox.Show("Request manage class " + e.RowIndex);
+                // xac dinh du lieu can truyen vao form Quan ly lop
+                // ID lop
+                DataGridViewRow row = ClassListview.Rows[e.RowIndex];
+                string ClassID = row.Cells[0].Value.ToString();
+
+                StudentClassManagment MenuStudentMgr = new StudentClassManagment();
+                MenuStudentMgr.Dock = DockStyle.Fill;
+                MenuStudentMgr.SetClassId(Convert.ToInt32(ClassID));
+                Globals.MainForm.AddNewPanelToQueue(MenuStudentMgr);
                 // Button clicked in row e.RowIndex
             }
             if (e.ColumnIndex == ClassListview.Columns["DeleteClass"].Index && e.RowIndex >= 0)
             {
-                MessageBox.Show("Request delete class " + e.RowIndex);
-                // Button clicked in row e.RowIndex
+                DataGridViewRow row = ClassListview.Rows[e.RowIndex];
+                string ClassID = row.Cells[0].Value.ToString();
+
+                string Message = String.Format("Xóa lớp {0} ({1}) khỏi hệ thống?", row.Cells[2].Value.ToString(), row.Cells[1].Value.ToString());
+
+                DialogResult result = MessageBox.Show(Message, "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (result == DialogResult.Yes)
+                {
+                    if (ClassManagment.Instance.RemoveClassByIndex(Convert.ToInt32(ClassID)) == true)
+                    {
+                        SetClassListSource();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Có lỗi khi thực hiện xóa lớp " + ClassID);
+                        SetClassListSource();
+                    }
+                }              
             }
         }
     }

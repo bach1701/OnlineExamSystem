@@ -1,14 +1,12 @@
-﻿using OnlineExamSystem.DataServicesLayer.Model.School;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.EntityFrameworkCore;
+using OnlineExamSystem.DataServicesLayer.Model.School;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace OnlineExamSystem.DataServicesLayer
 {
     public class ClassData
     {
+        private ExamDbContext DB;
         private static ClassData _obj = null;
         public static ClassData Instance
         {
@@ -25,6 +23,10 @@ namespace OnlineExamSystem.DataServicesLayer
 
             }
         }
+        public ClassData() 
+        {
+            DB = OEDB.Instance.GetDatabaseContext();
+        }
         public IEnumerable<Class> GetAllClassByCurrentTeacher()
         {
             User CurrentUser = UserData.Instance.GetCurrentUser();
@@ -33,9 +35,18 @@ namespace OnlineExamSystem.DataServicesLayer
 
             int RequestedTeacherId = CurrentUser.UserId;
 
-            var classes = OEDB.Instance.GetDatabaseContext().Classes
-                .Where(c => c.OwnedTeacherId == RequestedTeacherId)
+            var classes = DB.Classes
+                .Where(c => c.OwnedTeacherId == RequestedTeacherId && !c.IsDeleted)
                 .ToList();
+
+            return classes;
+        }
+        public Class GetClassById(int RequestedClassId)
+        {
+            var classes = DB.Classes.FirstOrDefault(c => c.ClassId == RequestedClassId);
+
+            if (classes == null)
+                throw new NullReferenceException("GetClassById null return");
 
             return classes;
         }
@@ -49,10 +60,20 @@ namespace OnlineExamSystem.DataServicesLayer
             NewClass.OwnedTeacher = CurrentUser;
             NewClass.Students = new List<ClassStudent>();
 
-            OEDB.Instance.GetDatabaseContext().Classes
-                .Add(NewClass);
+            DB.Classes.Add(NewClass);
 
+            return DB.SaveChanges() == 1;
+        }
+        public bool RemoveClassByIndex(int Index)
+        {
+            Class CNeededToRemove = DB.Classes.FirstOrDefault(x => x.ClassId == Index);
+            CNeededToRemove.IsDeleted = true;
             return OEDB.Instance.GetDatabaseContext().SaveChanges() == 1;
+        }
+        public bool AddStudentToClass(Class CurrentClass, ClassStudent classStudent)
+        {
+            CurrentClass.Students.Add(classStudent);
+            return DB.SaveChanges() == 1;
         }
     }
 }

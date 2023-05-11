@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OnlineExamSystem.DataServicesLayer.Model.School;
 
 namespace OnlineExamSystem.DataServicesLayer.Model.Tests
 {
@@ -20,7 +21,14 @@ namespace OnlineExamSystem.DataServicesLayer.Model.Tests
         public string Hint { get; set; }
 
 
-        public ICollection<Answer> AnswerOptions { get; set; }
+        public virtual ICollection<Answer> AnswerOptions { get; set; }
+
+        [ForeignKey("Test")]
+        public int TestId { get; set; }
+
+
+        public virtual Test Test { get; set; }
+
     }
     public class Answer
     {
@@ -32,5 +40,13 @@ namespace OnlineExamSystem.DataServicesLayer.Model.Tests
 
         [Required]
         public bool IsCorrect { get; set; }
+
+
+        [ForeignKey("Question")]
+        public int QuestionId { get; set; }
+
+
+        public virtual Question Question { get; set; }
+
     }
 }

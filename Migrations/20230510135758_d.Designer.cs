@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnlineExamSystem.DataServicesLayer;
 
@@ -11,16 +12,15 @@ using OnlineExamSystem.DataServicesLayer;
 namespace OnlineExamSystem.Migrations
 {
     [DbContext(typeof(ExamDbContext))]
-    partial class ExamDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230510135758_d")]
+    partial class d
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.5")
-                .HasAnnotation("Proxies:ChangeTracking", false)
-                .HasAnnotation("Proxies:CheckEquality", false)
-                .HasAnnotation("Proxies:LazyLoading", true)
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -138,7 +138,7 @@ namespace OnlineExamSystem.Migrations
                     b.Property<bool>("IsCorrect")
                         .HasColumnType("bit");
 
-                    b.Property<int>("QuestionId")
+                    b.Property<int?>("QuestionId")
                         .HasColumnType("int");
 
                     b.Property<string>("Text")
@@ -167,10 +167,7 @@ namespace OnlineExamSystem.Migrations
                     b.Property<decimal>("Mark")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("TestId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("TestId1")
+                    b.Property<int?>("TestId")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
@@ -180,8 +177,6 @@ namespace OnlineExamSystem.Migrations
                     b.HasKey("QuestionId");
 
                     b.HasIndex("TestId");
-
-                    b.HasIndex("TestId1");
 
                     b.ToTable("Questions");
                 });
@@ -324,28 +319,16 @@ namespace OnlineExamSystem.Migrations
 
             modelBuilder.Entity("OnlineExamSystem.DataServicesLayer.Model.Tests.Answer", b =>
                 {
-                    b.HasOne("OnlineExamSystem.DataServicesLayer.Model.Tests.Question", "Question")
+                    b.HasOne("OnlineExamSystem.DataServicesLayer.Model.Tests.Question", null)
                         .WithMany("AnswerOptions")
-                        .HasForeignKey("QuestionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Question");
+                        .HasForeignKey("QuestionId");
                 });
 
             modelBuilder.Entity("OnlineExamSystem.DataServicesLayer.Model.Tests.Question", b =>
                 {
-                    b.HasOne("OnlineExamSystem.DataServicesLayer.Model.Tests.Test", "Test")
-                        .WithMany()
-                        .HasForeignKey("TestId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("OnlineExamSystem.DataServicesLayer.Model.Tests.Test", null)
                         .WithMany("Questions")
-                        .HasForeignKey("TestId1");
-
-                    b.Navigation("Test");
+                        .HasForeignKey("TestId");
                 });
 
             modelBuilder.Entity("OnlineExamSystem.DataServicesLayer.Model.Tests.StudentAnswerResponse", b =>
