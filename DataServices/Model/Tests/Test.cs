@@ -25,8 +25,5 @@ namespace OnlineExamSystem.DataServicesLayer.Model.Tests
         public string JoinPassword { get; set; }
 
         public virtual IEnumerable<Question> Questions { get; set; }
-
-        //IEnumerable<Question> Questions { get; set; }
-
     }
 }

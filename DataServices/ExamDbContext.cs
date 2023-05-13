@@ -15,7 +15,11 @@ namespace OnlineExamSystem.DataServicesLayer
     {
         public DbSet<User> Users { get; set; }
         public DbSet<Class> Classes { get; set; }
+
+
         public DbSet<Test> Tests { get; set; }
+
+        // review needed
         public DbSet<Question> Questions { get; set; }
         public DbSet<TestTaker> TestTakers { get; set; }
         public DbSet<StudentAnswerResponse> StudentAnswerResponses { get; set; }

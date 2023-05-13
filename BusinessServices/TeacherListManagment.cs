@@ -59,6 +59,7 @@ namespace OnlineExamSystem.BusinessServicesLayer
         }
         public User CreateNewTeacherAccount(string FirstName,
             string LastName,
+            string PhoneNumber,
             string Email,
             string EmployeeNumber,
             string Password,
@@ -66,8 +67,10 @@ namespace OnlineExamSystem.BusinessServicesLayer
             Gender InGender)
         {
             // check if student already have an account
-            return TeacherData.Instance.CreateNewTeacherAccount(FirstName,
+            return TeacherData.Instance.CreateNewTeacherAccount(
+                FirstName,
                 LastName,
+                PhoneNumber,
                 Email,
                 EmployeeNumber,
                 Password,

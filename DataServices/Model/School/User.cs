@@ -25,7 +25,7 @@ namespace OnlineExamSystem.DataServicesLayer.Model.School
         public string Email { get; set; }
 
         [Required]
-        public int AccRole { get; set; }
+        public AccRole AccRole { get; set; }
 
         [Required]
         public string FirstName { get; set; }
@@ -35,7 +35,7 @@ namespace OnlineExamSystem.DataServicesLayer.Model.School
 
         public Gender Gender { get; set; }
         public DateTime Birthday { get; set; }
-
+        public string PhoneNumber { get; set; }
         [Required]
         public DateTime CreatedAt { get; set; }
         [Required]
@@ -52,7 +52,7 @@ namespace OnlineExamSystem.DataServicesLayer.Model.School
         public User()
         {
         }
-        public User(int id, string mSSV, string hashedPassword, string email, int accRole, string firstName, string lastName, Gender gender, DateTime birthday, DateTime createdAt, DateTime infoUpdatedAt)
+        public User(int id, string mSSV, string hashedPassword, string email, AccRole accRole, string firstName, string lastName, Gender gender, DateTime birthday, DateTime createdAt, DateTime infoUpdatedAt)
         {
             UserId = id;
             NumericIdentification = mSSV;
@@ -65,10 +65,6 @@ namespace OnlineExamSystem.DataServicesLayer.Model.School
             Birthday = birthday;
             CreatedAt = createdAt;
             InfoUpdatedAt = infoUpdatedAt;
-        }
-        public AccRole GetRole()
-        {
-            return (AccRole)Enum.ToObject(typeof(AccRole), AccRole);
         }
         public string GenderToString()
         {
@@ -84,6 +80,11 @@ namespace OnlineExamSystem.DataServicesLayer.Model.School
                     return "N/A";
             }
         }
+        public string AccRoleString()
+        {
+            AccRole x = (AccRole)Enum.ToObject(typeof(AccRole), this.AccRole);
+            return x.ToString();
+        }
         public string GetFirstClassName()
         {
             var firstClassStudent = ClassStudents.FirstOrDefault();
@@ -93,7 +94,7 @@ namespace OnlineExamSystem.DataServicesLayer.Model.School
             }
             else
             {
-                return "N/A";
+                return "Không phân lớp";
             }
         }
     }

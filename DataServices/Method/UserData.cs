@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
@@ -55,12 +56,17 @@ namespace OnlineExamSystem.DataServicesLayer
         public bool ChangePasswordHash(string NewHash)
         {
             CurrentUser.HashedPassword = NewHash;
-            return OEDB.Instance.GetDatabaseContext().SaveChanges() == 1;
+            return OEDB.Instance.Commit();
         }
         public bool CreateNewUser(User user)
         {
             OEDB.Instance.GetDatabaseContext().Users.Add(user);
-            return OEDB.Instance.GetDatabaseContext().SaveChanges() == 1;
+            return OEDB.Instance.Commit();
         }   
+        public bool UpdateUserInformation()
+        {
+            return OEDB.Instance.Commit();
+        }
+
     }
 }

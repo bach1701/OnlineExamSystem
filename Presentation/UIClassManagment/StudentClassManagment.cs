@@ -29,15 +29,15 @@ namespace OnlineExamSystem.PresentationLayer
         private void InitStudentListDGV()
         {
             StudentListView.AutoGenerateColumns = false;
-            StudentListView.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "STT", DataPropertyName = "Index" });
-            StudentListView.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Họ và tên", DataPropertyName = "Name" });
-            StudentListView.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Mã số SV", DataPropertyName = "NumericIdentification" });
+            StudentListView.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "STT", DataPropertyName = "Index", ReadOnly = true });
+            StudentListView.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Họ và tên", DataPropertyName = "Name", ReadOnly = true });
+            StudentListView.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Mã số SV", DataPropertyName = "NumericIdentification", ReadOnly = true });
 
-            var DateTimeColumn = new DataGridViewTextBoxColumn() { HeaderText = "Ngày sinh", DataPropertyName = "Birthday" };
+            var DateTimeColumn = new DataGridViewTextBoxColumn() { HeaderText = "Ngày sinh", DataPropertyName = "Birthday", ReadOnly = true };
             DateTimeColumn.DefaultCellStyle.Format = "dd/MM/yyyy";
             StudentListView.Columns.Add(DateTimeColumn);
 
-            StudentListView.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Giới tính", DataPropertyName = "GenderText" });
+            StudentListView.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Giới tính", DataPropertyName = "GenderText", ReadOnly = true });
 
             DataGridViewButtonColumn ManagmentStudentBtn = new DataGridViewButtonColumn();
             ManagmentStudentBtn.HeaderText = "Quản lý";

@@ -81,6 +81,7 @@
             this.dgvListTeacher.Name = "dgvListTeacher";
             this.dgvListTeacher.RowHeadersWidth = 62;
             this.dgvListTeacher.RowTemplate.Height = 33;
+            this.dgvListTeacher.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvListTeacher.Size = new System.Drawing.Size(1350, 695);
             this.dgvListTeacher.TabIndex = 5;
             // 

@@ -64,6 +64,7 @@
             this.ClassListview.Name = "ClassListview";
             this.ClassListview.RowHeadersWidth = 62;
             this.ClassListview.RowTemplate.Height = 33;
+            this.ClassListview.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.ClassListview.Size = new System.Drawing.Size(1292, 1021);
             this.ClassListview.TabIndex = 3;
             this.ClassListview.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.ClassListview_CellContentClick);

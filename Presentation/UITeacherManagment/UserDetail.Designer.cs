@@ -46,6 +46,7 @@
             this.TxtEmail = new System.Windows.Forms.TextBox();
             this.TxtPassword = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.ResetPass = new System.Windows.Forms.Button();
             this.BtnCreateOrModify = new System.Windows.Forms.Button();
             this.BtnCancel = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -55,7 +56,8 @@
             this.label11 = new System.Windows.Forms.Label();
             this.LbAccountCreation = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.ResetPass = new System.Windows.Forms.Button();
+            this.TxtPhoneNumber = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -67,7 +69,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label1.Location = new System.Drawing.Point(35, 131);
+            this.label1.Location = new System.Drawing.Point(35, 138);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(163, 32);
@@ -122,7 +124,7 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label7.Location = new System.Drawing.Point(620, 135);
+            this.label7.Location = new System.Drawing.Point(620, 142);
             this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(110, 32);
@@ -142,6 +144,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.TxtPhoneNumber);
+            this.groupBox1.Controls.Add(this.label8);
             this.groupBox1.Controls.Add(this.CbStudentGender);
             this.groupBox1.Controls.Add(this.BirthdayPicker);
             this.groupBox1.Controls.Add(this.label9);
@@ -169,7 +173,7 @@
             "Không",
             "Nam ",
             "Nữ"});
-            this.CbStudentGender.Location = new System.Drawing.Point(735, 135);
+            this.CbStudentGender.Location = new System.Drawing.Point(733, 135);
             this.CbStudentGender.Name = "CbStudentGender";
             this.CbStudentGender.Size = new System.Drawing.Size(289, 40);
             this.CbStudentGender.TabIndex = 36;
@@ -177,27 +181,28 @@
             // 
             // BirthdayPicker
             // 
-            this.BirthdayPicker.Location = new System.Drawing.Point(202, 209);
+            this.BirthdayPicker.Location = new System.Drawing.Point(733, 200);
             this.BirthdayPicker.Margin = new System.Windows.Forms.Padding(2);
             this.BirthdayPicker.Name = "BirthdayPicker";
-            this.BirthdayPicker.Size = new System.Drawing.Size(454, 39);
+            this.BirthdayPicker.Size = new System.Drawing.Size(289, 39);
             this.BirthdayPicker.TabIndex = 22;
             // 
             // label9
             // 
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label9.Location = new System.Drawing.Point(72, 209);
+            this.label9.Location = new System.Drawing.Point(604, 205);
             this.label9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(126, 32);
             this.label9.TabIndex = 21;
             this.label9.Text = "Ngày sinh:";
+            this.label9.Click += new System.EventHandler(this.label9_Click);
             // 
             // TxtEmployeeID
             // 
             this.TxtEmployeeID.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.TxtEmployeeID.Location = new System.Drawing.Point(202, 127);
+            this.TxtEmployeeID.Location = new System.Drawing.Point(202, 134);
             this.TxtEmployeeID.Margin = new System.Windows.Forms.Padding(2);
             this.TxtEmployeeID.Name = "TxtEmployeeID";
             this.TxtEmployeeID.Size = new System.Drawing.Size(290, 39);
@@ -206,7 +211,7 @@
             // TxtLastName
             // 
             this.TxtLastName.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.TxtLastName.Location = new System.Drawing.Point(734, 68);
+            this.TxtLastName.Location = new System.Drawing.Point(733, 71);
             this.TxtLastName.Margin = new System.Windows.Forms.Padding(2);
             this.TxtLastName.Name = "TxtLastName";
             this.TxtLastName.Size = new System.Drawing.Size(290, 39);
@@ -255,6 +260,17 @@
             this.groupBox2.TabIndex = 9;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Thông tin đăng nhập";
+            // 
+            // ResetPass
+            // 
+            this.ResetPass.Location = new System.Drawing.Point(780, 100);
+            this.ResetPass.Name = "ResetPass";
+            this.ResetPass.Size = new System.Drawing.Size(203, 43);
+            this.ResetPass.TabIndex = 17;
+            this.ResetPass.Text = "Đặt lại mật khẩu";
+            this.ResetPass.UseVisualStyleBackColor = true;
+            this.ResetPass.Visible = false;
+            this.ResetPass.Click += new System.EventHandler(this.ResetPass_Click);
             // 
             // BtnCreateOrModify
             // 
@@ -355,16 +371,25 @@
             this.label6.TabIndex = 0;
             this.label6.Text = "Ngày khởi tạo tài khoản:";
             // 
-            // ResetPass
+            // TxtPhoneNumber
             // 
-            this.ResetPass.Location = new System.Drawing.Point(780, 100);
-            this.ResetPass.Name = "ResetPass";
-            this.ResetPass.Size = new System.Drawing.Size(203, 43);
-            this.ResetPass.TabIndex = 17;
-            this.ResetPass.Text = "Đặt lại mật khẩu";
-            this.ResetPass.UseVisualStyleBackColor = true;
-            this.ResetPass.Visible = false;
-            this.ResetPass.Click += new System.EventHandler(this.ResetPass_Click);
+            this.TxtPhoneNumber.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.TxtPhoneNumber.Location = new System.Drawing.Point(202, 199);
+            this.TxtPhoneNumber.Margin = new System.Windows.Forms.Padding(2);
+            this.TxtPhoneNumber.Name = "TxtPhoneNumber";
+            this.TxtPhoneNumber.Size = new System.Drawing.Size(290, 39);
+            this.TxtPhoneNumber.TabIndex = 38;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label8.Location = new System.Drawing.Point(136, 200);
+            this.label8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(62, 32);
+            this.label8.TabIndex = 37;
+            this.label8.Text = "SĐT:";
             // 
             // UserDetail
             // 
@@ -422,5 +447,7 @@
         private Label label6;
         private ComboBox CbStudentGender;
         private Button ResetPass;
+        private TextBox TxtPhoneNumber;
+        private Label label8;
     }
 }

@@ -31,7 +31,7 @@ namespace OnlineExamSystem.DataServicesLayer.Method
             User NewStudent = new User();
             NewStudent.InfoUpdatedAt = DateTime.Now;
             NewStudent.CreatedAt = DateTime.Now;
-            NewStudent.AccRole = (int)AccRole.Student;
+            NewStudent.AccRole = AccRole.Student;
             NewStudent.FirstName = FirstName;
             NewStudent.LastName = LastName;
             NewStudent.NumericIdentification = Identification;

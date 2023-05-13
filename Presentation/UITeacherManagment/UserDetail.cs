@@ -48,6 +48,7 @@ namespace OnlineExamSystem.PresentationLayer
             TxtLastName.Text = AccountToModify.LastName;
             TxtEmail.Text = AccountToModify.Email;
             TxtEmployeeID.Text = AccountToModify.NumericIdentification;
+            TxtPhoneNumber.Text = AccountToModify.PhoneNumber;
             BirthdayPicker.Value = AccountToModify.Birthday;
             CbStudentGender.SelectedIndex = (int)AccountToModify.Gender;
             LbAccountCreation.Text = AccountToModify.CreatedAt.ToShortDateString();
@@ -139,12 +140,16 @@ namespace OnlineExamSystem.PresentationLayer
             if (CbStudentGender.SelectedIndex != (int)AccountToModify.Gender)
                 DataModified = true;
 
+            if (TxtPhoneNumber.Text != AccountToModify.PhoneNumber)
+                DataModified = true;
+
             if (DataModified)
             {
                 // commit changes to the object, and call save changes
                 AccountToModify.FirstName = TxtFirstName.Text;
                 AccountToModify.LastName = TxtLastName.Text;
                 AccountToModify.Email = TxtEmail.Text;
+                AccountToModify.PhoneNumber = TxtPhoneNumber.Text;
                 AccountToModify.Birthday = BirthdayPicker.Value;
                 AccountToModify.Gender = (Gender)CbStudentGender.SelectedIndex;
                 if (HashedPassword.Length > 0)
@@ -162,6 +167,7 @@ namespace OnlineExamSystem.PresentationLayer
             string lastName = TxtLastName.Text;
             string email = TxtEmail.Text;
             string employeeNumber = TxtEmployeeID.Text;
+            string phonenum = TxtPhoneNumber.Text;
             string password = TxtPassword.Text;
             if (password.Length <= 0)
                 password = employeeNumber;
@@ -177,13 +183,16 @@ namespace OnlineExamSystem.PresentationLayer
             }
 
             // Create new teacher account
-            User newTeacher = TeacherListManagment.Instance.CreateNewTeacherAccount(firstName,
+            User newTeacher = TeacherListManagment.Instance.CreateNewTeacherAccount(
+                firstName,
                 lastName,
+                phonenum,
                 email,
                 employeeNumber,
                 password,
                 birthday,
-                gender);
+                gender
+            );
 
             if (newTeacher != null)
             {
@@ -226,8 +235,17 @@ namespace OnlineExamSystem.PresentationLayer
             if (string.IsNullOrEmpty(TxtEmail.Text) || !Regex.IsMatch(TxtEmail.Text, @"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$"))
                 return false;
 
+            bool ValidPhoneNumber = TxtPhoneNumber.Text.All(char.IsDigit);
+            if (!ValidPhoneNumber)
+                return false;
+
             // All validations passed
             return true;
+        }
+
+        private void label9_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

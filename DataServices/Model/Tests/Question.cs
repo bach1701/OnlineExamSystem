@@ -26,7 +26,6 @@ namespace OnlineExamSystem.DataServicesLayer.Model.Tests
         [ForeignKey("Test")]
         public int TestId { get; set; }
 
-
         public virtual Test Test { get; set; }
 
     }

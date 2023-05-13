@@ -32,10 +32,10 @@ namespace OnlineExamSystem.PresentationLayer
         private void InitClassListDGV()
         {
             ClassListview.AutoGenerateColumns = false;
-            ClassListview.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "ID", DataPropertyName = "ClassId" });
-            ClassListview.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Lớp", DataPropertyName = "Name" });
-            ClassListview.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Môn học", DataPropertyName = "CourseName" });
-            ClassListview.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Sĩ số", DataPropertyName = "StudentsCount" });
+            ClassListview.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "ID", DataPropertyName = "ClassId", ReadOnly = true });
+            ClassListview.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Lớp", DataPropertyName = "Name", ReadOnly = true });
+            ClassListview.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Môn học", DataPropertyName = "CourseName", ReadOnly = true });
+            ClassListview.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Sĩ số", DataPropertyName = "StudentsCount", ReadOnly = true });
 
             DataGridViewButtonColumn ManagmentStudentBtn = new DataGridViewButtonColumn();
             ManagmentStudentBtn.HeaderText = "Quản lý";

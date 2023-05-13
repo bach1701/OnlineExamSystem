@@ -28,13 +28,13 @@ namespace OnlineExamSystem.PresentationLayer
         private void InitTeacherListDGV()
         {
             dgvListTeacher.AutoGenerateColumns = false;
-            dgvListTeacher.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "STT", DataPropertyName = "Index" });
-            dgvListTeacher.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Họ và tên", DataPropertyName = "Name" });
-            dgvListTeacher.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Mã số cán bộ", DataPropertyName = "EmployeeID" });
-            var DateTimeColumn = new DataGridViewTextBoxColumn() { HeaderText = "Ngày sinh", DataPropertyName = "Birthday" };
+            dgvListTeacher.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "STT", DataPropertyName = "Index", ReadOnly = true });
+            dgvListTeacher.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Họ và tên", DataPropertyName = "Name", ReadOnly = true });
+            dgvListTeacher.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Mã số cán bộ", DataPropertyName = "EmployeeID", ReadOnly = true });
+            var DateTimeColumn = new DataGridViewTextBoxColumn() { HeaderText = "Ngày sinh", DataPropertyName = "Birthday", ReadOnly = true };
             DateTimeColumn.DefaultCellStyle.Format = "dd/MM/yyyy";
             dgvListTeacher.Columns.Add(DateTimeColumn);
-            dgvListTeacher.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Giới tính", DataPropertyName = "GenderText" });
+            dgvListTeacher.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Giới tính", DataPropertyName = "GenderText", ReadOnly = true });
         }
         private void BtnSearch_Click(object sender, EventArgs e)
         {

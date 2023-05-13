@@ -33,7 +33,7 @@ namespace OnlineExamSystem.DataServicesLayer.Method
         }
         public List<User> GetAllTeacherInDB()
         {
-            return DB.Users.Where(x => x.AccRole == (int)AccRole.Teacher && x.IsDeleted == false).ToList();
+            return DB.Users.Where(x => x.AccRole == AccRole.Teacher && x.IsDeleted == false).ToList();
         }
         public User GetTeacherByEmployeeID(string EmployeeID)
         {
@@ -42,6 +42,7 @@ namespace OnlineExamSystem.DataServicesLayer.Method
         public User CreateNewTeacherAccount(
             string FirstName,
             string LastName,
+            string PhoneNumber,
             string Email,
             string EmployeeNumer,
             string Password,
@@ -52,7 +53,7 @@ namespace OnlineExamSystem.DataServicesLayer.Method
             NewTeacher.InfoUpdatedAt = DateTime.Now;
             NewTeacher.CreatedAt = DateTime.Now;
 
-            NewTeacher.AccRole = (int)AccRole.Teacher;
+            NewTeacher.AccRole = AccRole.Teacher;
             NewTeacher.FirstName = FirstName;
             NewTeacher.LastName = LastName;
             NewTeacher.NumericIdentification = EmployeeNumer;
@@ -60,6 +61,7 @@ namespace OnlineExamSystem.DataServicesLayer.Method
             NewTeacher.AvatarURL = "";
             NewTeacher.Gender = InGender;
             NewTeacher.Birthday = Birthday;
+            NewTeacher.PhoneNumber = PhoneNumber;
             NewTeacher.HashedPassword = Helper.HashPassword(Password);
 
             // call

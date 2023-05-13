@@ -135,6 +135,7 @@
             this.StudentListView.Name = "StudentListView";
             this.StudentListView.RowHeadersWidth = 62;
             this.StudentListView.RowTemplate.Height = 33;
+            this.StudentListView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.StudentListView.Size = new System.Drawing.Size(1236, 901);
             this.StudentListView.TabIndex = 11;
             this.StudentListView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.StudentListView_CellContentClick);

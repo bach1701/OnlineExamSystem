@@ -106,7 +106,7 @@ namespace OnlineExamSystem.PresentationLayer
         private void CreateDockFormBasedOnRole()
         {
             User CurrentLoggedUserInfo = UserData.Instance.GetCurrentUser();
-            switch (CurrentLoggedUserInfo.GetRole())
+            switch (CurrentLoggedUserInfo.AccRole)
             {
                 case AccRole.Administrator:
                     AdminCreateDockForm();
@@ -122,7 +122,10 @@ namespace OnlineExamSystem.PresentationLayer
             }
         }
 
-
+        public void ReloadUserInfo()
+        {
+            LoadUserInformation();
+        }
         private void LoadUserInformation()
         {
             if (!UserData.Instance.IsLoggedIn())
@@ -131,7 +134,7 @@ namespace OnlineExamSystem.PresentationLayer
             User CurrentLoggedUserInfo = UserData.Instance.GetCurrentUser();
 
             txtName.Text = CurrentLoggedUserInfo.FirstName + " " + CurrentLoggedUserInfo.LastName;
-            txtRole.Text = Helper.GetAccRoleString(CurrentLoggedUserInfo.AccRole);
+            txtRole.Text = CurrentLoggedUserInfo.AccRoleString();
             // set the avatar
 
             pictureBox1.NameInitials = CurrentLoggedUserInfo.FirstName.Substring(0, 1) + CurrentLoggedUserInfo.LastName.Substring(0, 1);
@@ -148,7 +151,7 @@ namespace OnlineExamSystem.PresentationLayer
                     pictureBox1.FontColor = Color.Black;
                     break;
             }
-
+            pictureBox1.Refresh();
         }
 
         private void ShowAccountInformation()
