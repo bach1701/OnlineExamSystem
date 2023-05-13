@@ -31,6 +31,9 @@ namespace OnlineExamSystem.PresentationLayer
         {
             InitializeComponent();
             CbStudentGender.SelectedIndex = 0;
+            BirthdayPicker.Format = DateTimePickerFormat.Custom;
+            BirthdayPicker.CustomFormat = "dd-MM-yyyy";
+
             Mode = WorkingMode.CreateNew;
         }
         public void SetModifyAccount(string RequestedModifyEmployeeID)
@@ -51,8 +54,8 @@ namespace OnlineExamSystem.PresentationLayer
             TxtPhoneNumber.Text = AccountToModify.PhoneNumber;
             BirthdayPicker.Value = AccountToModify.Birthday;
             CbStudentGender.SelectedIndex = (int)AccountToModify.Gender;
-            LbAccountCreation.Text = AccountToModify.CreatedAt.ToShortDateString();
-            LbLastModifyTime.Text = AccountToModify.InfoUpdatedAt.ToShortDateString();
+            LbAccountCreation.Text = AccountToModify.CreatedAt.ToString("dd-MM-yyyy");
+            LbLastModifyTime.Text = AccountToModify.InfoUpdatedAt.ToString("dd-MM-yyyy");
 
             TxtPassword.Enabled = false;
             TxtPassword.Text = "********";

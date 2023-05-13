@@ -37,6 +37,8 @@
             this.label7 = new System.Windows.Forms.Label();
             this.LbFormHeader = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.TxtPhoneNumber = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
             this.CbStudentGender = new System.Windows.Forms.ComboBox();
             this.BirthdayPicker = new System.Windows.Forms.DateTimePicker();
             this.label9 = new System.Windows.Forms.Label();
@@ -56,8 +58,6 @@
             this.label11 = new System.Windows.Forms.Label();
             this.LbAccountCreation = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.TxtPhoneNumber = new System.Windows.Forms.TextBox();
-            this.label8 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -124,7 +124,7 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label7.Location = new System.Drawing.Point(620, 142);
+            this.label7.Location = new System.Drawing.Point(620, 139);
             this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(110, 32);
@@ -166,6 +166,26 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Thông tin cá nhân";
             // 
+            // TxtPhoneNumber
+            // 
+            this.TxtPhoneNumber.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.TxtPhoneNumber.Location = new System.Drawing.Point(202, 199);
+            this.TxtPhoneNumber.Margin = new System.Windows.Forms.Padding(2);
+            this.TxtPhoneNumber.Name = "TxtPhoneNumber";
+            this.TxtPhoneNumber.Size = new System.Drawing.Size(290, 39);
+            this.TxtPhoneNumber.TabIndex = 38;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label8.Location = new System.Drawing.Point(136, 200);
+            this.label8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(62, 32);
+            this.label8.TabIndex = 37;
+            this.label8.Text = "SĐT:";
+            // 
             // CbStudentGender
             // 
             this.CbStudentGender.FormattingEnabled = true;
@@ -191,7 +211,7 @@
             // 
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label9.Location = new System.Drawing.Point(604, 205);
+            this.label9.Location = new System.Drawing.Point(604, 203);
             this.label9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(126, 32);
@@ -370,26 +390,6 @@
             this.label6.Size = new System.Drawing.Size(275, 32);
             this.label6.TabIndex = 0;
             this.label6.Text = "Ngày khởi tạo tài khoản:";
-            // 
-            // TxtPhoneNumber
-            // 
-            this.TxtPhoneNumber.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.TxtPhoneNumber.Location = new System.Drawing.Point(202, 199);
-            this.TxtPhoneNumber.Margin = new System.Windows.Forms.Padding(2);
-            this.TxtPhoneNumber.Name = "TxtPhoneNumber";
-            this.TxtPhoneNumber.Size = new System.Drawing.Size(290, 39);
-            this.TxtPhoneNumber.TabIndex = 38;
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label8.Location = new System.Drawing.Point(136, 200);
-            this.label8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(62, 32);
-            this.label8.TabIndex = 37;
-            this.label8.Text = "SĐT:";
             // 
             // UserDetail
             // 
