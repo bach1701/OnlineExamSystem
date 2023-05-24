@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -14,9 +15,14 @@ namespace OnlineExamSystem.DataServicesLayer.Model.Tests
         [Key]
         public int TestTakerId { get; set; }
 
-        public virtual User Student { get; set; }
+
+        [ForeignKey("Test")]
+        public int TestId;
         public virtual Test Test { get; set; }
-        public AccRole Role { get; set; }
+
+        [ForeignKey("User")]
+        public int UserId;
+        public virtual User Student { get; set; }
 
 
         public float FinalScore { get; set; }
@@ -27,6 +33,6 @@ namespace OnlineExamSystem.DataServicesLayer.Model.Tests
         public int SubmitedAnswerCount { get; set; }
 
         public int CorrectAnswerCount { get; set; }
-        
     }
+
 }

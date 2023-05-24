@@ -25,7 +25,6 @@ namespace OnlineExamSystem.DataServicesLayer.Model.Tests
 
         [ForeignKey("Test")]
         public int TestId { get; set; }
-
         public virtual Test Test { get; set; }
 
     }
@@ -43,8 +42,6 @@ namespace OnlineExamSystem.DataServicesLayer.Model.Tests
 
         [ForeignKey("Question")]
         public int QuestionId { get; set; }
-
-
         public virtual Question Question { get; set; }
 
     }

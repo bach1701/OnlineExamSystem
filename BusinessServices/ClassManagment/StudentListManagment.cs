@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OnlineExamSystem.BusinessServicesLayer
+namespace OnlineExamSystem.BusinessServices.ClassManagment
 {
     public class StudentListForDisplay
     {
@@ -25,7 +25,7 @@ namespace OnlineExamSystem.BusinessServicesLayer
     {
         private Class CurrentClasses;
 
-        public StudentListManagment(int ClassID) 
+        public StudentListManagment(int ClassID)
         {
             CurrentClasses = ClassData.Instance.GetClassById(ClassID);
         }
@@ -48,7 +48,7 @@ namespace OnlineExamSystem.BusinessServicesLayer
             }
             return StudentListForDisplays;
         }
-        public bool AddStudentToCurrentClass(string FirstName, String LastName, string MSSV, DateTime Birthday, Gender StdGender)
+        public bool AddStudentToCurrentClass(string FirstName, string LastName, string MSSV, DateTime Birthday, Gender StdGender)
         {
             // check if student already have an account
 
@@ -59,7 +59,7 @@ namespace OnlineExamSystem.BusinessServicesLayer
 
             Student = UserData.Instance.GetUserByIDOrEmail(MSSV);
             if (Student == null)
-            { 
+            {
                 // create student account first
                 NumericIdentification = MSSV;
                 Password = MSSV;
@@ -80,7 +80,7 @@ namespace OnlineExamSystem.BusinessServicesLayer
                 Student = Student
             };
             bool AddSuccess = ClassData.Instance.AddStudentToClass(CurrentClasses, classStudent);
-            if (AddSuccess && NewAccountCreated) 
+            if (AddSuccess && NewAccountCreated)
             {
                 MessageBox.Show("Đã tạo mới tài khoản học sinh\nTên đăng nhập: " + NumericIdentification + "\nMật khẩu: " + Password);
             }
@@ -103,7 +103,7 @@ namespace OnlineExamSystem.BusinessServicesLayer
         public bool RemoveStudentFromCurrentClass(string MSSV)
         {
             ClassStudent Entry = FindStudentEntry(MSSV);
-            if (Entry == null) 
+            if (Entry == null)
                 return false;
 
             CurrentClasses.Students.Remove(Entry);
@@ -122,7 +122,7 @@ namespace OnlineExamSystem.BusinessServicesLayer
 
         public User GetUserByNumericID(string NumID)
         {
-            return UserData.Instance.GetUserByIDOrEmail(NumID);    
+            return UserData.Instance.GetUserByIDOrEmail(NumID);
         }
     }
 }

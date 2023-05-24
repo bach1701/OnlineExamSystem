@@ -34,16 +34,21 @@ namespace OnlineExamSystem.DataServicesLayer.Model.School
 
 
         public Gender Gender { get; set; }
+
         public DateTime Birthday { get; set; }
+
         public string PhoneNumber { get; set; }
+
         [Required]
         public DateTime CreatedAt { get; set; }
+
         [Required]
         public DateTime InfoUpdatedAt { get; set; }
 
         public string AvatarURL { get; set; }
 
         public bool IsBlocked { get; set; }
+
         public bool IsDeleted { get; set; }
 
         public virtual ICollection<ClassStudent> ClassStudents { get; set; }

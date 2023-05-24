@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnlineExamSystem.DataServicesLayer;
 
@@ -11,9 +12,11 @@ using OnlineExamSystem.DataServicesLayer;
 namespace OnlineExamSystem.Migrations
 {
     [DbContext(typeof(ExamDbContext))]
-    partial class ExamDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230524155257_ques")]
+    partial class ques
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -210,9 +213,6 @@ namespace OnlineExamSystem.Migrations
                     b.Property<DateTime>("CreateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("CreatorId")
-                        .HasColumnType("int");
-
                     b.Property<int>("DurationInMinutes")
                         .HasColumnType("int");
 
@@ -242,8 +242,6 @@ namespace OnlineExamSystem.Migrations
 
                     b.HasKey("TestId");
 
-                    b.HasIndex("CreatorId");
-
                     b.ToTable("Tests");
                 });
 
@@ -260,6 +258,9 @@ namespace OnlineExamSystem.Migrations
 
                     b.Property<float>("FinalScore")
                         .HasColumnType("real");
+
+                    b.Property<int>("Role")
+                        .HasColumnType("int");
 
                     b.Property<int>("StudentUserId")
                         .HasColumnType("int");
@@ -336,17 +337,6 @@ namespace OnlineExamSystem.Migrations
                         .HasForeignKey("TestId1");
 
                     b.Navigation("Test");
-                });
-
-            modelBuilder.Entity("OnlineExamSystem.DataServicesLayer.Model.Tests.Test", b =>
-                {
-                    b.HasOne("OnlineExamSystem.DataServicesLayer.Model.School.User", "Creator")
-                        .WithMany()
-                        .HasForeignKey("CreatorId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Creator");
                 });
 
             modelBuilder.Entity("OnlineExamSystem.DataServicesLayer.Model.Tests.TestTaker", b =>

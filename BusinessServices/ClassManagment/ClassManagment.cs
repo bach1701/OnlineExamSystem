@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OnlineExamSystem.BusinessServicesLayer
+namespace OnlineExamSystem.BusinessServices.ClassManagment
 {
     public class ClassManagment
     {
@@ -42,7 +42,7 @@ namespace OnlineExamSystem.BusinessServicesLayer
 
             return ClassData.Instance.AddNewClassByCurrentTeacher(NewClass);
         }
-        public bool RemoveClassByIndex(int index) 
+        public bool RemoveClassByIndex(int index)
         {
             return ClassData.Instance.RemoveClassByIndex(index);
         }

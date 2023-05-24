@@ -15,14 +15,13 @@ namespace OnlineExamSystem.DataServicesLayer
     {
         public DbSet<User> Users { get; set; }
         public DbSet<Class> Classes { get; set; }
-
-
+        
         public DbSet<Test> Tests { get; set; }
 
         // review needed
-        public DbSet<Question> Questions { get; set; }
-        public DbSet<TestTaker> TestTakers { get; set; }
-        public DbSet<StudentAnswerResponse> StudentAnswerResponses { get; set; }
+        //public DbSet<Question> Questions { get; set; }
+        //public DbSet<TestTaker> TestTakers { get; set; }
+        //public DbSet<StudentAnswerResponse> StudentAnswerResponses { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -59,6 +58,19 @@ namespace OnlineExamSystem.DataServicesLayer
                 .HasOne(t => t.Test)
                 .WithMany()
                 .HasForeignKey(t => t.TestId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+
+            modelBuilder.Entity<Question>()
+                .HasOne(t => t.Test)
+                .WithMany()
+                .HasForeignKey(t => t.TestId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Test>()
+                .HasOne(t => t.Creator)
+                .WithMany()
+                .HasForeignKey(t => t.CreatorId)
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }
