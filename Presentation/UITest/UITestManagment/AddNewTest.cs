@@ -1,4 +1,5 @@
 ﻿using OnlineExamSystem.BusinessServices.TestManagment;
+using OnlineExamSystem.BusinessServicesLayer;
 using OnlineExamSystem.DataServicesLayer;
 using OnlineExamSystem.DataServicesLayer.Model.School;
 using OnlineExamSystem.DataServicesLayer.Model.Tests;
@@ -17,15 +18,17 @@ namespace OnlineExamSystem.Presentation.UITest.UITestManagment
 {
     public partial class AddNewTest : UserControl
     {
-        private User CurrentTeacher;
         private List<Class> TeachingClasses;
+        public event EventHandler OnFormLeave;
 
+        private Test ModifyingTestObj;
 
         public AddNewTest()
         {
             InitializeComponent();
             SetDateTimeFormat();
             LoadFormInformation();
+            LoadDataFromExistTest();
         }
         private void SetDateTimeFormat()
         {
@@ -40,7 +43,6 @@ namespace OnlineExamSystem.Presentation.UITest.UITestManagment
             if (UserData.Instance.GetCurrentUser() == null)
                 return;
 
-            CurrentTeacher = UserData.Instance.GetCurrentUser();
             TeachingClasses = ClassData.Instance.GetAllClassByCurrentTeacher().ToList();
 
             CbClassSelection.Items.Clear();
@@ -153,7 +155,16 @@ namespace OnlineExamSystem.Presentation.UITest.UITestManagment
         {
             if (ValidateFormInformation())
             {
-                Test NewTest = new Test();
+                
+                Test NewTest = null;
+                if (ModifyingTestObj != null)
+                    NewTest = ModifyingTestObj;
+                else
+                {
+                    NewTest = new Test();
+                    NewTest.CreateTime = DateTime.Now;
+                }
+
                 NewTest.Name = TxtTestName.Text;
 
                 int requiredDurationInMinutes = 0;
@@ -171,6 +182,23 @@ namespace OnlineExamSystem.Presentation.UITest.UITestManagment
                 NewTest.StudentCanSeeFinalScore = CheckBoxAllowSeeFinalScore.Checked;
                 NewTest.Subject = "";
 
+                // @WARNING: unsafe operation...
+                /*
+                // kill the child first
+                if (NewTest.Questions.Count > 0)
+                {
+                    foreach (var question in NewTest.Questions)
+                    {
+                        if (question.AnswerOptions.Count > 0) 
+                        {
+                            question.AnswerOptions.Clear();
+                        }
+                    }
+                }
+                */
+                NewTest.Questions.Clear();
+                // end
+
                 foreach (Control item in flowLayoutPanel1.Controls)
                 {
                     UCAddNewQuestion QuestionForm = item as UCAddNewQuestion;
@@ -179,24 +207,46 @@ namespace OnlineExamSystem.Presentation.UITest.UITestManagment
                         NewTest.Questions.Add(QuestionForm.BuildQuestion());
                     }
                 }
-                if (TestManagment.Instance.CreateNewTestFromUI(NewTest))
+                if (ModifyingTestObj != null)
                 {
-                    MessageBox.Show("Tao bai kiem tra ok");
+                    if (TestManagment.Instance.UpdateTest(NewTest))
+                    {
+                        MessageBox.Show("Đã lưu thông tin.");
+                        OnFormLeave?.Invoke(this, EventArgs.Empty);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Co loi xay ra.");
+                    }
                 }
                 else
                 {
-                    MessageBox.Show("Co loi xay ra.");
+                    if (TestManagment.Instance.CreateNewTestFromUI(NewTest))
+                    {
+                        MessageBox.Show("Tạo bài kiểm tra mới thành công.");
+                        OnFormLeave?.Invoke(this, EventArgs.Empty);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Co loi xay ra.");
+                    }
                 }
             }
         }
 
         private void NewQuestionBtn(object sender, EventArgs e)
         {
+            NewQuestionForm();
+        }
+        private UCAddNewQuestion NewQuestionForm()
+        {
             UCAddNewQuestion userControl = new UCAddNewQuestion();
             flowLayoutPanel1.Controls.Add(userControl);
-            
+
             // dem button len cuoi ds
             SwapLastTwoControls(flowLayoutPanel1);
+
+            return userControl;
         }
         private void SwapLastTwoControls(FlowLayoutPanel flowLayoutPanel)
         {
@@ -216,6 +266,45 @@ namespace OnlineExamSystem.Presentation.UITest.UITestManagment
 
             flowLayoutPanel.AutoScrollPosition = new Point(0, flowLayoutPanel.DisplayRectangle.Height);
 
+        }
+
+        private void label9_Click(object sender, EventArgs e)
+        {
+            OnFormLeave?.Invoke(this, EventArgs.Empty);
+        }
+        ////////////////////////////////////// EDIT EXIST TEST ///////////////////////////////////////////
+        
+        public void SetModifyingTest(Test TestObject)
+        {
+            ModifyingTestObj = TestObject;
+            LoadDataFromExistTest();
+            label5.Text = "Chỉnh sửa bài test";
+        }
+        public void LoadDataFromExistTest()
+        {
+            if (ModifyingTestObj == null)
+                return;
+
+            Test T = ModifyingTestObj;
+
+            TxtTestName.Text = T.Name;
+            TxtTestDurationInMinutes.Text = T.DurationInMinutes.ToString();
+
+            DTPBeginTime.Value = T.BeginTime;
+            DTPEndTime.Value = T.EndTime;
+
+            TxtJoinPassword.Text = T.JoinPassword;
+            CheckboxCanOnlyTakeOneTime.Checked = T.AllowOnlyOneTry;
+            CheckBoxSwapQandA.Checked = T.SwapQuestionAndAnswersOrder;
+            CheckBoxAllowSeeQandA.Checked = T.StudentCanSeeAnswersAfterDone;
+            CheckBoxAllowSeeFinalScore.Checked = T.StudentCanSeeFinalScore;
+            
+
+            foreach (Question Q in T.Questions)
+            {
+                UCAddNewQuestion UCQues = NewQuestionForm();
+                UCQues.LoadQuestionAndAnswers(Q);
+            }
         }
     }
 }

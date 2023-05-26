@@ -37,6 +37,8 @@ namespace OnlineExamSystem.DataServicesLayer.Model.Tests
 
         public bool StudentCanSeeFinalScore { get; set; }
 
+        public bool Deleted { get; set; }
+
         public virtual ICollection<Question> Questions { get; set; }
 
         public virtual ICollection<TestTaker> TestTakers { get; set; }

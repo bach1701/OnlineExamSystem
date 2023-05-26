@@ -38,7 +38,7 @@ namespace OnlineExamSystem.DataServices.Method.Tests
             {
                 return null;
             }
-            return DB.Tests.Where(Exam => Exam.Creator == user).ToList();
+            return DB.Tests.Where(Exam => Exam.Creator == user && !Exam.Deleted).ToList();
         }
         public List<Test> GetAllTestCreatedByCurrentUser()
         {

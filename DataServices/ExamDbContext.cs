@@ -59,13 +59,20 @@ namespace OnlineExamSystem.DataServicesLayer
                 .HasOne(t => t.Test)
                 .WithMany(t => t.Questions)
                 .HasForeignKey(t => t.TestId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Test>()
                 .HasOne(t => t.Creator)
                 .WithMany(u => u.TestsCreated)
                 .HasForeignKey(t => t.CreatorId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Answer>()
+                .HasOne(a => a.Question)
+                .WithMany(q => q.AnswerOptions)
+                .HasForeignKey(a => a.QuestionId)
+                .OnDelete(DeleteBehavior.Cascade);
+
         }
     }
 }

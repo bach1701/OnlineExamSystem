@@ -120,6 +120,7 @@ namespace OnlineExamSystem.Presentation.UITest.UITestManagment
             this.label9.Size = new System.Drawing.Size(39, 41);
             this.label9.TabIndex = 18;
             this.label9.Text = "<";
+            this.label9.Click += new System.EventHandler(this.label9_Click);
             // 
             // button3
             // 

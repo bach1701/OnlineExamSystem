@@ -27,14 +27,37 @@ namespace OnlineExamSystem.BusinessServices.TestManagment
             }
         }
 
+        private List<Test> Tests = null;
 
         public List<Test> GetAllTestCreatedByCurrentTeacher()
         {
-            return TestData.Instance.GetAllTestCreatedByCurrentUser();
+            Tests = TestData.Instance.GetAllTestCreatedByCurrentUser();
+            return Tests;
         }
         public bool CreateNewTestFromUI(Test NewTest)
         {
             return TestData.Instance.AddNewTest(NewTest);
+        }
+        public bool UpdateTest(Test NewTest) 
+        {
+            return OEDB.Instance.Commit(); // chi can z la du
+        }
+        public bool DeleteTest(int Index)
+        {
+            foreach (var test in Tests) 
+            {
+                if (test.TestId == Index)
+                {
+                    test.Deleted = true;
+                    OEDB.Instance.Commit();
+                    return true;
+                }
+            }  
+            return false;
+        }
+        public Test GetTestByTestID(int ID)
+        {
+            return Tests.Find(T => T.TestId == ID);
         }
     }
 }

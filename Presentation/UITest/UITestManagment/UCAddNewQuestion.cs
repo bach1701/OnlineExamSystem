@@ -34,7 +34,7 @@ namespace OnlineExamSystem.Presentation.UITest.UITestManagment
             AddOptionToList(checkBox1, textBox1, label4);
             AlignForm();
         }
-        public void AddOptionToList(CheckBox TF, TextBox NewTxt, Label NewLabel)
+        private void AddOptionToList(CheckBox TF, TextBox NewTxt, Label NewLabel)
         {
             UIOptions NewOption = new UIOptions();
             NewOption.OptionsText = NewTxt;
@@ -177,13 +177,35 @@ namespace OnlineExamSystem.Presentation.UITest.UITestManagment
 
             return NewQues;
         }
+        public void LoadQuestionAndAnswers(Question question)
+        {
+            TxtQuestion.Text = question.Title;
+            TxtScore.Text = question.Mark.ToString();
+
+            int index = 0;
+            foreach (Answer A in question.AnswerOptions)
+            {
+                LoadOptionsToUC(A.IsCorrect, A.Text, index);
+                index++;
+            }
+        }
+        public void LoadOptionsToUC(bool IsCorrect, String Content, int index)
+        {
+            if (index != 0)
+                AddNewOptions();
+
+            // track
+            UIOptions LastOpt = UIOptionsList.LastOrDefault();
+            LastOpt.TrueFalse.Checked = IsCorrect;
+            LastOpt.OptionsText.Text = Content;
+        }
         private void AddNewQuestion_Load(object sender, EventArgs e)
         {
 
         }
         public void SetSize(int width, int height)
         {
-            this.Size = new System.Drawing.Size(width, height);
+            Size = new System.Drawing.Size(width, height);
         }
     }
 }

@@ -35,6 +35,7 @@
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.label4 = new System.Windows.Forms.Label();
             this.TxtScore = new System.Windows.Forms.TextBox();
+            this.LbScore = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // TxtQuestion
@@ -95,16 +96,26 @@
             // 
             // TxtScore
             // 
-            this.TxtScore.Location = new System.Drawing.Point(786, 34);
+            this.TxtScore.Location = new System.Drawing.Point(786, 46);
             this.TxtScore.Name = "TxtScore";
             this.TxtScore.Size = new System.Drawing.Size(55, 31);
             this.TxtScore.TabIndex = 14;
+            // 
+            // LbScore
+            // 
+            this.LbScore.AutoSize = true;
+            this.LbScore.Location = new System.Drawing.Point(786, 18);
+            this.LbScore.Name = "LbScore";
+            this.LbScore.Size = new System.Drawing.Size(58, 25);
+            this.LbScore.TabIndex = 15;
+            this.LbScore.Text = "Điểm:";
             // 
             // UCAddNewQuestion
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(217)))), ((int)(((byte)(217)))));
+            this.Controls.Add(this.LbScore);
             this.Controls.Add(this.TxtScore);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.checkBox1);
@@ -129,5 +140,6 @@
         private CheckBox checkBox1;
         private Label label4;
         private TextBox TxtScore;
+        private Label LbScore;
     }
 }
