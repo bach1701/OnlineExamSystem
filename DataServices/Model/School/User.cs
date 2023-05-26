@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OnlineExamSystem.DataServicesLayer.Model.Tests;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -52,10 +53,12 @@ namespace OnlineExamSystem.DataServicesLayer.Model.School
         public bool IsDeleted { get; set; }
 
         public virtual ICollection<ClassStudent> ClassStudents { get; set; }
-
+        public virtual ICollection<Test> TestsCreated { get; set; }
 
         public User()
         {
+            TestsCreated = new HashSet<Test>();
+            ClassStudents = new HashSet<ClassStudent>();
         }
         public User(int id, string mSSV, string hashedPassword, string email, AccRole accRole, string firstName, string lastName, Gender gender, DateTime birthday, DateTime createdAt, DateTime infoUpdatedAt)
         {

@@ -1,6 +1,6 @@
 ﻿namespace OnlineExamSystem.PresentationLayer
 {
-    partial class TestManagment
+    partial class UITestManagmentList
     {
         /// <summary> 
         /// Required designer variable.

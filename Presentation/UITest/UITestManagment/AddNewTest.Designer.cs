@@ -49,7 +49,7 @@ namespace OnlineExamSystem.Presentation.UITest.UITestManagment
             this.BtnAddClassToLV = new System.Windows.Forms.Button();
             this.CbClassSelection = new System.Windows.Forms.ComboBox();
             this.ListViewCanDoExamClass = new System.Windows.Forms.ListView();
-            this.label3 = new System.Windows.Forms.Label();
+            this.LbWhoCanTakeEx = new System.Windows.Forms.Label();
             this.DTPEndTime = new System.Windows.Forms.DateTimePicker();
             this.DTPBeginTime = new System.Windows.Forms.DateTimePicker();
             this.LabelTestAllowTime = new System.Windows.Forms.Label();
@@ -75,7 +75,7 @@ namespace OnlineExamSystem.Presentation.UITest.UITestManagment
             this.groupBox1.Controls.Add(this.BtnAddClassToLV);
             this.groupBox1.Controls.Add(this.CbClassSelection);
             this.groupBox1.Controls.Add(this.ListViewCanDoExamClass);
-            this.groupBox1.Controls.Add(this.label3);
+            this.groupBox1.Controls.Add(this.LbWhoCanTakeEx);
             this.groupBox1.Controls.Add(this.DTPEndTime);
             this.groupBox1.Controls.Add(this.DTPBeginTime);
             this.groupBox1.Controls.Add(this.LabelTestAllowTime);
@@ -254,6 +254,7 @@ namespace OnlineExamSystem.Presentation.UITest.UITestManagment
             this.BtnAddClassToLV.TabIndex = 8;
             this.BtnAddClassToLV.Text = "Thêm lớp";
             this.BtnAddClassToLV.UseVisualStyleBackColor = true;
+            this.BtnAddClassToLV.Click += new System.EventHandler(this.BtnAddClassToLV_Click);
             // 
             // CbClassSelection
             // 
@@ -271,15 +272,15 @@ namespace OnlineExamSystem.Presentation.UITest.UITestManagment
             this.ListViewCanDoExamClass.TabIndex = 6;
             this.ListViewCanDoExamClass.UseCompatibleStateImageBehavior = false;
             // 
-            // label3
+            // LbWhoCanTakeEx
             // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label3.Location = new System.Drawing.Point(20, 462);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(197, 32);
-            this.label3.TabIndex = 5;
-            this.label3.Text = "Ai được phép thi:";
+            this.LbWhoCanTakeEx.AutoSize = true;
+            this.LbWhoCanTakeEx.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.LbWhoCanTakeEx.Location = new System.Drawing.Point(20, 462);
+            this.LbWhoCanTakeEx.Name = "LbWhoCanTakeEx";
+            this.LbWhoCanTakeEx.Size = new System.Drawing.Size(197, 32);
+            this.LbWhoCanTakeEx.TabIndex = 5;
+            this.LbWhoCanTakeEx.Text = "Ai được phép thi:";
             // 
             // DTPEndTime
             // 
@@ -378,7 +379,7 @@ namespace OnlineExamSystem.Presentation.UITest.UITestManagment
         private Button BtnAddClassToLV;
         private ComboBox CbClassSelection;
         private ListView ListViewCanDoExamClass;
-        private Label label3;
+        private Label LbWhoCanTakeEx;
         private DateTimePicker DTPEndTime;
         private DateTimePicker DTPBeginTime;
         private Label LabelTestAllowTime;

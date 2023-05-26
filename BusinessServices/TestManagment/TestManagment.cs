@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using OnlineExamSystem.DataServicesLayer.Model.Tests;
+using OnlineExamSystem.DataServices.Method.Tests;
 
 namespace OnlineExamSystem.BusinessServices.TestManagment
 {
@@ -27,13 +28,13 @@ namespace OnlineExamSystem.BusinessServices.TestManagment
         }
 
 
-        public IEnumerable<Test> GetAllTestCreatedByCurrentTeacher()
+        public List<Test> GetAllTestCreatedByCurrentTeacher()
         {
-            return null;
+            return TestData.Instance.GetAllTestCreatedByCurrentUser();
         }
-        public void CreateNewTest()
+        public bool CreateNewTestFromUI(Test NewTest)
         {
-
+            return TestData.Instance.AddNewTest(NewTest);
         }
     }
 }

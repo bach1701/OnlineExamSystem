@@ -36,7 +36,7 @@ namespace OnlineExamSystem.DataServicesLayer
             int RequestedTeacherId = CurrentUser.UserId;
 
             var classes = DB.Classes
-                .Where(c => c.OwnedTeacherId == RequestedTeacherId && !c.IsDeleted)
+                .Where(c => c.OwnedTeacher == CurrentUser && !c.IsDeleted)
                 .ToList();
 
             return classes;

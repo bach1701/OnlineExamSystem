@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnlineExamSystem.DataServicesLayer;
 
@@ -11,9 +12,11 @@ using OnlineExamSystem.DataServicesLayer;
 namespace OnlineExamSystem.Migrations
 {
     [DbContext(typeof(ExamDbContext))]
-    partial class ExamDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230526103640_j")]
+    partial class j
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -218,9 +221,6 @@ namespace OnlineExamSystem.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("LastModifyTime")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -253,13 +253,22 @@ namespace OnlineExamSystem.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TestTakerId"));
 
+                    b.Property<int>("CorrectAnswerCount")
+                        .HasColumnType("int");
+
+                    b.Property<float>("FinalScore")
+                        .HasColumnType("real");
+
                     b.Property<int>("StudentUserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SubmitedAnswerCount")
                         .HasColumnType("int");
 
                     b.Property<int>("TestId")
                         .HasColumnType("int");
 
-                    b.Property<int>("TotalTakeTime")
+                    b.Property<int>("TimeTakenSeconds")
                         .HasColumnType("int");
 
                     b.HasKey("TestTakerId");
@@ -269,36 +278,6 @@ namespace OnlineExamSystem.Migrations
                     b.HasIndex("TestId");
 
                     b.ToTable("TestTaker");
-                });
-
-            modelBuilder.Entity("OnlineExamSystem.DataServicesLayer.Model.Tests.TestTakerResult", b =>
-                {
-                    b.Property<int>("TestTakerResultId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TestTakerResultId"));
-
-                    b.Property<int>("CorrectAnswerCount")
-                        .HasColumnType("int");
-
-                    b.Property<float>("FinalScore")
-                        .HasColumnType("real");
-
-                    b.Property<int>("SubmitedAnswerCount")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TestTakerId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TimeTakenSeconds")
-                        .HasColumnType("int");
-
-                    b.HasKey("TestTakerResultId");
-
-                    b.HasIndex("TestTakerId");
-
-                    b.ToTable("TestTakerResult");
                 });
 
             modelBuilder.Entity("OnlineExamSystem.DataServicesLayer.Model.School.Class", b =>
@@ -383,17 +362,6 @@ namespace OnlineExamSystem.Migrations
                     b.Navigation("Test");
                 });
 
-            modelBuilder.Entity("OnlineExamSystem.DataServicesLayer.Model.Tests.TestTakerResult", b =>
-                {
-                    b.HasOne("OnlineExamSystem.DataServicesLayer.Model.Tests.TestTaker", "TestTaker")
-                        .WithMany("TestTakerResults")
-                        .HasForeignKey("TestTakerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("TestTaker");
-                });
-
             modelBuilder.Entity("OnlineExamSystem.DataServicesLayer.Model.School.Class", b =>
                 {
                     b.Navigation("Students");
@@ -416,11 +384,6 @@ namespace OnlineExamSystem.Migrations
                     b.Navigation("Questions");
 
                     b.Navigation("TestTakers");
-                });
-
-            modelBuilder.Entity("OnlineExamSystem.DataServicesLayer.Model.Tests.TestTaker", b =>
-                {
-                    b.Navigation("TestTakerResults");
                 });
 #pragma warning restore 612, 618
         }

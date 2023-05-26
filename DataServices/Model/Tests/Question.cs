@@ -27,6 +27,10 @@ namespace OnlineExamSystem.DataServicesLayer.Model.Tests
         public int TestId { get; set; }
         public virtual Test Test { get; set; }
 
+        public Question()
+        {
+            AnswerOptions = new HashSet<Answer>();
+        }
     }
     public class Answer
     {

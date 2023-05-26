@@ -1,4 +1,9 @@
-﻿using System;
+﻿using OnlineExamSystem.BusinessServices.TestManagment;
+using OnlineExamSystem.DataServicesLayer;
+using OnlineExamSystem.DataServicesLayer.Model.School;
+using OnlineExamSystem.DataServicesLayer.Model.Tests;
+using OnlineExamSystem.PresentationLayer;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,9 +17,58 @@ namespace OnlineExamSystem.Presentation.UITest.UITestManagment
 {
     public partial class AddNewTest : UserControl
     {
+        private User CurrentTeacher;
+        private List<Class> TeachingClasses;
+
+
         public AddNewTest()
         {
             InitializeComponent();
+            SetDateTimeFormat();
+            LoadFormInformation();
+        }
+        private void SetDateTimeFormat()
+        {
+            DTPBeginTime.Format = DateTimePickerFormat.Custom;
+            DTPBeginTime.CustomFormat = "dd-MM-yyyy HH:mm";
+
+            DTPEndTime.Format = DateTimePickerFormat.Custom;
+            DTPEndTime.CustomFormat = "dd-MM-yyyy HH:mm";
+        }
+        private void LoadFormInformation()
+        {
+            if (UserData.Instance.GetCurrentUser() == null)
+                return;
+
+            CurrentTeacher = UserData.Instance.GetCurrentUser();
+            TeachingClasses = ClassData.Instance.GetAllClassByCurrentTeacher().ToList();
+
+            CbClassSelection.Items.Clear();
+            if (TeachingClasses.Count() > 0)
+            {
+                foreach (Class c in TeachingClasses)
+                {
+                    CbClassSelection.Items.Add(c.Name);
+                }
+                CbClassSelection.SelectedIndex = 0;
+            }
+            
+        }
+
+        private void BtnAddClassToLV_Click(object sender, EventArgs e)
+        {
+            int index = CbClassSelection.SelectedIndex;
+            if (index != -1) 
+            {
+                Class SelectedClass = TeachingClasses[index];
+                ListViewCanDoExamClass.Items.Add(new ListViewItem(SelectedClass.Name));
+                CbClassSelection.Items.RemoveAt(CbClassSelection.SelectedIndex);
+
+                if (CbClassSelection.Items.Count > 0)
+                    CbClassSelection.SelectedIndex = 0;
+                else
+                    CbClassSelection.SelectedIndex = -1;
+            }
         }
 
         private void panel1_Paint(object sender, PaintEventArgs e)
@@ -69,18 +123,76 @@ namespace OnlineExamSystem.Presentation.UITest.UITestManagment
                 AllGood = false;
             }
             else
-                LabelTestAllowTime.ForeColor = Color.White;
+                LabelTestAllowTime.ForeColor = Color.Black;
 
+            if (ListViewCanDoExamClass.Items.Count == 0)
+            {
+                AllGood = false;
+                LbWhoCanTakeEx.ForeColor = Color.Red;
+            }
+            else
+                LbWhoCanTakeEx.ForeColor = Color.Black;
+
+            if (flowLayoutPanel1.Controls.Count <= 1)
+            {
+                MessageBox.Show("Vui long tao it nhat 1 cau hoi");
+                return false;
+            }
+            foreach (Control item in flowLayoutPanel1.Controls) 
+            {
+                UCAddNewQuestion QuestionForm = item as UCAddNewQuestion;
+                if (QuestionForm != null)
+                {
+                    if (!QuestionForm.IsValidQuestion())
+                        return false;
+                }
+            }
             return AllGood;
         }
         private void BtnSaveInformation_Click(object sender, EventArgs e)
         {
-            ValidateFormInformation();
+            if (ValidateFormInformation())
+            {
+                Test NewTest = new Test();
+                NewTest.Name = TxtTestName.Text;
+
+                int requiredDurationInMinutes = 0;
+                int.TryParse(TxtTestDurationInMinutes.Text, out requiredDurationInMinutes);
+                NewTest.DurationInMinutes = requiredDurationInMinutes;
+
+                NewTest.BeginTime = DTPBeginTime.Value;
+                NewTest.EndTime = DTPEndTime.Value;
+                NewTest.LastModifyTime = DateTime.Now;
+
+                NewTest.JoinPassword = TxtJoinPassword.Text;
+                NewTest.AllowOnlyOneTry = CheckboxCanOnlyTakeOneTime.Checked;
+                NewTest.SwapQuestionAndAnswersOrder = CheckBoxSwapQandA.Checked;
+                NewTest.StudentCanSeeAnswersAfterDone = CheckBoxAllowSeeQandA.Checked;
+                NewTest.StudentCanSeeFinalScore = CheckBoxAllowSeeFinalScore.Checked;
+                NewTest.Subject = "";
+
+                foreach (Control item in flowLayoutPanel1.Controls)
+                {
+                    UCAddNewQuestion QuestionForm = item as UCAddNewQuestion;
+                    if (QuestionForm != null)
+                    {
+                        NewTest.Questions.Add(QuestionForm.BuildQuestion());
+                    }
+                }
+                if (TestManagment.Instance.CreateNewTestFromUI(NewTest))
+                {
+                    MessageBox.Show("Tao bai kiem tra ok");
+                }
+                else
+                {
+                    MessageBox.Show("Co loi xay ra.");
+                }
+            }
         }
 
         private void NewQuestionBtn(object sender, EventArgs e)
         {
-            AddNewQuestion userControl = new AddNewQuestion();
+            UCAddNewQuestion userControl = new UCAddNewQuestion();
             flowLayoutPanel1.Controls.Add(userControl);
             
             // dem button len cuoi ds

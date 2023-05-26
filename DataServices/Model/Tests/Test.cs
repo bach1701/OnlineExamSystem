@@ -20,6 +20,7 @@ namespace OnlineExamSystem.DataServicesLayer.Model.Tests
         public string Subject { get; set; }
 
         public DateTime CreateTime { get; set; }
+        public DateTime LastModifyTime { get; set; }
 
         public DateTime BeginTime { get; set; }
         public DateTime EndTime { get; set; }
@@ -36,13 +37,22 @@ namespace OnlineExamSystem.DataServicesLayer.Model.Tests
 
         public bool StudentCanSeeFinalScore { get; set; }
 
-        public virtual IEnumerable<Question> Questions { get; set; }
+        public virtual ICollection<Question> Questions { get; set; }
 
-        public virtual IEnumerable<TestTaker> TestTakers { get; set; }
+        public virtual ICollection<TestTaker> TestTakers { get; set; }
 
         [ForeignKey("User")]
         public int CreatorId;
         public virtual User Creator { get; set; }
+
+
+        public int SubmissionCount => TestTakers?.Count ?? 0;
+
+        public Test()
+        {
+            Questions = new HashSet<Question>();
+            TestTakers = new HashSet<TestTaker>();
+        }
 
     }
 }

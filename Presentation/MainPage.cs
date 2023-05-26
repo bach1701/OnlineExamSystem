@@ -18,7 +18,7 @@ namespace OnlineExamSystem.PresentationLayer
     public partial class MainPage : Form
     {
         private UserInformation? UserInfoDock;
-        private TestManagment? TestManagmentDock;
+        private UITestManagmentList? TestManagmentDock;
         private TeacherManagment? TeacherManagerDock;
         private UIClassManagment? ClassManagerDock;
         private StudentViewUpcomingTest? StudentViewTestDock;
@@ -64,7 +64,7 @@ namespace OnlineExamSystem.PresentationLayer
             button1.Text = "Thông tin cá nhân";
             button1.Visible = true;
 
-            TestManagmentDock = new TestManagment();
+            TestManagmentDock = new UITestManagmentList();
             TestManagmentDock.Dock = DockStyle.Fill;
             button2.Text = "Bài kiểm tra";
             button2.Visible = true;

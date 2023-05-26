@@ -25,6 +25,20 @@ namespace OnlineExamSystem.DataServicesLayer.Model.Tests
         public virtual User Student { get; set; }
 
 
+        public int TotalTakeTime { get; set; }
+
+        public virtual ICollection<TestTakerResult> TestTakerResults { get; set; }
+    }
+
+    public class TestTakerResult
+    {
+        [Key]
+        public int TestTakerResultId { get; set; }
+
+        [ForeignKey("TestTaker")]
+        public int TestTakerId { get; set; } 
+        public virtual TestTaker TestTaker { get; set; }
+
         public float FinalScore { get; set; }
 
         public int TimeTakenSeconds { get; set; }
@@ -34,5 +48,4 @@ namespace OnlineExamSystem.DataServicesLayer.Model.Tests
 
         public int CorrectAnswerCount { get; set; }
     }
-
 }
