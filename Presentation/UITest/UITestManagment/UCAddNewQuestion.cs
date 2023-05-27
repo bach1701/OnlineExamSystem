@@ -132,10 +132,13 @@ namespace OnlineExamSystem.Presentation.UITest.UITestManagment
             if (TxtScore.Text.Length == 0)
                 return false;
 
-            int Score;
-            if (!int.TryParse(TxtScore.Text, out Score))
+            decimal Score;
+            if (!decimal.TryParse(TxtScore.Text, out Score))
+            {
+                LbScore.ForeColor = Color.Red;
                 return false;
-
+            }
+            LbScore.ForeColor = Color.Black;
             // for each option
             bool ThereIsCheckedOptions = false;
             foreach (UIOptions Opt in UIOptionsList)
@@ -160,8 +163,8 @@ namespace OnlineExamSystem.Presentation.UITest.UITestManagment
 
             NewQues.Title = TxtQuestion.Text;
 
-            int Score;
-            int.TryParse(TxtScore.Text, out Score);
+            decimal Score;
+            decimal.TryParse(TxtScore.Text, out Score);
             NewQues.Mark = Score;
 
             NewQues.Hint = "";

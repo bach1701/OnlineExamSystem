@@ -24,6 +24,11 @@ namespace OnlineExamSystem.DataServicesLayer.Model.Tests
         public int UserId;
         public virtual User Student { get; set; }
 
+        // this looks stupid
+        [ForeignKey("Class")]
+        public int ClassId;
+        public virtual Class Class { get; set; }
+
 
         public int TotalTakeTime { get; set; }
 

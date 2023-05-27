@@ -19,6 +19,7 @@ namespace OnlineExamSystem.Presentation.UITest.UITestManagment
     public partial class AddNewTest : UserControl
     {
         private List<Class> TeachingClasses;
+        private List<Class> CanDoExamClass;
         public event EventHandler OnFormLeave;
 
         private Test ModifyingTestObj;
@@ -44,6 +45,7 @@ namespace OnlineExamSystem.Presentation.UITest.UITestManagment
                 return;
 
             TeachingClasses = ClassData.Instance.GetAllClassByCurrentTeacher().ToList();
+            CanDoExamClass = new List<Class>();
 
             CbClassSelection.Items.Clear();
             if (TeachingClasses.Count() > 0)
@@ -63,13 +65,24 @@ namespace OnlineExamSystem.Presentation.UITest.UITestManagment
             if (index != -1) 
             {
                 Class SelectedClass = TeachingClasses[index];
-                ListViewCanDoExamClass.Items.Add(new ListViewItem(SelectedClass.Name));
-                CbClassSelection.Items.RemoveAt(CbClassSelection.SelectedIndex);
 
-                if (CbClassSelection.Items.Count > 0)
-                    CbClassSelection.SelectedIndex = 0;
-                else
-                    CbClassSelection.SelectedIndex = -1;
+                // Check if the ListView already contains the class name
+                var existingItem = ListViewCanDoExamClass.Items.Cast<ListViewItem>().FirstOrDefault(item => item.Text == SelectedClass.Name);
+
+                if (existingItem == null) // If the class name does not exist in the ListView
+                {
+                    // Add the class to ListView and CanDoExamClass
+                    ListViewCanDoExamClass.Items.Add(new ListViewItem(SelectedClass.Name));
+                    CanDoExamClass.Add(SelectedClass);
+                    BtnAddClassToLV.Text = "Xóa lớp";
+                }
+                else // If the class name already exists in the ListView
+                {
+                    // Remove the class from ListView and CanDoExamClass
+                    ListViewCanDoExamClass.Items.Remove(existingItem);
+                    CanDoExamClass.Remove(SelectedClass);
+                    BtnAddClassToLV.Text = "Thêm lớp";
+                }
             }
         }
 
@@ -183,20 +196,23 @@ namespace OnlineExamSystem.Presentation.UITest.UITestManagment
                 NewTest.Subject = "";
 
                 // @WARNING: unsafe operation...
-                /*
-                // kill the child first
-                if (NewTest.Questions.Count > 0)
+                NewTest.Questions.Clear();
+                NewTest.TestTakers.Clear();
+                // process TestTaker
+                foreach (Class AllowedClass in CanDoExamClass)
                 {
-                    foreach (var question in NewTest.Questions)
+                    foreach (ClassStudent CStudent in AllowedClass.Students)
                     {
-                        if (question.AnswerOptions.Count > 0) 
-                        {
-                            question.AnswerOptions.Clear();
-                        }
+                        User Student = CStudent.Student;
+
+                        TestTaker NewTaker = new TestTaker();
+                        NewTaker.Test = NewTest;
+                        NewTaker.Student = Student;
+                        NewTaker.Class = AllowedClass;
+                       
+                        NewTest.TestTakers.Add(NewTaker);
                     }
                 }
-                */
-                NewTest.Questions.Clear();
                 // end
 
                 foreach (Control item in flowLayoutPanel1.Controls)
@@ -304,6 +320,39 @@ namespace OnlineExamSystem.Presentation.UITest.UITestManagment
             {
                 UCAddNewQuestion UCQues = NewQuestionForm();
                 UCQues.LoadQuestionAndAnswers(Q);
+            }
+            var distinctClasses = T.TestTakers
+                    .Where(tt => tt.Test == T) // Filter by TestId
+                    .Select(tt => tt.Class) // Select the Class property
+                    .GroupBy(c => c.ClassId) // Group by ClassId
+                    .Select(g => g.First()) // Select the first Class object from each group
+                    .ToList(); // Convert to List<Class>
+
+            foreach (Class C in distinctClasses)
+            {
+                ListViewCanDoExamClass.Items.Add(new ListViewItem(C.Name));
+                CanDoExamClass.Add(C);
+            }
+        }
+
+        private void CbClassSelection_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int index = CbClassSelection.SelectedIndex;
+            if (index != -1)
+            {
+                Class SelectedClass = TeachingClasses[index];
+
+                // Check if the ListView already contains the class name
+                var existingItem = ListViewCanDoExamClass.Items.Cast<ListViewItem>().FirstOrDefault(item => item.Text == SelectedClass.Name);
+
+                if (existingItem == null) // If the class name does not exist in the ListView
+                {
+                    BtnAddClassToLV.Text = "Thêm lớp";
+                }
+                else // If the class name already exists in the ListView
+                {
+                    BtnAddClassToLV.Text = "Xóa lớp";
+                }
             }
         }
     }

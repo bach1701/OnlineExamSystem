@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using OnlineExamSystem.DataServicesLayer.Model.Tests;
+using Microsoft.EntityFrameworkCore;
 
 namespace OnlineExamSystem.DataServices.Method.Tests
 {
@@ -60,5 +61,22 @@ namespace OnlineExamSystem.DataServices.Method.Tests
 
             return DB.SaveChanges() > 0;
         }
+
+        // student region
+        
+        public List<Test> GetAllUpcomingTestFromTakerList()
+        {
+            User CurrentUser = UserData.Instance.GetCurrentUser();
+            if (CurrentUser == null || CurrentUser.AccRole != AccRole.Student)
+                return null;
+
+            return DB.TestTakers
+                     .Include(TT => TT.Test)
+                     .Where(TT => TT.Student == CurrentUser)
+                     .Select(TT => TT.Test)
+                     .Distinct()
+                     .ToList();
+        }
+        
     }
 }

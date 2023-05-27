@@ -264,6 +264,7 @@ namespace OnlineExamSystem.Presentation.UITest.UITestManagment
             this.CbClassSelection.Name = "CbClassSelection";
             this.CbClassSelection.Size = new System.Drawing.Size(182, 33);
             this.CbClassSelection.TabIndex = 7;
+            this.CbClassSelection.SelectedIndexChanged += new System.EventHandler(this.CbClassSelection_SelectedIndexChanged);
             // 
             // ListViewCanDoExamClass
             // 

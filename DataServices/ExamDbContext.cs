@@ -20,7 +20,7 @@ namespace OnlineExamSystem.DataServicesLayer
 
         // review needed
         //public DbSet<Question> Questions { get; set; }
-        //public DbSet<TestTaker> TestTakers { get; set; }
+        public DbSet<TestTaker> TestTakers { get; set; }
         //public DbSet<StudentAnswerResponse> StudentAnswerResponses { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
