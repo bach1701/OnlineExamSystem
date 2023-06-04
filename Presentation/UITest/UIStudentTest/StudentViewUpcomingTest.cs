@@ -1,4 +1,5 @@
 ﻿using OnlineExamSystem.BusinessServices.TestManagment;
+using OnlineExamSystem.BusinessServicesLayer;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -47,6 +48,24 @@ namespace OnlineExamSystem.PresentationLayer
             JoinTestBtn.UseColumnTextForButtonValue = true;
             ListViewUpcomingTest.Columns.Add(JoinTestBtn);
 
+        }
+        private void StudentTest_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex == ListViewUpcomingTest.Columns["Action"].Index && e.RowIndex >= 0)
+            {
+                // xac dinh du lieu can truyen vao form Quan ly lop
+                // ID lop
+                DataGridViewRow row = ListViewUpcomingTest.Rows[e.RowIndex];
+                string StudentID = row.Cells[1].Value.ToString();
+
+                /*
+                EditStudentForm EditStudentForm = new EditStudentForm();
+                EditStudentForm.Dock = DockStyle.Fill;
+                EditStudentForm.EditStudentSuccessful += OnEditStudentSuccessful;
+                EditStudentForm.SetStudentID(StudentID);
+                Globals.MainForm.AddNewPanelToQueue(EditStudentForm);
+                */
+            }
         }
         private void ListViewUpcomingTest_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
