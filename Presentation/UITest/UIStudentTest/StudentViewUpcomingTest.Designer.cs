@@ -52,6 +52,7 @@
             this.ListViewUpcomingTest.RowTemplate.Height = 33;
             this.ListViewUpcomingTest.Size = new System.Drawing.Size(1270, 1016);
             this.ListViewUpcomingTest.TabIndex = 1;
+            this.ListViewUpcomingTest.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.StudentTest_CellClick);
             this.ListViewUpcomingTest.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.ListViewUpcomingTest_CellFormatting);
             // 
             // StudentViewUpcomingTest

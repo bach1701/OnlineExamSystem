@@ -23,7 +23,9 @@ namespace OnlineExamSystem.Presentation.UITest.UITestManagment
             public CheckBox TrueFalse { get; set; }
             public TextBox OptionsText { get; set; }
             public Label RemoveOptions { get; set; }
+            public int AnswerID { get; set; }
         }
+        private int QuestionID = 0;
 
         private List<UIOptions> UIOptionsList;
 
@@ -161,6 +163,7 @@ namespace OnlineExamSystem.Presentation.UITest.UITestManagment
             Question NewQues = new Question();
 
 
+            NewQues.QuestionId = QuestionID;
             NewQues.Title = TxtQuestion.Text;
 
             decimal Score;
@@ -175,6 +178,7 @@ namespace OnlineExamSystem.Presentation.UITest.UITestManagment
                 NewAnswerOption.Question = NewQues;
                 NewAnswerOption.Text = Opt.OptionsText.Text;
                 NewAnswerOption.IsCorrect = Opt.TrueFalse.Checked;
+                NewAnswerOption.AnswerId = Opt.AnswerID;
                 NewQues.AnswerOptions.Add(NewAnswerOption);
             }
 
@@ -182,17 +186,19 @@ namespace OnlineExamSystem.Presentation.UITest.UITestManagment
         }
         public void LoadQuestionAndAnswers(Question question)
         {
+            QuestionID = question.QuestionId;
+
             TxtQuestion.Text = question.Title;
             TxtScore.Text = question.Mark.ToString();
 
             int index = 0;
             foreach (Answer A in question.AnswerOptions)
             {
-                LoadOptionsToUC(A.IsCorrect, A.Text, index);
+                LoadOptionsToUC(A.IsCorrect, A.Text, A.AnswerId, index);
                 index++;
             }
         }
-        public void LoadOptionsToUC(bool IsCorrect, String Content, int index)
+        public void LoadOptionsToUC(bool IsCorrect, String Content, int AnswerID, int index)
         {
             if (index != 0)
                 AddNewOptions();
@@ -201,6 +207,7 @@ namespace OnlineExamSystem.Presentation.UITest.UITestManagment
             UIOptions LastOpt = UIOptionsList.LastOrDefault();
             LastOpt.TrueFalse.Checked = IsCorrect;
             LastOpt.OptionsText.Text = Content;
+            LastOpt.AnswerID = AnswerID;
         }
         private void AddNewQuestion_Load(object sender, EventArgs e)
         {

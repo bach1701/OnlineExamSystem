@@ -47,7 +47,7 @@ namespace OnlineExamSystem.BusinessServicesLayer
                     {
                         if (Account.IsBlocked)
                         {
-                            MessageBox.Show("Tài khoản đang bị kh.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            MessageBox.Show("Tài khoản đang bị khóa.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             return false;
                         }
                         UserData.Instance.SetUser(Account);

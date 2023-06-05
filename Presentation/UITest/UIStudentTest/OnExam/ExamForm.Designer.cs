@@ -28,18 +28,34 @@
         /// </summary>
         private void InitializeComponent()
         {
-            SuspendLayout();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.SuspendLayout();
+            // 
+            // panel1
+            // 
+            this.panel1.Location = new System.Drawing.Point(0, 1);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(1920, 1080);
+            this.panel1.TabIndex = 0;
             // 
             // ExamForm
             // 
-            AutoScaleDimensions = new SizeF(13F, 32F);
-            AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(2174, 1429);
-            Name = "ExamForm";
-            Text = "ExamForm";
-            ResumeLayout(false);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(1919, 1080);
+            this.Controls.Add(this.panel1);
+            this.Margin = new System.Windows.Forms.Padding(2);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.Name = "ExamForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "ExamForm";
+            this.ResumeLayout(false);
+
         }
 
         #endregion
+
+        private Panel panel1;
     }
 }

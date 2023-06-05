@@ -1,5 +1,7 @@
 ﻿using OnlineExamSystem.BusinessServices.TestManagment;
 using OnlineExamSystem.BusinessServicesLayer;
+using OnlineExamSystem.DataServicesLayer.Model.Tests;
+using OnlineExamSystem.Presentation.UITest.UIStudentTest;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,6 +16,8 @@ namespace OnlineExamSystem.PresentationLayer
 {
     public partial class StudentViewUpcomingTest : UserControl
     {
+        private List<Test> TestAssigned;
+
         public StudentViewUpcomingTest()
         {
             InitializeComponent();
@@ -22,7 +26,9 @@ namespace OnlineExamSystem.PresentationLayer
         }
         private void AssignDataGridView()
         {
-            ListViewUpcomingTest.DataSource = StudentTest.Instance.GetAllTestAssigned();
+            TestAssigned = StudentTest.Instance.GetAllTestAssigned();
+
+            ListViewUpcomingTest.DataSource = TestAssigned;
         }
 
         private void InitTestListDGV()
@@ -55,9 +61,12 @@ namespace OnlineExamSystem.PresentationLayer
             {
                 // xac dinh du lieu can truyen vao form Quan ly lop
                 // ID lop
-                DataGridViewRow row = ListViewUpcomingTest.Rows[e.RowIndex];
-                string StudentID = row.Cells[1].Value.ToString();
+                //DataGridViewRow row = ListViewUpcomingTest.Rows[e.RowIndex];
+                //string SelectedIndex = row.Cells[1].Value.ToString();
+                Test SelectedTest = TestAssigned[e.RowIndex];
 
+                ExamForm NewExamSess = new ExamForm(SelectedTest);
+                NewExamSess.Show();
                 /*
                 EditStudentForm EditStudentForm = new EditStudentForm();
                 EditStudentForm.Dock = DockStyle.Fill;

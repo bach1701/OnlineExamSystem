@@ -150,7 +150,7 @@ namespace OnlineExamSystem.Presentation.UITest.UITestManagment
 
             if (flowLayoutPanel1.Controls.Count <= 1)
             {
-                MessageBox.Show("Vui long tao it nhat 1 cau hoi");
+                MessageBox.Show("Vui lòng thêm ít nhất một câu hỏi!");
                 return false;
             }
             foreach (Control item in flowLayoutPanel1.Controls) 
@@ -195,10 +195,10 @@ namespace OnlineExamSystem.Presentation.UITest.UITestManagment
                 NewTest.StudentCanSeeFinalScore = CheckBoxAllowSeeFinalScore.Checked;
                 NewTest.Subject = "";
 
-                // @WARNING: unsafe operation...
-                NewTest.Questions.Clear();
-                NewTest.TestTakers.Clear();
+                ProcessQuestions(NewTest);
+
                 // process TestTaker
+                NewTest.TestTakers.Clear();
                 foreach (Class AllowedClass in CanDoExamClass)
                 {
                     foreach (ClassStudent CStudent in AllowedClass.Students)
@@ -215,14 +215,6 @@ namespace OnlineExamSystem.Presentation.UITest.UITestManagment
                 }
                 // end
 
-                foreach (Control item in flowLayoutPanel1.Controls)
-                {
-                    UCAddNewQuestion QuestionForm = item as UCAddNewQuestion;
-                    if (QuestionForm != null)
-                    {
-                        NewTest.Questions.Add(QuestionForm.BuildQuestion());
-                    }
-                }
                 if (ModifyingTestObj != null)
                 {
                     if (TestManagment.Instance.UpdateTest(NewTest))
@@ -250,6 +242,94 @@ namespace OnlineExamSystem.Presentation.UITest.UITestManagment
             }
         }
 
+        // stupid function, don't ask me why
+        private void ProcessQuestions(Test Test)
+        {
+            if (ModifyingTestObj != null)
+            {
+                foreach (Control item in flowLayoutPanel1.Controls)
+                {
+                    UCAddNewQuestion QuestionForm = item as UCAddNewQuestion;
+                    if (QuestionForm != null)
+                    {
+                        Question NewQues = QuestionForm.BuildQuestion();
+                        if (NewQues.QuestionId != 0)
+                        {
+                            Question ExistingQuestion = Test.Questions.FirstOrDefault(q => q.QuestionId == NewQues.QuestionId);
+
+                            if (ExistingQuestion != null)
+                            {
+                                ExistingQuestion.Title = NewQues.Title;
+                                ExistingQuestion.Mark = NewQues.Mark;
+                                ExistingQuestion.Hint = NewQues.Hint;
+
+                                foreach (var NewAnswer in NewQues.AnswerOptions)
+                                {
+                                    if (NewAnswer.AnswerId != 0)
+                                    {
+                                        Answer existingAnswer = ExistingQuestion.AnswerOptions.FirstOrDefault(a => a.AnswerId == NewAnswer.AnswerId);
+
+                                        if (existingAnswer != null)
+                                        {
+                                            existingAnswer.Text = NewAnswer.Text;
+                                            existingAnswer.IsCorrect = NewAnswer.IsCorrect;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        // Add new answers to the existing question
+                                        ExistingQuestion.AnswerOptions.Add(NewAnswer);
+                                    }
+                                }
+
+                                var deletedAnswers = ExistingQuestion.AnswerOptions
+                                                     .Where(a => !NewQues.AnswerOptions.Any(na => na.AnswerId == a.AnswerId))
+                                                     .ToList();
+
+                                foreach (var deletedAnswer in deletedAnswers)
+                                {
+                                    ExistingQuestion.AnswerOptions.Remove(deletedAnswer);
+                                }
+
+                            }
+                            else
+                            {
+                                Test.Questions.Add(NewQues);
+                            }
+                        }                       
+                    }
+                }
+                // Remove deleted questions
+                var UpdatedQuestionIDs = flowLayoutPanel1.Controls
+                                                        .OfType<UCAddNewQuestion>()
+                                                        .Select(qf => qf.BuildQuestion().QuestionId)
+                                                        .Where(id => id != 0)
+                                                        .ToList();
+
+                var DeletedQuestions = Test.Questions
+                                                .Where(q => !UpdatedQuestionIDs.Contains(q.QuestionId))
+                                                .ToList();
+
+                foreach (var DeletedQuestion in DeletedQuestions)
+                {
+                    Test.Questions.Remove(DeletedQuestion);
+                }
+            }
+            else
+            {
+                Test.Questions.Clear();
+
+                foreach (Control item in flowLayoutPanel1.Controls)
+                {
+                    UCAddNewQuestion QuestionForm = item as UCAddNewQuestion;
+                    if (QuestionForm != null)
+                    {
+                        Test.Questions.Add(QuestionForm.BuildQuestion());
+                    }
+                }
+            }
+        }
+       
         private void NewQuestionBtn(object sender, EventArgs e)
         {
             NewQuestionForm();
