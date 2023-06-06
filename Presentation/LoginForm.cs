@@ -15,8 +15,8 @@ namespace OnlineExamSystem
         {
             InitializeComponent();
 #if TEST_LOGIN
-            //TxtUsername.Text = "joebiden@example.com";
-            //TxtPassword.Text = "12345678";
+            TxtUsername.Text = "admin@gmail.com";
+            TxtPassword.Text = "12345678";
 
             TxtUsername.Text = "jane.smith@example.com";
             TxtPassword.Text = "123456";

@@ -1,4 +1,5 @@
 ﻿using OnlineExamSystem.BusinessServices.ClassManagment;
+using OnlineExamSystem.BusinessServices.TestManagment;
 using OnlineExamSystem.BusinessServicesLayer;
 using OnlineExamSystem.DataServicesLayer.Model.School;
 using System;
@@ -11,11 +12,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static OnlineExamSystem.PresentationLayer.UIClassManagment;
+using static OnlineExamSystem.PresentationLayer.UITestManagmentList;
 
 namespace OnlineExamSystem.PresentationLayer
 {
     public partial class UIClassManagment : UserControl
     {
+        public class ClassListDTO
+        {
+            public int ID { get; set; }
+            public int STT { get; set; }
+            public string ClassName { get; set; }
+            public string SubjectName { get; set; }
+            public int StudentCount { get; set; }
+        }
+        private List<ClassListDTO> ClassListDtos;
+
         private ClassManagment ClassMgr;
 
         public UIClassManagment()
@@ -34,10 +47,10 @@ namespace OnlineExamSystem.PresentationLayer
         {
             ClassListview.AutoGenerateColumns = false;
             ClassListview.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            ClassListview.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "ID", DataPropertyName = "ClassId", ReadOnly = true });
-            ClassListview.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Lớp", DataPropertyName = "Name", ReadOnly = true });
-            ClassListview.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Môn học", DataPropertyName = "CourseName", ReadOnly = true });
-            ClassListview.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Sĩ số", DataPropertyName = "StudentsCount", ReadOnly = true });
+            ClassListview.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "STT", DataPropertyName = "STT", ReadOnly = true });
+            ClassListview.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Lớp", DataPropertyName = "ClassName", ReadOnly = true });
+            ClassListview.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Môn học", DataPropertyName = "SubjectName", ReadOnly = true });
+            ClassListview.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Sĩ số", DataPropertyName = "StudentCount", ReadOnly = true });
 
             DataGridViewButtonColumn ManagmentStudentBtn = new DataGridViewButtonColumn();
             ManagmentStudentBtn.HeaderText = "Quản lý";
@@ -55,7 +68,20 @@ namespace OnlineExamSystem.PresentationLayer
         }
         private void SetClassListSource()
         {
-            ClassListview.DataSource = ClassMgr.GetAllClassByCurrentTeacher();
+            int index = 1;
+
+            ClassListDtos = ClassMgr.GetAllClassByCurrentTeacher()
+                            .Select(r => new ClassListDTO
+                            {
+                                STT = index++,
+                                ID = r.ClassId,
+                                ClassName = r.Name,
+                                SubjectName = r.CourseName,
+                                StudentCount = r.StudentsCount,
+                            })
+                            .ToList();
+
+            ClassListview.DataSource = ClassListDtos;
         }
         private void NewClassBtn_Click(object sender, EventArgs e)
         {
@@ -74,34 +100,38 @@ namespace OnlineExamSystem.PresentationLayer
         {
             if (e.ColumnIndex == ClassListview.Columns["ManageStudents"].Index && e.RowIndex >= 0)
             {
-                // xac dinh du lieu can truyen vao form Quan ly lop
-                // ID lop
                 DataGridViewRow row = ClassListview.Rows[e.RowIndex];
-                string ClassID = row.Cells[0].Value.ToString();
+                string STT = row.Cells[0].Value.ToString();
+                int STT_INT = Convert.ToInt32(STT);
+                ClassListDTO ElementSelected = ClassListDtos.Find(R => R.STT == STT_INT);
+
 
                 StudentClassManagment MenuStudentMgr = new StudentClassManagment();
                 MenuStudentMgr.Dock = DockStyle.Fill;
-                MenuStudentMgr.SetClassId(Convert.ToInt32(ClassID));
+                MenuStudentMgr.SetClassId(ElementSelected.ID);
                 Globals.MainForm.AddNewPanelToQueue(MenuStudentMgr);
                 // Button clicked in row e.RowIndex
             }
             if (e.ColumnIndex == ClassListview.Columns["DeleteClass"].Index && e.RowIndex >= 0)
             {
                 DataGridViewRow row = ClassListview.Rows[e.RowIndex];
-                string ClassID = row.Cells[0].Value.ToString();
+                string STT = row.Cells[0].Value.ToString();
+                int STT_INT = Convert.ToInt32(STT);
+                ClassListDTO ElementSelected = ClassListDtos.Find(R => R.STT == STT_INT);
+
 
                 string Message = String.Format("Xóa lớp {0} ({1}) khỏi hệ thống?", row.Cells[2].Value.ToString(), row.Cells[1].Value.ToString());
 
                 DialogResult result = MessageBox.Show(Message, "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (result == DialogResult.Yes)
                 {
-                    if (ClassManagment.Instance.RemoveClassByIndex(Convert.ToInt32(ClassID)) == true)
+                    if (ClassManagment.Instance.RemoveClassByIndex(ElementSelected.ID) == true)
                     {
                         SetClassListSource();
                     }
                     else
                     {
-                        MessageBox.Show("Có lỗi khi thực hiện xóa lớp " + ClassID);
+                        MessageBox.Show("Có lỗi khi thực hiện xóa lớp #" + ElementSelected.ID);
                         SetClassListSource();
                     }
                 }              

@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace OnlineExamSystem.DataServicesLayer.Model.Tests
 {
@@ -51,7 +52,7 @@ namespace OnlineExamSystem.DataServicesLayer.Model.Tests
         public virtual User Creator { get; set; }
 
 
-        public int SubmissionCount => TestTakers?.Count ?? 0;
+        public int SubmissionCount => TestTakers?.Sum(testTaker => testTaker.TestTakerResults?.Count ?? 0) ?? 0;
 
         public Test()
         {

@@ -27,7 +27,7 @@ namespace OnlineExamSystem.DataServicesLayer
         {
             DB = OEDB.Instance.GetDatabaseContext();
         }
-        public IEnumerable<Class> GetAllClassByCurrentTeacher()
+        public List<Class> GetAllClassByCurrentTeacher()
         {
             User CurrentUser = UserData.Instance.GetCurrentUser();
             if (CurrentUser == null || (AccRole)CurrentUser.AccRole != AccRole.Teacher)

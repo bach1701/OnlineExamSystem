@@ -26,7 +26,7 @@ namespace OnlineExamSystem.BusinessServices.ClassManagment
         }
 
 
-        public IEnumerable<Class> GetAllClassByCurrentTeacher()
+        public List<Class> GetAllClassByCurrentTeacher()
         {
             return ClassData.Instance.GetAllClassByCurrentTeacher();
         }

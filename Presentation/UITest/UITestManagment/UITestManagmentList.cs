@@ -1,4 +1,5 @@
-﻿using OnlineExamSystem.BusinessServices.ClassManagment;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using OnlineExamSystem.BusinessServices.ClassManagment;
 using OnlineExamSystem.BusinessServices.TestManagment;
 using OnlineExamSystem.BusinessServicesLayer;
 using OnlineExamSystem.DataServicesLayer.Model.Tests;
@@ -14,11 +15,24 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using static OnlineExamSystem.Presentation.UITest.UIStudentTest.OnExam.AfterExam.UCExamResultList;
+using static OnlineExamSystem.PresentationLayer.UITestManagmentList;
 
 namespace OnlineExamSystem.PresentationLayer
 {
     public partial class UITestManagmentList : UserControl
     {
+        public class TestListDTO
+        {
+            public int ID { get; set; }
+            public int STT { get; set; }
+            public string TestName { get; set; }
+            public int SubmissionCount { get; set; }
+            public DateTime LastModifyTime { get; set; }         
+        }
+        private List<TestListDTO> TestListDtos;
+
+
         public UITestManagmentList()
         {
             InitializeComponent();
@@ -27,7 +41,19 @@ namespace OnlineExamSystem.PresentationLayer
         }
         private void BindDataToGridView()
         {
-            dataGridView1.DataSource = TestManagment.Instance.GetAllTestCreatedByCurrentTeacher();
+            int index = 1;
+
+            TestListDtos = TestManagment.Instance.GetAllTestCreatedByCurrentTeacher()
+                            .Select(r => new TestListDTO
+                            {
+                                STT = index++,
+                                ID = r.TestId,
+                                TestName = r.Name,
+                                SubmissionCount = r.SubmissionCount,
+                                LastModifyTime = r.LastModifyTime,                               
+                            })
+                            .ToList();
+            dataGridView1.DataSource = TestListDtos;
         }
         private void UpdateDataGV()
         {
@@ -37,8 +63,8 @@ namespace OnlineExamSystem.PresentationLayer
         {
             dataGridView1.AutoGenerateColumns = false;
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridView1.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "ID", DataPropertyName = "TestId", ReadOnly = true });
-            dataGridView1.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Tên", DataPropertyName = "Name", ReadOnly = true });
+            dataGridView1.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "STT", DataPropertyName = "STT", ReadOnly = true });
+            dataGridView1.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Tên", DataPropertyName = "TestName", ReadOnly = true });
             dataGridView1.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Số bài đã nộp", DataPropertyName = "SubmissionCount", ReadOnly = true });
             dataGridView1.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Sửa lần cuối", DataPropertyName = "LastModifyTime", ReadOnly = true });
 
@@ -79,36 +105,29 @@ namespace OnlineExamSystem.PresentationLayer
 
         private void TestListView_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-
             if (e.ColumnIndex == dataGridView1.Columns["TestSubmissionResult"].Index && e.RowIndex >= 0)
             {
-                
-                // xac dinh du lieu can truyen vao form Quan ly lop
-                // ID lop
                 DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
-                string TestID = row.Cells[0].Value.ToString();
-                Test TestObject = TestManagment.Instance.GetTestByTestID(Convert.ToInt32(TestID));
+                string STT = row.Cells[0].Value.ToString();
+                int STT_INT = Convert.ToInt32(STT);
+                TestListDTO ElementSelected = TestListDtos.Find(R => R.STT == STT_INT);
+
+                Test TestObject = TestManagment.Instance.GetTestByTestID(ElementSelected.ID);
 
                 ExamForm ViewExamResult = new ExamForm(TestObject);
                 if (!ViewExamResult.SetShowResultMulti())
                     MessageBox.Show("Không có bài làm nào đối với bài kiểm tra này.");
                 else
                     ViewExamResult.Show();
-
-                //StudentClassManagment MenuStudentMgr = new StudentClassManagment();
-                //MenuStudentMgr.Dock = DockStyle.Fill;
-                //MenuStudentMgr.SetClassId(Convert.ToInt32(ClassID));
-                //Globals.MainForm.AddNewPanelToQueue(MenuStudentMgr);
-                // Button clicked in row e.RowIndex
-
             }
             if (e.ColumnIndex == dataGridView1.Columns["ModifyTest"].Index && e.RowIndex >= 0)
             {
                 DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
+                string STT = row.Cells[0].Value.ToString();
+                int STT_INT = Convert.ToInt32(STT);
+                TestListDTO ElementSelected = TestListDtos.Find(R => R.STT == STT_INT);
 
-                string TestID = row.Cells[0].Value.ToString();
-
-                Test TestObject = TestManagment.Instance.GetTestByTestID(Convert.ToInt32(TestID));
+                Test TestObject = TestManagment.Instance.GetTestByTestID(ElementSelected.ID);
 
                 AddNewTest ModifyForm = new AddNewTest();
                 ModifyForm.OnFormLeave += OnNewTestFormLeaved;
@@ -118,22 +137,25 @@ namespace OnlineExamSystem.PresentationLayer
             if (e.ColumnIndex == dataGridView1.Columns["RemoveTest"].Index && e.RowIndex >= 0)
             {
                 DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
+                string STT = row.Cells[0].Value.ToString();
+                int STT_INT = Convert.ToInt32(STT);
+                TestListDTO ElementSelected = TestListDtos.Find(R => R.STT == STT_INT);
 
-                string TestID = row.Cells[0].Value.ToString();
 
-                string Message = String.Format("Xóa bài kiểm tra {0} khỏi hệ thống?", row.Cells[1].Value.ToString());
+                Test TestObject = TestManagment.Instance.GetTestByTestID(ElementSelected.ID);
+
+                string Message = String.Format("Xóa bài kiểm tra \"{0}\" khỏi hệ thống?", row.Cells[1].Value.ToString());
 
                 DialogResult result = MessageBox.Show(Message, "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (result == DialogResult.Yes)
                 {
-                    
-                    if (TestManagment.Instance.DeleteTest(Convert.ToInt32(TestID)) == true)
+                    if (TestManagment.Instance.DeleteTest(ElementSelected.ID) == true)
                     {
                         BindDataToGridView();
                     }
                     else
                     {
-                        MessageBox.Show("Có lỗi khi thực hiện xóa lớp " + TestID);
+                        MessageBox.Show("Có lỗi khi thực hiện xóa bài kiểm tra ID " + ElementSelected.ID);
                         BindDataToGridView();
                     }
                 }

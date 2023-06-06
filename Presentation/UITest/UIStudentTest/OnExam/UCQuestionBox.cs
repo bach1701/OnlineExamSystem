@@ -124,6 +124,9 @@ namespace OnlineExamSystem.Presentation.UITest.UIStudentTest.Exam
         }
         public void SetSelectedOptionsAndAnswer(StudentAnswerResponse QuestionResponse)
         {
+            if (QuestionResponse == null)
+                return;
+
             Color LightGreen = Color.FromArgb(255, 204, 229, 204);
             Color LightRed = Color.FromArgb(255, 255, 204, 204);
 

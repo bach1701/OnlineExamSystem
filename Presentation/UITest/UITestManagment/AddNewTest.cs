@@ -292,7 +292,7 @@ namespace OnlineExamSystem.Presentation.UITest.UITestManagment
         private decimal ProcessQuestions(Test Test)
         {
             decimal MaxScore = 0;
-
+            int NewQuestionPlaceholderId = -1;
             if (ModifyingTestObj != null)
             {
                 foreach (Control item in flowLayoutPanel1.Controls)
@@ -342,11 +342,14 @@ namespace OnlineExamSystem.Presentation.UITest.UITestManagment
                                 }
 
                             }
-                            else
-                            {
-                                Test.Questions.Add(NewQues);
-                            }
-                        }                       
+                        }
+                        else
+                        {
+                            NewQues.QuestionId = NewQuestionPlaceholderId;
+                            NewQuestionPlaceholderId--;
+
+                            Test.Questions.Add(NewQues);
+                        }
                     }
                 }
                 // Remove deleted questions
@@ -357,12 +360,18 @@ namespace OnlineExamSystem.Presentation.UITest.UITestManagment
                                                         .ToList();
 
                 var DeletedQuestions = Test.Questions
-                                                .Where(q => !UpdatedQuestionIDs.Contains(q.QuestionId))
-                                                .ToList();
+                                .Where(q => !UpdatedQuestionIDs.Contains(q.QuestionId) && q.QuestionId > 0)
+                                .ToList();
 
                 foreach (var DeletedQuestion in DeletedQuestions)
                 {
                     Test.Questions.Remove(DeletedQuestion);
+                }
+
+                foreach (Question Q in Test.Questions)
+                {
+                    if (Q.QuestionId < 0)
+                        Q.QuestionId = 0; // mark for creation
                 }
             }
             else

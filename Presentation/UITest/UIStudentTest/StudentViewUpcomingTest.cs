@@ -11,11 +11,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static OnlineExamSystem.PresentationLayer.UIClassManagment;
 
 namespace OnlineExamSystem.PresentationLayer
 {
     public partial class StudentViewUpcomingTest : UserControl
     {
+        public class TestListDTO
+        {
+            public int ID { get; set; }
+            public int STT { get; set; }
+            public string TestName { get; set; }
+            public int QuestionCount { get; set; }
+            public DateTime BeginTime { get; set; }
+            public DateTime EndTime { get; set; }
+            public int DurationInMinutes { get; set; }
+        }
+        private List<TestListDTO> TestListDtos;
+
+
         private List<Test> TestAssigned;
 
         public StudentViewUpcomingTest()
@@ -27,18 +41,32 @@ namespace OnlineExamSystem.PresentationLayer
         private void AssignDataGridView()
         {
             TestAssigned = StudentTest.Instance.GetAllTestAssigned();
+            int index = 1;
 
-            ListViewUpcomingTest.DataSource = TestAssigned;
+            TestListDtos = TestAssigned
+                            .Select(r => new TestListDTO
+                            {
+                                STT = index++,
+                                ID = r.TestId,
+                                TestName = r.Name,
+                                QuestionCount = r.Questions.Count,
+                                BeginTime = r.BeginTime,
+                                EndTime = r.EndTime,
+                                DurationInMinutes = r.DurationInMinutes,
+                            })
+                            .ToList();
+
+            ListViewUpcomingTest.DataSource = TestListDtos;
         }
 
         private void InitTestListDGV()
         {
             ListViewUpcomingTest.AutoGenerateColumns = false;
             ListViewUpcomingTest.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            ListViewUpcomingTest.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "STT", DataPropertyName = "TestId", ReadOnly = true });
-            ListViewUpcomingTest.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Tên", DataPropertyName = "Name", ReadOnly = true });
+            ListViewUpcomingTest.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "STT", DataPropertyName = "STT", ReadOnly = true });
+            ListViewUpcomingTest.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Tên", DataPropertyName = "TestName", ReadOnly = true });
             
-            ListViewUpcomingTest.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Số câu hỏi", Name = "QCount", DataPropertyName = "SubmissionCount", ReadOnly = true });
+            ListViewUpcomingTest.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Số câu hỏi", Name = "QCount", DataPropertyName = "QuestionCount", ReadOnly = true });
             
             ListViewUpcomingTest.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Mở đề lúc", DataPropertyName = "BeginTime", ReadOnly = true });
             ListViewUpcomingTest.Columns[ListViewUpcomingTest.Columns.Count - 1].DefaultCellStyle.Format = "HH:mm dd-MM-yyyy";
