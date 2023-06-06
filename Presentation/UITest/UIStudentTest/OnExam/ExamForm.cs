@@ -1,6 +1,8 @@
 ﻿using OnlineExamSystem.BusinessServicesLayer;
+using OnlineExamSystem.DataServices.Method.Tests;
 using OnlineExamSystem.DataServicesLayer.Model.Tests;
 using OnlineExamSystem.Presentation.UITest.UIStudentTest.Exam;
+using OnlineExamSystem.Presentation.UITest.UIStudentTest.OnExam;
 using OnlineExamSystem.PresentationLayer;
 using System;
 using System.Collections.Generic;
@@ -17,12 +19,35 @@ namespace OnlineExamSystem.Presentation.UITest.UIStudentTest
     public partial class ExamForm : Form
     {
         Test Exam;
+        bool ShowResultOnly = false;
         public ExamForm(Test RequestedTest)
         {
             Exam = RequestedTest;
 
             InitializeComponent();
-            ShowEnterExamUC();
+            if (!ShowResultOnly)
+                ShowEnterExamUC();
+        }
+        public bool SetShowResultOnly()
+        {
+            UCExamScore demo = new UCExamScore(this);
+
+            TestTaker Taker = TestData.Instance.GetTestTakerEntityFromTest(Exam);
+
+            if (Taker.TestTakerResults.Count > 0)
+            {
+                ShowResultOnly = true;
+
+                TestTakerResult Result = Taker.TestTakerResults.First();
+                demo.SetScore(Result.FinalScore, Result.TestTaker.Test.MaxScore);
+                if (Exam.StudentCanSeeAnswersAfterDone)
+                {
+                    demo.ShowSeeDetailsButton(Result);
+                }
+                BringUp(demo);
+                return true;
+            }
+            return false;
         }
         public void ShowEnterExamUC()
         {
@@ -34,7 +59,16 @@ namespace OnlineExamSystem.Presentation.UITest.UIStudentTest
         private void OnRequestSpawnTestUI(object sender, EventArgs e)
         {
             UCDoingExam exam_uc = new UCDoingExam(Exam);
-            BringUp(exam_uc);
+            exam_uc.EventShowResultUC += OnRequestSpawnTestResult;
+            BringUp(exam_uc);           
+        }
+        private void OnRequestSpawnTestResult(object sender, EventArgs e)
+        {
+            UCExamScore demo = new UCExamScore(this);
+
+            TestTakerResult Result = sender as TestTakerResult;
+            demo.SetScore(Result.FinalScore, Result.TestTaker.Test.MaxScore);
+            BringUp(demo);
         }
         public void BringUp(object sender)
         {

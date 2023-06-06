@@ -54,26 +54,32 @@ namespace OnlineExamSystem.PresentationLayer
             JoinTestBtn.UseColumnTextForButtonValue = true;
             ListViewUpcomingTest.Columns.Add(JoinTestBtn);
 
+            DataGridViewButtonColumn ViewTestResultBtn = new DataGridViewButtonColumn();
+            ViewTestResultBtn.HeaderText = "Kết quả";
+            ViewTestResultBtn.Name = "ViewResult";
+            ViewTestResultBtn.Text = "Kết quả";
+            ViewTestResultBtn.UseColumnTextForButtonValue = true;
+            ListViewUpcomingTest.Columns.Add(ViewTestResultBtn);
+
         }
         private void StudentTest_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.ColumnIndex == ListViewUpcomingTest.Columns["Action"].Index && e.RowIndex >= 0)
             {
-                // xac dinh du lieu can truyen vao form Quan ly lop
-                // ID lop
-                //DataGridViewRow row = ListViewUpcomingTest.Rows[e.RowIndex];
-                //string SelectedIndex = row.Cells[1].Value.ToString();
                 Test SelectedTest = TestAssigned[e.RowIndex];
 
                 ExamForm NewExamSess = new ExamForm(SelectedTest);
-                NewExamSess.Show();
-                /*
-                EditStudentForm EditStudentForm = new EditStudentForm();
-                EditStudentForm.Dock = DockStyle.Fill;
-                EditStudentForm.EditStudentSuccessful += OnEditStudentSuccessful;
-                EditStudentForm.SetStudentID(StudentID);
-                Globals.MainForm.AddNewPanelToQueue(EditStudentForm);
-                */
+                NewExamSess.Show();            
+            }
+            if (e.ColumnIndex == ListViewUpcomingTest.Columns["ViewResult"].Index && e.RowIndex >= 0)
+            {
+                Test SelectedTest = TestAssigned[e.RowIndex];
+
+                ExamForm ViewExamResult = new ExamForm(SelectedTest);
+                if (!ViewExamResult.SetShowResultOnly())
+                    MessageBox.Show("Không có bài làm nào của bạn.");
+                else
+                    ViewExamResult.Show();
             }
         }
         private void ListViewUpcomingTest_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)

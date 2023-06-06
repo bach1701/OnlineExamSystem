@@ -1,4 +1,5 @@
 ﻿using OnlineExamSystem.DataServicesLayer.Model.Tests;
+using OnlineExamSystem.Migrations;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,17 +10,39 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
 
 namespace OnlineExamSystem.Presentation.UITest.UIStudentTest.Exam
 {
     public partial class UCQuestionBox : UserControl
     {
         private int QIndex = 0;
+
+        private class UIAnswer
+        {
+            public int AnswerID { get; set; }
+
+            public bool ReadCheckbox { get; set; }
+
+            public CheckBox CheckboxChecked { get; set; }
+            public RadioButton RadioChecked { get; set; }
+
+            public bool IsCorrect { get; set; }
+        }
+        public class QuestionResponse
+        {
+            public int QuestionID { get; set; }
+            public List<int> SelectedAnswerID { get; set; }
+        }
+
+        private List<UIAnswer> AnswersList;
+
         private int OptionsCount = 0;
         private Question Question;
 
-        public UCQuestionBox(Question Ques, int QuestionIndex)
+        public UCQuestionBox(Question Ques,
+            bool IsMoreThanOneCorrectAnswer,
+            bool NeedSuffleAnswers,
+            int QuestionIndex)
         {
             QIndex = QuestionIndex;
             Question = Ques;
@@ -28,51 +51,124 @@ namespace OnlineExamSystem.Presentation.UITest.UIStudentTest.Exam
             InitializeComponent();
 
             SetBackgroundColorBasedOnIndex();
-            SetQuestionContent();
+            SetQuestionContent(IsMoreThanOneCorrectAnswer, NeedSuffleAnswers);
             AlignForm();
         }
-        private void SetQuestionContent()
+        public QuestionResponse GetResponse()
+        {
+            QuestionResponse NewRes = new QuestionResponse();
+            NewRes.QuestionID = Question.QuestionId;
+            NewRes.SelectedAnswerID = new List<int>();
+
+            foreach (UIAnswer UIAns in AnswersList)
+            {
+                bool IsChecked = false;
+                if (UIAns.ReadCheckbox)
+                {
+                    IsChecked = UIAns.CheckboxChecked.Checked;
+                }
+                else
+                {
+                    IsChecked = UIAns.RadioChecked.Checked;
+                }
+                if (IsChecked)
+                {
+                    NewRes.SelectedAnswerID.Add(UIAns.AnswerID);
+                }
+            }
+
+            return NewRes;
+        }
+        private void SetQuestionContent(bool IsMoreThanOneCorrectAnswer, bool NeedSuffleAnswers)
         {
             LbQuestionIndex.Text = "Câu " + (QIndex + 1).ToString();
             LbQuestionText.Text = Question.Title;
 
-            bool IsMoreThanOneCorrectAnswer = false;
-            int CorrectCount = 0;
-            foreach (Answer A in Question.AnswerOptions)
+
+            List<Answer> AnswerList = Question.AnswerOptions.ToList();
+
+            if (NeedSuffleAnswers)
             {
-                if (A.IsCorrect)
-                {
-                    CorrectCount++;
-                    if (CorrectCount > 1)
-                    {
-                        IsMoreThanOneCorrectAnswer = true;
-                        break;
-                    }
-                }
+                Helper.Shuffle(AnswerList);
             }
+            AnswersList = new List<UIAnswer>();
+
             if (IsMoreThanOneCorrectAnswer)
             {
                 groupBox1.Text = "Chọn một hoặc nhiều phương án";
                 // create checkbox
-                foreach (Answer A in Question.AnswerOptions)
+                foreach (Answer A in AnswerList)
                 {
-                    CreateCheckboxOptions(A.Text);
+                    UIAnswer UANS = new UIAnswer();
+                    UANS.AnswerID = A.AnswerId;
+
+                    CreateCheckboxOptions(UANS, A.Text);
+
+                    AnswersList.Add(UANS);
                 }
             }
             else
             {
                 groupBox1.Text = "Chọn một phương án";
                 // create radio
-                foreach (Answer A in Question.AnswerOptions)
+                foreach (Answer A in AnswerList)
                 {
-                    CreateRadioOptions(A.Text);
+                    UIAnswer UANS = new UIAnswer();
+                    UANS.AnswerID = A.AnswerId;
+
+                    CreateRadioOptions(UANS, A.Text);
+
+                    AnswersList.Add(UANS);
                 }
             }
         }
-        private void CreateRadioOptions(string Text)
+        public void SetSelectedOptionsAndAnswer(StudentAnswerResponse QuestionResponse)
+        {
+            Color LightGreen = Color.FromArgb(255, 204, 229, 204);
+            Color LightRed = Color.FromArgb(255, 255, 204, 204);
+
+            foreach (Answer A in QuestionResponse.Question.AnswerOptions)
+            {
+                // Find the corresponding UIAnswer object
+                UIAnswer State = AnswersList.Find(ans => ans.AnswerID == A.AnswerId);
+                if (A.IsCorrect)
+                {
+                    if (State.ReadCheckbox)
+                        State.CheckboxChecked.BackColor = LightGreen;
+                    else
+                        State.RadioChecked.BackColor = LightGreen;
+
+                    State.IsCorrect = true;
+                }        
+            }
+
+            foreach (SelectedAnswer SAnswer in QuestionResponse.SelectedAnswers) 
+            {
+                int SelectedAnswerID = SAnswer.AnswerId;
+                UIAnswer State = AnswersList.Find(A => A.AnswerID == SelectedAnswerID);
+
+                if (State.ReadCheckbox)
+                    State.CheckboxChecked.Checked = true;
+                else
+                    State.RadioChecked.Checked = true;
+
+
+                if (!State.IsCorrect)
+                {
+                    if (State.ReadCheckbox)
+                        State.CheckboxChecked.BackColor = LightRed;
+                    else
+                        State.RadioChecked.BackColor = LightRed;
+                }
+            }
+        }
+        private void CreateRadioOptions(UIAnswer UANS, string Text)
         {
             System.Windows.Forms.RadioButton NewRadioButton = new System.Windows.Forms.RadioButton();
             this.groupBox1.Controls.Add(NewRadioButton);
+            
+            UANS.ReadCheckbox = false;
+            UANS.RadioChecked = NewRadioButton;
 
             NewRadioButton.AutoSize = true;
             NewRadioButton.Font = new System.Drawing.Font("Segoe UI", 13F, 
@@ -92,10 +188,13 @@ namespace OnlineExamSystem.Presentation.UITest.UIStudentTest.Exam
 
             OptionsCount++;
         }
-        private void CreateCheckboxOptions(string Text)
+        private void CreateCheckboxOptions(UIAnswer UANS, string Text)
         {
             System.Windows.Forms.CheckBox NewCheckbox = new System.Windows.Forms.CheckBox();
             this.groupBox1.Controls.Add(NewCheckbox);
+
+            UANS.ReadCheckbox = true;
+            UANS.CheckboxChecked = NewCheckbox;
 
             NewCheckbox.AutoSize = true;
             NewCheckbox.Font = new System.Drawing.Font("Segoe UI", 13F,
@@ -141,8 +240,6 @@ namespace OnlineExamSystem.Presentation.UITest.UIStudentTest.Exam
             groupBox1.Location = new Point(groupBox1.Location.X, newY);
             groupBox1.Size = new Size(groupBox1.Size.Width, OptionsCount * 57 + 15);
             this.Size = new Size(1880, 70 + (int)textSize.Height + (OptionsCount * 57) + 15 );
-
-
         }
     }
 }

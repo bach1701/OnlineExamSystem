@@ -41,6 +41,9 @@ namespace OnlineExamSystem.DataServicesLayer.Model.Tests
 
         public virtual ICollection<Question> Questions { get; set; }
 
+        public decimal MaxScore { get; set; }
+
+
         public virtual ICollection<TestTaker> TestTakers { get; set; }
 
         [ForeignKey("User")]

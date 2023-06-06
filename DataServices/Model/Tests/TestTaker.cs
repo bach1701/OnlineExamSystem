@@ -44,7 +44,11 @@ namespace OnlineExamSystem.DataServicesLayer.Model.Tests
         public int TestTakerId { get; set; } 
         public virtual TestTaker TestTaker { get; set; }
 
-        public float FinalScore { get; set; }
+
+        public virtual ICollection<StudentAnswerResponse> AnswerResponses { get; set; }
+
+
+        public decimal FinalScore { get; set; }
 
         public int TimeTakenSeconds { get; set; }
 
@@ -52,5 +56,10 @@ namespace OnlineExamSystem.DataServicesLayer.Model.Tests
         public int SubmitedAnswerCount { get; set; }
 
         public int CorrectAnswerCount { get; set; }
+
+        public TestTakerResult()
+        {
+            AnswerResponses = new HashSet<StudentAnswerResponse>();
+        }
     }
 }

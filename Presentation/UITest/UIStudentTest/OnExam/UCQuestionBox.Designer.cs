@@ -31,7 +31,6 @@
             this.LbQuestionIndex = new System.Windows.Forms.Label();
             this.LbQuestionText = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // LbQuestionIndex
@@ -65,7 +64,6 @@
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Chọn 1 phương án";
-
             // 
             // UCQuestionBox
             // 
@@ -77,8 +75,6 @@
             this.Controls.Add(this.LbQuestionIndex);
             this.Name = "UCQuestionBox";
             this.Size = new System.Drawing.Size(1880, 357);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 

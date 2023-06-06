@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnlineExamSystem.DataServicesLayer;
 
@@ -11,9 +12,11 @@ using OnlineExamSystem.DataServicesLayer;
 namespace OnlineExamSystem.Migrations
 {
     [DbContext(typeof(ExamDbContext))]
-    partial class ExamDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230606071240_xy")]
+    partial class xy
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -271,9 +274,6 @@ namespace OnlineExamSystem.Migrations
                     b.Property<DateTime>("LastModifyTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal>("MaxScore")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -340,8 +340,8 @@ namespace OnlineExamSystem.Migrations
                     b.Property<int>("CorrectAnswerCount")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("FinalScore")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<float>("FinalScore")
+                        .HasColumnType("real");
 
                     b.Property<int>("SubmitedAnswerCount")
                         .HasColumnType("int");
@@ -433,7 +433,7 @@ namespace OnlineExamSystem.Migrations
                     b.HasOne("OnlineExamSystem.DataServicesLayer.Model.Tests.TestTakerResult", "TestTaker")
                         .WithMany("AnswerResponses")
                         .HasForeignKey("TestTakerResultId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Question");

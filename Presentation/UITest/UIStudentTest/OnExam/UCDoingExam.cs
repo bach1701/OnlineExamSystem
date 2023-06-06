@@ -3,10 +3,12 @@ using OnlineExamSystem.DataServicesLayer;
 using OnlineExamSystem.DataServicesLayer.Model.School;
 using OnlineExamSystem.DataServicesLayer.Model.Tests;
 using OnlineExamSystem.Migrations;
+using OnlineExamSystem.Presentation.UITest.UITestManagment;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -18,6 +20,8 @@ namespace OnlineExamSystem.Presentation.UITest.UIStudentTest.Exam
 {
     public partial class UCDoingExam : UserControl
     {
+        public event EventHandler? EventShowResultUC;
+
         private Test Exam;
         private User Examinee;
         private StudentTest ExamManager;
@@ -57,16 +61,88 @@ namespace OnlineExamSystem.Presentation.UITest.UIStudentTest.Exam
         }
         public void LoadTestQuestion()
         {
-            foreach (Question Q in Exam.Questions) 
+            List<Question> QuestionList = Exam.Questions.ToList();
+
+            if (Exam.SwapQuestionAndAnswersOrder)
             {
-                UCQuestionBox NewBox = new UCQuestionBox(Q, test_index++);
+                Helper.Shuffle(QuestionList);
+            }
+
+            foreach (Question Q in QuestionList) 
+            {
+                UCQuestionBox NewBox = new UCQuestionBox(Q, 
+                    Q.IsMoreThanOneCorrectAnswer,
+                    Exam.SwapQuestionAndAnswersOrder,
+                    test_index++);
                 FlowPanelQuestionBox.Controls.Add(NewBox);
             }
         }
 
         private void BtnSubmitTest_Click(object sender, EventArgs e)
         {
+            if (CheckSubmitCondition())
+            {
+                SubmitTest();
+            }
+        }
+        private bool CheckSubmitCondition()
+        {
+            bool HasUnansweredQuestion = false;
 
+            foreach (Control item in FlowPanelQuestionBox.Controls)
+            {
+                UCQuestionBox QuestionForm = item as UCQuestionBox;
+                if (QuestionForm != null)
+                {
+                    UCQuestionBox.QuestionResponse Res = QuestionForm.GetResponse();
+                    if (Res.SelectedAnswerID.Count() == 0)
+                    {
+                        HasUnansweredQuestion = true;
+                        break;
+                    }
+                }
+            }
+
+            if (HasUnansweredQuestion)
+            {
+                DialogResult result = MessageBox.Show(
+                                                        "Có câu hỏi bạn chưa chọn đáp án. Có muốn tiếp tục nộp bài?", 
+                                                        "Xác nhận", 
+                                                        MessageBoxButtons.YesNo, 
+                                                        MessageBoxIcon.Information
+                                                     );
+                if (result == DialogResult.No)
+                    return false;
+            }
+
+            DialogResult FinalConfirmation = MessageBox.Show(
+                                                                "Xác nhận nộp và kết thúc làm bài?", 
+                                                                "Xác nhận", 
+                                                                MessageBoxButtons.YesNo, 
+                                                                MessageBoxIcon.Information
+                                                            );
+            if (FinalConfirmation == DialogResult.Yes)
+                return true;
+
+            return false;
+        }
+        private bool SubmitTest()
+        {
+            foreach (Control item in FlowPanelQuestionBox.Controls)
+            {
+                UCQuestionBox QuestionForm = item as UCQuestionBox;
+                if (QuestionForm != null)
+                {
+                    UCQuestionBox.QuestionResponse Res = QuestionForm.GetResponse();
+                    StudentTest.Instance.InsertQuestionSelectionToResult(Res);
+                }
+            }
+            int TimeTaken = Exam.DurationInMinutes * 60 - RemainingSeconds;
+
+            StudentTest.Instance.GradeTestAndStoreResult(TimeTaken);
+
+            EventShowResultUC?.Invoke(StudentTest.Instance.GetCurrentResultEntity(), null);
+            return true;
         }
         public void AlignCenterLabel()
         {
@@ -110,7 +186,7 @@ namespace OnlineExamSystem.Presentation.UITest.UIStudentTest.Exam
             else
             {
                 CountdownTimer.Stop();
-                MessageBox.Show("Countdown finished!", "Countdown", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                SubmitTest();
             }
         }
 

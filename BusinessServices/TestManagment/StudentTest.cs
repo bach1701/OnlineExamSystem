@@ -1,5 +1,7 @@
 ﻿using OnlineExamSystem.DataServices.Method.Tests;
+using OnlineExamSystem.DataServicesLayer;
 using OnlineExamSystem.DataServicesLayer.Model.Tests;
+using OnlineExamSystem.Presentation.UITest.UIStudentTest.Exam;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,10 +36,16 @@ namespace OnlineExamSystem.BusinessServices.TestManagment
         }
         // section: test join + work
         private Test Exam;
-      
+        private TestTaker Taker;
+        private TestTakerResult CurrentResultEntity;
+
         public void SetDoTest(Test test)
         {
             Exam = test;
+        }
+        public TestTakerResult GetCurrentResultEntity()
+        {
+            return CurrentResultEntity;
         }
         public bool RequestDoTest(string Password, ref string ErrorMessage)
         {
@@ -55,8 +63,103 @@ namespace OnlineExamSystem.BusinessServices.TestManagment
                     return false;
                 }
             }
+            // @FIXME
+            // neu hs chua submit bai, ma out ra => bi chan lam bai => ko co ket qua
+            
+            if (!CreateTakerResultEntity())
+            {
+                ErrorMessage = "Bạn chỉ có thể làm bài thi một lần.";
+                return false;
+            }
             return true;
         }
+        public bool CreateTakerResultEntity()
+        {
+            Taker = TestData.Instance.GetTestTakerEntityFromTest(Exam);
 
+            if (Taker.TestTakerResults.Count > 0 && Exam.AllowOnlyOneTry)
+                return false;
+
+            TestTakerResult TakerResult = new TestTakerResult();
+            TakerResult.TestTaker = Taker;
+            
+            Taker.TestTakerResults.Add(TakerResult);
+            CurrentResultEntity = TakerResult;
+
+            return OEDB.Instance.Commit();
+        }
+        public bool InsertQuestionSelectionToResult(UCQuestionBox.QuestionResponse Res)
+        {
+            if (Taker == null || CurrentResultEntity == null)
+                return false;
+
+            if (Res.SelectedAnswerID.Count > 0)
+            {
+                Question QSelectI = GetQuestionById(Res.QuestionID);
+
+                StudentAnswerResponse NewResponse = new StudentAnswerResponse();
+                NewResponse.TestTaker = CurrentResultEntity;
+                NewResponse.Question = QSelectI;
+
+
+                foreach (int SelectedAnswerID in Res.SelectedAnswerID) 
+                {
+                    SelectedAnswer SAEntity = new SelectedAnswer();
+                    SAEntity.StudentAnswerResponse = NewResponse;
+                    SAEntity.AnswerId = SelectedAnswerID;
+                    NewResponse.SelectedAnswers.Add(SAEntity);
+                }
+                CurrentResultEntity.AnswerResponses.Add(NewResponse);
+            }
+            return true;
+        }
+        public bool GradeTestAndStoreResult(int TimeTaken)
+        {
+            // Calculate the total score and correct answer count
+            decimal totalScore = 0;
+            int correctAnswerCount = 0;
+
+            foreach (var answerResponse in CurrentResultEntity.AnswerResponses)
+            {
+                var question = answerResponse.Question;
+                var selectedAnswers = answerResponse.SelectedAnswers.Select(sa => sa.AnswerId).ToList();
+
+                if (question.IsMoreThanOneCorrectAnswer) // Multiple-choice question
+                {
+                    var allCorrectAnswers = question.AnswerOptions.Where(ao => ao.IsCorrect).ToList();
+                    var selectedCorrectAnswers = selectedAnswers.Intersect(allCorrectAnswers.Select(a => a.AnswerId)).ToList();
+
+                    if (selectedCorrectAnswers.Count == allCorrectAnswers.Count && selectedCorrectAnswers.Count == selectedAnswers.Count)
+                    {
+                        totalScore += question.Mark;
+                        correctAnswerCount++;
+                    }
+                }
+                else // Single-choice question
+                {
+                    if (selectedAnswers.Count == 1)
+                    {
+                        var selectedAnswer = question.AnswerOptions.FirstOrDefault(ao => ao.AnswerId == selectedAnswers[0]);
+                        if (selectedAnswer != null && selectedAnswer.IsCorrect)
+                        {
+                            totalScore += question.Mark;
+                            correctAnswerCount++;
+                        }
+                    }
+                }
+            }
+
+            // Update the TestTakerResult object
+            CurrentResultEntity.FinalScore = totalScore;
+            CurrentResultEntity.CorrectAnswerCount = correctAnswerCount;
+            CurrentResultEntity.TimeTakenSeconds = TimeTaken;
+
+            // Save the changes
+            return OEDB.Instance.Commit();
+        }
+        public Question GetQuestionById(int QuestionId)
+        {
+            return Exam.Questions.FirstOrDefault(T => T.QuestionId == QuestionId);
+        }
     }
 }

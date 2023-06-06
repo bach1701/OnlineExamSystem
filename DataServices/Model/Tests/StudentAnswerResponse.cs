@@ -14,24 +14,30 @@ namespace OnlineExamSystem.DataServicesLayer.Model.Tests
         [Key]
         public int StudentAnswerResponseId { get; set; }
 
-        [ForeignKey("User")]
-        public int UserId { get; set; }
-
-        public virtual User User { get; set; }
-
-
-
-        [ForeignKey("Test")]
-        public int TestId { get; set; }
-
-        public virtual Test Test { get; set; }
-
+        [ForeignKey("TestTakerResult")]
+        public int TestTakerResultId { get; set; }
+        public virtual TestTakerResult TestTaker { get; set; } // @FIXME name check pls
 
         [ForeignKey("Question")]
         public int QuestionId { get; set; }
-
         public virtual Question Question { get; set; }
 
-        public int SelectedOption { get; set; }
+        public virtual ICollection<SelectedAnswer> SelectedAnswers { get; set; }
+        
+        public StudentAnswerResponse()
+        {
+            SelectedAnswers = new HashSet<SelectedAnswer>();
+        }
+    }
+    public class SelectedAnswer
+    {
+        [Key]
+        public int SelectedAnswerId { get; set; }
+
+        [ForeignKey("StudentAnswerResponse")]
+        public int StudentAnswerResponseId { get; set; }
+        public virtual StudentAnswerResponse StudentAnswerResponse { get; set; }
+
+        public int AnswerId { get; set; }
     }
 }

@@ -14,14 +14,10 @@ namespace OnlineExamSystem.DataServicesLayer
     public class ExamDbContext : DbContext
     {
         public DbSet<User> Users { get; set; }
-        public DbSet<Class> Classes { get; set; }
-        
+        public DbSet<Class> Classes { get; set; }      
         public DbSet<Test> Tests { get; set; }
-
-        // review needed
-        //public DbSet<Question> Questions { get; set; }
         public DbSet<TestTaker> TestTakers { get; set; }
-        //public DbSet<StudentAnswerResponse> StudentAnswerResponses { get; set; }
+        
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -72,6 +68,18 @@ namespace OnlineExamSystem.DataServicesLayer
                 .WithMany(q => q.AnswerOptions)
                 .HasForeignKey(a => a.QuestionId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<TestTakerResult>()
+                .HasOne(ttr => ttr.TestTaker)
+                .WithMany(tt => tt.TestTakerResults)
+                .HasForeignKey(ttr => ttr.TestTakerId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<StudentAnswerResponse>()
+                .HasOne(sar => sar.TestTaker)
+                .WithMany(ttr => ttr.AnswerResponses)
+                .HasForeignKey(sar => sar.TestTakerResultId)
+                .OnDelete(DeleteBehavior.NoAction); 
 
         }
     }

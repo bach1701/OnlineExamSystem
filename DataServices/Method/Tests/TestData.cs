@@ -77,6 +77,15 @@ namespace OnlineExamSystem.DataServices.Method.Tests
                      .Distinct()
                      .ToList();
         }
-        
+        public TestTaker GetTestTakerEntityFromTest(Test ReqTest)
+        {
+            User CurrentUser = UserData.Instance.GetCurrentUser();
+            if (CurrentUser == null || CurrentUser.AccRole != AccRole.Student)
+                return null;
+
+            return DB.TestTakers.FirstOrDefault(TT => TT.Student == CurrentUser && TT.Test == ReqTest);
+        }
+        // student region
+
     }
 }

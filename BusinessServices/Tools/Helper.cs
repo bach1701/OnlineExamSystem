@@ -63,5 +63,17 @@ namespace OnlineExamSystem
         {
             Environment.Exit(0);
         }
+        public static void Shuffle<T>(IList<T> list)
+        {
+            Random random = new Random();
+
+            for (int i = list.Count - 1; i > 0; i--)
+            {
+                int j = random.Next(i + 1);
+                T temp = list[i];
+                list[i] = list[j];
+                list[j] = temp;
+            }
+        }
     }
 }

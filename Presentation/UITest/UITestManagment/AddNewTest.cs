@@ -69,16 +69,14 @@ namespace OnlineExamSystem.Presentation.UITest.UITestManagment
                 // Check if the ListView already contains the class name
                 var existingItem = ListViewCanDoExamClass.Items.Cast<ListViewItem>().FirstOrDefault(item => item.Text == SelectedClass.Name);
 
-                if (existingItem == null) // If the class name does not exist in the ListView
+                if (existingItem == null)
                 {
-                    // Add the class to ListView and CanDoExamClass
                     ListViewCanDoExamClass.Items.Add(new ListViewItem(SelectedClass.Name));
                     CanDoExamClass.Add(SelectedClass);
                     BtnAddClassToLV.Text = "Xóa lớp";
                 }
-                else // If the class name already exists in the ListView
+                else 
                 {
-                    // Remove the class from ListView and CanDoExamClass
                     ListViewCanDoExamClass.Items.Remove(existingItem);
                     CanDoExamClass.Remove(SelectedClass);
                     BtnAddClassToLV.Text = "Thêm lớp";
@@ -168,7 +166,6 @@ namespace OnlineExamSystem.Presentation.UITest.UITestManagment
         {
             if (ValidateFormInformation())
             {
-                
                 Test NewTest = null;
                 if (ModifyingTestObj != null)
                     NewTest = ModifyingTestObj;
@@ -195,9 +192,11 @@ namespace OnlineExamSystem.Presentation.UITest.UITestManagment
                 NewTest.StudentCanSeeFinalScore = CheckBoxAllowSeeFinalScore.Checked;
                 NewTest.Subject = "";
 
-                ProcessQuestions(NewTest);
-
+                decimal MaxScore = ProcessQuestions(NewTest);
+                NewTest.MaxScore = MaxScore;
                 // process TestTaker
+                ProcessTestTakers(NewTest);
+                /*
                 NewTest.TestTakers.Clear();
                 foreach (Class AllowedClass in CanDoExamClass)
                 {
@@ -213,6 +212,7 @@ namespace OnlineExamSystem.Presentation.UITest.UITestManagment
                         NewTest.TestTakers.Add(NewTaker);
                     }
                 }
+                */
                 // end
 
                 if (ModifyingTestObj != null)
@@ -243,8 +243,56 @@ namespace OnlineExamSystem.Presentation.UITest.UITestManagment
         }
 
         // stupid function, don't ask me why
-        private void ProcessQuestions(Test Test)
+        private void ProcessTestTakers(Test NewTest)
         {
+            // Retrieve existing TestTakers associated with the test
+            var existingTestTakers = NewTest.TestTakers.ToList();
+
+            // Process TestTakers
+            foreach (Class allowedClass in CanDoExamClass)
+            {
+                foreach (ClassStudent cStudent in allowedClass.Students)
+                {
+                    User student = cStudent.Student;
+
+                    // Check if a TestTaker instance already exists for the student
+                    var existingTestTaker = existingTestTakers.FirstOrDefault(tt => tt.Student.UserId == student.UserId);
+
+                    if (existingTestTaker != null)
+                    {
+                        // Update the existing TestTaker instance
+                        existingTestTaker.Class = allowedClass;
+                        existingTestTaker.Test = NewTest;
+                    }
+                    else
+                    {
+                        // Create a new TestTaker instance
+                        TestTaker newTaker = new TestTaker
+                        {
+                            Test = NewTest,
+                            Student = student,
+                            Class = allowedClass
+                        };
+
+                        NewTest.TestTakers.Add(newTaker);
+                    }
+                }
+            }
+
+            // Remove TestTaker instances that are no longer associated with allowed classes
+            var testTakersToRemove = existingTestTakers
+                .Where(tt => !CanDoExamClass.Any(c => c.ClassId == tt.ClassId))
+                .ToList();
+
+            foreach (var testTakerToRemove in testTakersToRemove)
+            {
+                NewTest.TestTakers.Remove(testTakerToRemove);
+            }
+        }
+        private decimal ProcessQuestions(Test Test)
+        {
+            decimal MaxScore = 0;
+
             if (ModifyingTestObj != null)
             {
                 foreach (Control item in flowLayoutPanel1.Controls)
@@ -261,6 +309,7 @@ namespace OnlineExamSystem.Presentation.UITest.UITestManagment
                             {
                                 ExistingQuestion.Title = NewQues.Title;
                                 ExistingQuestion.Mark = NewQues.Mark;
+                                MaxScore += NewQues.Mark;
                                 ExistingQuestion.Hint = NewQues.Hint;
 
                                 foreach (var NewAnswer in NewQues.AnswerOptions)
@@ -324,10 +373,13 @@ namespace OnlineExamSystem.Presentation.UITest.UITestManagment
                     UCAddNewQuestion QuestionForm = item as UCAddNewQuestion;
                     if (QuestionForm != null)
                     {
-                        Test.Questions.Add(QuestionForm.BuildQuestion());
+                        Question NewQues = QuestionForm.BuildQuestion();
+                        MaxScore += NewQues.Mark;
+                        Test.Questions.Add(NewQues);
                     }
                 }
             }
+            return MaxScore;
         }
        
         private void NewQuestionBtn(object sender, EventArgs e)

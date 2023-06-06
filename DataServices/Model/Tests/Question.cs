@@ -22,6 +22,8 @@ namespace OnlineExamSystem.DataServicesLayer.Model.Tests
 
 
         public virtual ICollection<Answer> AnswerOptions { get; set; }
+        public bool IsMoreThanOneCorrectAnswer { get; set; }
+
 
         [ForeignKey("Test")]
         public int TestId { get; set; }

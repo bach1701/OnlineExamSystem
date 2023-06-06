@@ -62,8 +62,8 @@ namespace OnlineExamSystem.Presentation.UITest.UIStudentTest
 
         private void button1_Click(object sender, EventArgs e)
         {
-            RequestSpawnTestUI?.Invoke(this, EventArgs.Empty);
-            /*
+            //RequestSpawnTestUI?.Invoke(this, EventArgs.Empty);
+            
             string ErrorMessage = "";
             bool CanJoin = ExamManager.RequestDoTest(TxtPassword.Text, ref ErrorMessage);
             if (CanJoin)
@@ -74,7 +74,7 @@ namespace OnlineExamSystem.Presentation.UITest.UIStudentTest
             {
                 SetStatus(ErrorMessage);
             }
-            */
+            
         }
     }
 }

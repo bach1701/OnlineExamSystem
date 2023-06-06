@@ -172,15 +172,25 @@ namespace OnlineExamSystem.Presentation.UITest.UITestManagment
 
             NewQues.Hint = "";
 
+            int CorrectCount = 0;
             foreach (UIOptions Opt in UIOptionsList)
             {
                 Answer NewAnswerOption = new Answer();
                 NewAnswerOption.Question = NewQues;
                 NewAnswerOption.Text = Opt.OptionsText.Text;
                 NewAnswerOption.IsCorrect = Opt.TrueFalse.Checked;
+
+                if (NewAnswerOption.IsCorrect)
+                    CorrectCount++;
+
                 NewAnswerOption.AnswerId = Opt.AnswerID;
                 NewQues.AnswerOptions.Add(NewAnswerOption);
             }
+
+            if (CorrectCount > 1)
+                NewQues.IsMoreThanOneCorrectAnswer = true;
+            else
+                NewQues.IsMoreThanOneCorrectAnswer = false;
 
             return NewQues;
         }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnlineExamSystem.DataServicesLayer;
 
@@ -11,9 +12,11 @@ using OnlineExamSystem.DataServicesLayer;
 namespace OnlineExamSystem.Migrations
 {
     [DbContext(typeof(ExamDbContext))]
-    partial class ExamDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230605170955_xx")]
+    partial class xx
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -191,27 +194,6 @@ namespace OnlineExamSystem.Migrations
                     b.ToTable("Question");
                 });
 
-            modelBuilder.Entity("OnlineExamSystem.DataServicesLayer.Model.Tests.SelectedAnswer", b =>
-                {
-                    b.Property<int>("SelectedAnswerId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SelectedAnswerId"));
-
-                    b.Property<int>("AnswerId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StudentAnswerResponseId")
-                        .HasColumnType("int");
-
-                    b.HasKey("SelectedAnswerId");
-
-                    b.HasIndex("StudentAnswerResponseId");
-
-                    b.ToTable("SelectedAnswer");
-                });
-
             modelBuilder.Entity("OnlineExamSystem.DataServicesLayer.Model.Tests.StudentAnswerResponse", b =>
                 {
                     b.Property<int>("StudentAnswerResponseId")
@@ -221,6 +203,9 @@ namespace OnlineExamSystem.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StudentAnswerResponseId"));
 
                     b.Property<int>("QuestionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SelectedAnswerID")
                         .HasColumnType("int");
 
                     b.Property<int>("TestTakerResultId")
@@ -270,9 +255,6 @@ namespace OnlineExamSystem.Migrations
 
                     b.Property<DateTime>("LastModifyTime")
                         .HasColumnType("datetime2");
-
-                    b.Property<decimal>("MaxScore")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -340,8 +322,8 @@ namespace OnlineExamSystem.Migrations
                     b.Property<int>("CorrectAnswerCount")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("FinalScore")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<float>("FinalScore")
+                        .HasColumnType("real");
 
                     b.Property<int>("SubmitedAnswerCount")
                         .HasColumnType("int");
@@ -411,17 +393,6 @@ namespace OnlineExamSystem.Migrations
                     b.Navigation("Test");
                 });
 
-            modelBuilder.Entity("OnlineExamSystem.DataServicesLayer.Model.Tests.SelectedAnswer", b =>
-                {
-                    b.HasOne("OnlineExamSystem.DataServicesLayer.Model.Tests.StudentAnswerResponse", "StudentAnswerResponse")
-                        .WithMany("SelectedAnswers")
-                        .HasForeignKey("StudentAnswerResponseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("StudentAnswerResponse");
-                });
-
             modelBuilder.Entity("OnlineExamSystem.DataServicesLayer.Model.Tests.StudentAnswerResponse", b =>
                 {
                     b.HasOne("OnlineExamSystem.DataServicesLayer.Model.Tests.Question", "Question")
@@ -433,7 +404,7 @@ namespace OnlineExamSystem.Migrations
                     b.HasOne("OnlineExamSystem.DataServicesLayer.Model.Tests.TestTakerResult", "TestTaker")
                         .WithMany("AnswerResponses")
                         .HasForeignKey("TestTakerResultId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Question");
@@ -505,11 +476,6 @@ namespace OnlineExamSystem.Migrations
             modelBuilder.Entity("OnlineExamSystem.DataServicesLayer.Model.Tests.Question", b =>
                 {
                     b.Navigation("AnswerOptions");
-                });
-
-            modelBuilder.Entity("OnlineExamSystem.DataServicesLayer.Model.Tests.StudentAnswerResponse", b =>
-                {
-                    b.Navigation("SelectedAnswers");
                 });
 
             modelBuilder.Entity("OnlineExamSystem.DataServicesLayer.Model.Tests.Test", b =>
