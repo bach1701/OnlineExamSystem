@@ -77,7 +77,7 @@ namespace OnlineExamSystem.DataServices.Method.Tests
                      .Distinct()
                      .ToList();
         }
-        public TestTaker GetTestTakerEntityFromTest(Test ReqTest)
+        public TestTaker GetUserTestTakerEntityFromTest(Test ReqTest)
         {
             User CurrentUser = UserData.Instance.GetCurrentUser();
             if (CurrentUser == null || CurrentUser.AccRole != AccRole.Student)

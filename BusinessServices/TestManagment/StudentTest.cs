@@ -4,6 +4,7 @@ using OnlineExamSystem.DataServicesLayer.Model.Tests;
 using OnlineExamSystem.Presentation.UITest.UIStudentTest.Exam;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
@@ -75,14 +76,14 @@ namespace OnlineExamSystem.BusinessServices.TestManagment
         }
         public bool CreateTakerResultEntity()
         {
-            Taker = TestData.Instance.GetTestTakerEntityFromTest(Exam);
+            Taker = TestData.Instance.GetUserTestTakerEntityFromTest(Exam);
 
             if (Taker.TestTakerResults.Count > 0 && Exam.AllowOnlyOneTry)
                 return false;
 
             TestTakerResult TakerResult = new TestTakerResult();
             TakerResult.TestTaker = Taker;
-            
+            TakerResult.BeginExamTime = DateTime.Now;
             Taker.TestTakerResults.Add(TakerResult);
             CurrentResultEntity = TakerResult;
 
@@ -115,7 +116,6 @@ namespace OnlineExamSystem.BusinessServices.TestManagment
         }
         public bool GradeTestAndStoreResult(int TimeTaken)
         {
-            // Calculate the total score and correct answer count
             decimal totalScore = 0;
             int correctAnswerCount = 0;
 
@@ -124,16 +124,31 @@ namespace OnlineExamSystem.BusinessServices.TestManagment
                 var question = answerResponse.Question;
                 var selectedAnswers = answerResponse.SelectedAnswers.Select(sa => sa.AnswerId).ToList();
 
-                if (question.IsMoreThanOneCorrectAnswer) // Multiple-choice question
+                if (question.IsMoreThanOneCorrectAnswer)
                 {
                     var allCorrectAnswers = question.AnswerOptions.Where(ao => ao.IsCorrect).ToList();
-                    var selectedCorrectAnswers = selectedAnswers.Intersect(allCorrectAnswers.Select(a => a.AnswerId)).ToList();
+                    int allIncorrectAnswersCount = question.AnswerOptions.Count - allCorrectAnswers.Count;
 
-                    if (selectedCorrectAnswers.Count == allCorrectAnswers.Count && selectedCorrectAnswers.Count == selectedAnswers.Count)
+                    var selectedCorrectAnswers = selectedAnswers.Intersect(allCorrectAnswers.Select(a => a.AnswerId)).ToList();
+                    var selectedIncorrectAnswers = selectedAnswers.Except(allCorrectAnswers.Select(a => a.AnswerId)).ToList();
+
+                    // Calculate the partial score for this question
+                    decimal partialScore = 0;
+                    decimal pointsPerCorrectAnswer = question.Mark / allCorrectAnswers.Count;
+                    decimal pointsDeductedPerIncorrectAnswer = 0;
+
+                    if (allIncorrectAnswersCount > 0)
+                        pointsDeductedPerIncorrectAnswer = question.Mark / allIncorrectAnswersCount;
+                    
+                    partialScore += pointsPerCorrectAnswer * selectedCorrectAnswers.Count;
+                    partialScore -= pointsDeductedPerIncorrectAnswer * selectedIncorrectAnswers.Count;
+                    partialScore = Math.Max(0, partialScore); // Ensure the score is not negative
+
+                    if (selectedCorrectAnswers.Count == allCorrectAnswers.Count && selectedIncorrectAnswers.Count == 0)
                     {
-                        totalScore += question.Mark;
                         correctAnswerCount++;
                     }
+                    totalScore += partialScore;
                 }
                 else // Single-choice question
                 {
@@ -153,6 +168,7 @@ namespace OnlineExamSystem.BusinessServices.TestManagment
             CurrentResultEntity.FinalScore = totalScore;
             CurrentResultEntity.CorrectAnswerCount = correctAnswerCount;
             CurrentResultEntity.TimeTakenSeconds = TimeTaken;
+            CurrentResultEntity.EndExamTime = DateTime.Now;
 
             // Save the changes
             return OEDB.Instance.Commit();

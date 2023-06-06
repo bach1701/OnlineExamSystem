@@ -21,8 +21,8 @@ namespace OnlineExamSystem
             TxtUsername.Text = "jane.smith@example.com";
             TxtPassword.Text = "123456";
 
-            TxtUsername.Text = "102210002";
-            TxtPassword.Text = "102210002";
+            //TxtUsername.Text = "102210002";
+            //TxtPassword.Text = "102210002";
 #endif
         }
 

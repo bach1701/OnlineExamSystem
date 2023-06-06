@@ -33,6 +33,7 @@ namespace OnlineExamSystem.PresentationLayer
         private void InitClassListDGV()
         {
             ClassListview.AutoGenerateColumns = false;
+            ClassListview.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             ClassListview.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "ID", DataPropertyName = "ClassId", ReadOnly = true });
             ClassListview.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Lớp", DataPropertyName = "Name", ReadOnly = true });
             ClassListview.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Môn học", DataPropertyName = "CourseName", ReadOnly = true });

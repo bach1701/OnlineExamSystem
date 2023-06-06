@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Presentation\UITest\UIStudentTest\OnExam\UCWorkDetails.cs">
+    <Compile Update="Presentation\UITest\UIStudentTest\OnExam\AfterExam\UCWorkDetails.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Update="Properties\Resources.Designer.cs">

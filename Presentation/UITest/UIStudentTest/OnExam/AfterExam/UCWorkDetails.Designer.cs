@@ -38,7 +38,10 @@ namespace OnlineExamSystem.Presentation.UITest.UIStudentTest.Exam
             this.LbStudentID = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.LbScore = new System.Windows.Forms.Label();
+            this.BtnPrevStudent = new System.Windows.Forms.Button();
+            this.GroupSelectStudent = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.GroupSelectStudent.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -127,11 +130,32 @@ namespace OnlineExamSystem.Presentation.UITest.UIStudentTest.Exam
             this.LbScore.TabIndex = 9;
             this.LbScore.Text = "100";
             // 
+            // BtnPrevStudent
+            // 
+            this.BtnPrevStudent.Location = new System.Drawing.Point(6, 30);
+            this.BtnPrevStudent.Name = "BtnPrevStudent";
+            this.BtnPrevStudent.Size = new System.Drawing.Size(112, 34);
+            this.BtnPrevStudent.TabIndex = 1;
+            this.BtnPrevStudent.Text = "< Back";
+            this.BtnPrevStudent.UseVisualStyleBackColor = true;
+            this.BtnPrevStudent.Click += new System.EventHandler(this.BtnPrevStudent_Click);
+            // 
+            // GroupSelectStudent
+            // 
+            this.GroupSelectStudent.Controls.Add(this.BtnPrevStudent);
+            this.GroupSelectStudent.Location = new System.Drawing.Point(45, 58);
+            this.GroupSelectStudent.Name = "GroupSelectStudent";
+            this.GroupSelectStudent.Size = new System.Drawing.Size(130, 77);
+            this.GroupSelectStudent.TabIndex = 10;
+            this.GroupSelectStudent.TabStop = false;
+            this.GroupSelectStudent.Text = "Menu";
+            // 
             // UCWorkDetails
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
+            this.Controls.Add(this.GroupSelectStudent);
             this.Controls.Add(this.LbScore);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.LbStudentID);
@@ -144,6 +168,7 @@ namespace OnlineExamSystem.Presentation.UITest.UIStudentTest.Exam
             this.Name = "UCWorkDetails";
             this.Size = new System.Drawing.Size(1920, 1080);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.GroupSelectStudent.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -159,5 +184,7 @@ namespace OnlineExamSystem.Presentation.UITest.UIStudentTest.Exam
         private Label LbStudentID;
         private Label label2;
         private Label LbScore;
+        private Button BtnPrevStudent;
+        private GroupBox GroupSelectStudent;
     }
 }

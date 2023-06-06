@@ -2,6 +2,7 @@
 using OnlineExamSystem.BusinessServices.TestManagment;
 using OnlineExamSystem.BusinessServicesLayer;
 using OnlineExamSystem.DataServicesLayer.Model.Tests;
+using OnlineExamSystem.Presentation.UITest.UIStudentTest;
 using OnlineExamSystem.Presentation.UITest.UITestManagment;
 using System;
 using System.Collections.Generic;
@@ -35,6 +36,7 @@ namespace OnlineExamSystem.PresentationLayer
         private void InitTestListDGV()
         {
             dataGridView1.AutoGenerateColumns = false;
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView1.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "ID", DataPropertyName = "TestId", ReadOnly = true });
             dataGridView1.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Tên", DataPropertyName = "Name", ReadOnly = true });
             dataGridView1.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Số bài đã nộp", DataPropertyName = "SubmissionCount", ReadOnly = true });
@@ -80,18 +82,25 @@ namespace OnlineExamSystem.PresentationLayer
 
             if (e.ColumnIndex == dataGridView1.Columns["TestSubmissionResult"].Index && e.RowIndex >= 0)
             {
-                /*
+                
                 // xac dinh du lieu can truyen vao form Quan ly lop
                 // ID lop
-                DataGridViewRow row = ClassListview.Rows[e.RowIndex];
-                string ClassID = row.Cells[0].Value.ToString();
+                DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
+                string TestID = row.Cells[0].Value.ToString();
+                Test TestObject = TestManagment.Instance.GetTestByTestID(Convert.ToInt32(TestID));
 
-                StudentClassManagment MenuStudentMgr = new StudentClassManagment();
-                MenuStudentMgr.Dock = DockStyle.Fill;
-                MenuStudentMgr.SetClassId(Convert.ToInt32(ClassID));
-                Globals.MainForm.AddNewPanelToQueue(MenuStudentMgr);
+                ExamForm ViewExamResult = new ExamForm(TestObject);
+                if (!ViewExamResult.SetShowResultMulti())
+                    MessageBox.Show("Không có bài làm nào đối với bài kiểm tra này.");
+                else
+                    ViewExamResult.Show();
+
+                //StudentClassManagment MenuStudentMgr = new StudentClassManagment();
+                //MenuStudentMgr.Dock = DockStyle.Fill;
+                //MenuStudentMgr.SetClassId(Convert.ToInt32(ClassID));
+                //Globals.MainForm.AddNewPanelToQueue(MenuStudentMgr);
                 // Button clicked in row e.RowIndex
-                */
+
             }
             if (e.ColumnIndex == dataGridView1.Columns["ModifyTest"].Index && e.RowIndex >= 0)
             {

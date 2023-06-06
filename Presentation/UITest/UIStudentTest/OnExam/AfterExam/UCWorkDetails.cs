@@ -25,22 +25,34 @@ namespace OnlineExamSystem.Presentation.UITest.UIStudentTest.Exam
         private Test Exam;
         private User Examinee;
         private TestTakerResult TakerResult;
+        private ExamForm MainContainer;
 
         private StudentTest ExamManager;
 
         private int test_index = 0;
 
-        public UCWorkDetails(TestTakerResult RequestedTest)
+        public UCWorkDetails(ExamForm f, TestTakerResult RequestedTest)
         {
             InitializeComponent();
+            MainContainer = f;
+
             Exam = RequestedTest.TestTaker.Test;
             Examinee = RequestedTest.TestTaker.Student;
             TakerResult = RequestedTest;
+            GroupSelectStudent.Visible = false;
 
             SetAvatar();
             LoadTestInfoOntoUI();
             AlignCenterLabel();
             LoadTestQuestion();
+        }
+        public void ShowNagivationBackButton()
+        {
+            GroupSelectStudent.Visible = true;
+            pictureBox1.Visible = false;
+            LbStudentName.Location = new Point(45, 10);
+            LbStudentID.Visible = false;
+            LbStudentName.Text = LbStudentName.Text + " (MSSV: " + LbStudentID.Text + ")";
         }
         public void LoadTestInfoOntoUI()
         {
@@ -76,6 +88,21 @@ namespace OnlineExamSystem.Presentation.UITest.UIStudentTest.Exam
             pictureBox1.NameInitials = Examinee.FirstName.Substring(0, 1) + Examinee.LastName.Substring(0, 1);
             pictureBox1.BackgroundColor = Color.Green;
             pictureBox1.Refresh();
-        }   
+        }
+        // back to last menu
+        private void BtnPrevStudent_Click(object sender, EventArgs e)
+        {
+            MainContainer.GoBack();
+        }
+
+        private void BtnNextStudent_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void CbStudentList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

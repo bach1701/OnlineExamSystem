@@ -57,6 +57,10 @@ namespace OnlineExamSystem.DataServicesLayer.Model.Tests
 
         public int CorrectAnswerCount { get; set; }
 
+        public DateTime BeginExamTime { get; set; }
+
+        public DateTime EndExamTime { get; set; }
+
         public TestTakerResult()
         {
             AnswerResponses = new HashSet<StudentAnswerResponse>();

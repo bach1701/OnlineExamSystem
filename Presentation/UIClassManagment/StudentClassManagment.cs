@@ -30,6 +30,7 @@ namespace OnlineExamSystem.PresentationLayer
         private void InitStudentListDGV()
         {
             StudentListView.AutoGenerateColumns = false;
+            StudentListView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             StudentListView.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "STT", DataPropertyName = "Index", ReadOnly = true });
             StudentListView.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Họ và tên", DataPropertyName = "Name", ReadOnly = true });
             StudentListView.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Mã số SV", DataPropertyName = "NumericIdentification", ReadOnly = true });

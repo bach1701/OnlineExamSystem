@@ -311,6 +311,7 @@ namespace OnlineExamSystem.Presentation.UITest.UITestManagment
                                 ExistingQuestion.Mark = NewQues.Mark;
                                 MaxScore += NewQues.Mark;
                                 ExistingQuestion.Hint = NewQues.Hint;
+                                ExistingQuestion.IsMoreThanOneCorrectAnswer = NewQues.IsMoreThanOneCorrectAnswer;
 
                                 foreach (var NewAnswer in NewQues.AnswerOptions)
                                 {

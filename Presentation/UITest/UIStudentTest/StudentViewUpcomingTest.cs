@@ -34,6 +34,7 @@ namespace OnlineExamSystem.PresentationLayer
         private void InitTestListDGV()
         {
             ListViewUpcomingTest.AutoGenerateColumns = false;
+            ListViewUpcomingTest.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             ListViewUpcomingTest.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "STT", DataPropertyName = "TestId", ReadOnly = true });
             ListViewUpcomingTest.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Tên", DataPropertyName = "Name", ReadOnly = true });
             

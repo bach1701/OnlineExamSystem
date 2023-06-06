@@ -28,6 +28,7 @@ namespace OnlineExamSystem.PresentationLayer
         private void InitTeacherListDGV()
         {
             dgvListTeacher.AutoGenerateColumns = false;
+            dgvListTeacher.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvListTeacher.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "STT", DataPropertyName = "Index", ReadOnly = true });
             dgvListTeacher.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Họ và tên", DataPropertyName = "Name", ReadOnly = true });
             dgvListTeacher.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Mã số cán bộ", DataPropertyName = "EmployeeID", ReadOnly = true });

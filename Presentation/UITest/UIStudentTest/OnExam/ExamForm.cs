@@ -3,6 +3,7 @@ using OnlineExamSystem.DataServices.Method.Tests;
 using OnlineExamSystem.DataServicesLayer.Model.Tests;
 using OnlineExamSystem.Presentation.UITest.UIStudentTest.Exam;
 using OnlineExamSystem.Presentation.UITest.UIStudentTest.OnExam;
+using OnlineExamSystem.Presentation.UITest.UIStudentTest.OnExam.AfterExam;
 using OnlineExamSystem.PresentationLayer;
 using System;
 using System.Collections.Generic;
@@ -32,7 +33,7 @@ namespace OnlineExamSystem.Presentation.UITest.UIStudentTest
         {
             UCExamScore demo = new UCExamScore(this);
 
-            TestTaker Taker = TestData.Instance.GetTestTakerEntityFromTest(Exam);
+            TestTaker Taker = TestData.Instance.GetUserTestTakerEntityFromTest(Exam);
 
             if (Taker.TestTakerResults.Count > 0)
             {
@@ -48,6 +49,18 @@ namespace OnlineExamSystem.Presentation.UITest.UIStudentTest
                 return true;
             }
             return false;
+        }
+        public bool SetShowResultMulti()
+        {
+            UCExamResultList demo = new UCExamResultList(this);
+            demo.SetExamEntity(Exam);
+            if (!demo.IsSubmissionAvailable())
+                return false;
+            
+            demo.Load();
+
+            BringUp(demo);
+            return true;
         }
         public void ShowEnterExamUC()
         {
@@ -67,13 +80,29 @@ namespace OnlineExamSystem.Presentation.UITest.UIStudentTest
             UCExamScore demo = new UCExamScore(this);
 
             TestTakerResult Result = sender as TestTakerResult;
-            demo.SetScore(Result.FinalScore, Result.TestTaker.Test.MaxScore);
+            if (Result.TestTaker.Test.StudentCanSeeFinalScore)
+            {
+                demo.SetScore(Result.FinalScore, Result.TestTaker.Test.MaxScore);
+            }
+            if (Result.TestTaker.Test.StudentCanSeeAnswersAfterDone)
+            {
+                demo.ShowSeeDetailsButton(Result);
+            }
             BringUp(demo);
         }
         public void BringUp(object sender)
         {
             panel1.Controls.Clear();
             panel1.Controls.Add((Control)sender);
+        }
+        public void AddNewPanelToQueue(object sender)
+        {
+            panel1.Controls.Add((Control)sender);
+            panel1.Controls[panel1.Controls.Count - 1].BringToFront();
+        }
+        public void GoBack()
+        {
+            panel1.Controls.RemoveAt(0);
         }
     }
 }

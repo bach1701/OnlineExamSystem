@@ -56,8 +56,8 @@ namespace OnlineExamSystem.Presentation.UITest.UIStudentTest.OnExam
 
         private void BtnViewDetails_Click(object sender, EventArgs e)
         {
-            UCWorkDetails ExamResultUI = new UCWorkDetails(WorkResult);
-            MainControl.BringUp(ExamResultUI);
+            UCWorkDetails ExamResultUI = new UCWorkDetails(MainControl, WorkResult);
+            MainControl.AddNewPanelToQueue(ExamResultUI);
         }
     }
 }
