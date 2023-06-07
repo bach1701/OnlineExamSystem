@@ -113,7 +113,6 @@
             this.lbClassName.Size = new System.Drawing.Size(117, 45);
             this.lbClassName.TabIndex = 20;
             this.lbClassName.Text = "Class";
-            this.lbClassName.Click += new System.EventHandler(this.lbClassName_Click);
             // 
             // button2
             // 

@@ -28,23 +28,23 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.ExamResultListView = new System.Windows.Forms.DataGridView();
             this.LbNameOfTest = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ExamResultListView)).BeginInit();
             this.SuspendLayout();
             // 
             // dataGridView1
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(38, 127);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowHeadersWidth = 62;
-            this.dataGridView1.RowTemplate.Height = 33;
-            this.dataGridView1.Size = new System.Drawing.Size(1831, 905);
-            this.dataGridView1.TabIndex = 0;
-            this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.ExamResultList_CellContentClick);
+            this.ExamResultListView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.ExamResultListView.Location = new System.Drawing.Point(38, 127);
+            this.ExamResultListView.Name = "dataGridView1";
+            this.ExamResultListView.RowHeadersWidth = 62;
+            this.ExamResultListView.RowTemplate.Height = 33;
+            this.ExamResultListView.Size = new System.Drawing.Size(1831, 905);
+            this.ExamResultListView.TabIndex = 0;
+            this.ExamResultListView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.ExamResultList_CellContentClick);
             // 
             // LbNameOfTest
             // 
@@ -87,10 +87,10 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.LbNameOfTest);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.ExamResultListView);
             this.Name = "UCExamResultList";
             this.Size = new System.Drawing.Size(1920, 1080);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ExamResultListView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -98,7 +98,7 @@
 
         #endregion
 
-        private DataGridView dataGridView1;
+        private DataGridView ExamResultListView;
         private Label LbNameOfTest;
         private Label label1;
         private Label label2;

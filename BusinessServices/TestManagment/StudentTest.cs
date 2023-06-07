@@ -132,7 +132,10 @@ namespace OnlineExamSystem.BusinessServices.TestManagment
                     var selectedCorrectAnswers = selectedAnswers.Intersect(allCorrectAnswers.Select(a => a.AnswerId)).ToList();
                     var selectedIncorrectAnswers = selectedAnswers.Except(allCorrectAnswers.Select(a => a.AnswerId)).ToList();
 
-                    // Calculate the partial score for this question
+                    // tinh diem
+                    // phuong an dung = diem / so cau dung
+                    // phuong an san = diem / so cau sai
+
                     decimal partialScore = 0;
                     decimal pointsPerCorrectAnswer = question.Mark / allCorrectAnswers.Count;
                     decimal pointsDeductedPerIncorrectAnswer = 0;
@@ -142,7 +145,7 @@ namespace OnlineExamSystem.BusinessServices.TestManagment
                     
                     partialScore += pointsPerCorrectAnswer * selectedCorrectAnswers.Count;
                     partialScore -= pointsDeductedPerIncorrectAnswer * selectedIncorrectAnswers.Count;
-                    partialScore = Math.Max(0, partialScore); // Ensure the score is not negative
+                    partialScore = Math.Max(0, partialScore); // bi am diem thi 0 tru
 
                     if (selectedCorrectAnswers.Count == allCorrectAnswers.Count && selectedIncorrectAnswers.Count == 0)
                     {
@@ -150,7 +153,7 @@ namespace OnlineExamSystem.BusinessServices.TestManagment
                     }
                     totalScore += partialScore;
                 }
-                else // Single-choice question
+                else // 1 phuong an dung
                 {
                     if (selectedAnswers.Count == 1)
                     {
@@ -164,13 +167,12 @@ namespace OnlineExamSystem.BusinessServices.TestManagment
                 }
             }
 
-            // Update the TestTakerResult object
             CurrentResultEntity.FinalScore = totalScore;
             CurrentResultEntity.CorrectAnswerCount = correctAnswerCount;
             CurrentResultEntity.TimeTakenSeconds = TimeTaken;
             CurrentResultEntity.EndExamTime = DateTime.Now;
 
-            // Save the changes
+
             return OEDB.Instance.Commit();
         }
         public Question GetQuestionById(int QuestionId)

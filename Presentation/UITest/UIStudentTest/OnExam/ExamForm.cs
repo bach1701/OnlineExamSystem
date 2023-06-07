@@ -92,17 +92,17 @@ namespace OnlineExamSystem.Presentation.UITest.UIStudentTest
         }
         public void BringUp(object sender)
         {
-            panel1.Controls.Clear();
-            panel1.Controls.Add((Control)sender);
+            ViewPanel.Controls.Clear();
+            ViewPanel.Controls.Add((Control)sender);
         }
         public void AddNewPanelToQueue(object sender)
         {
-            panel1.Controls.Add((Control)sender);
-            panel1.Controls[panel1.Controls.Count - 1].BringToFront();
+            ViewPanel.Controls.Add((Control)sender);
+            ViewPanel.Controls[ViewPanel.Controls.Count - 1].BringToFront();
         }
         public void GoBack()
         {
-            panel1.Controls.RemoveAt(0);
+            ViewPanel.Controls.RemoveAt(0);
         }
     }
 }

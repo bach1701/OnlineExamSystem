@@ -47,29 +47,29 @@ namespace OnlineExamSystem.Presentation.UITest.UIStudentTest.OnExam.AfterExam
 
         private void InitTestListDGV()
         {
-            dataGridView1.AutoGenerateColumns = false;
-            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            ExamResultListView.AutoGenerateColumns = false;
+            ExamResultListView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             //ListViewUpcomingTest.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "STT", DataPropertyName = "TestId", ReadOnly = true });
-            dataGridView1.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "STT", DataPropertyName = "STT", ReadOnly = true });
-            dataGridView1.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "MSSV", DataPropertyName = "MSSV", ReadOnly = true });
+            ExamResultListView.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "STT", DataPropertyName = "STT", ReadOnly = true });
+            ExamResultListView.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "MSSV", DataPropertyName = "MSSV", ReadOnly = true });
 
-            dataGridView1.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Họ và tên", Name = "TenHocSinh", DataPropertyName = "StudentName", ReadOnly = true });
+            ExamResultListView.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Họ và tên", Name = "TenHocSinh", DataPropertyName = "StudentName", ReadOnly = true });
 
-            dataGridView1.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Thời gian bắt đầu", DataPropertyName = "BeginExamTime", ReadOnly = true });
-            dataGridView1.Columns[dataGridView1.Columns.Count - 1].DefaultCellStyle.Format = "HH:mm dd-MM-yyyy";
+            ExamResultListView.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Thời gian bắt đầu", DataPropertyName = "BeginExamTime", ReadOnly = true });
+            ExamResultListView.Columns[ExamResultListView.Columns.Count - 1].DefaultCellStyle.Format = "HH:mm dd-MM-yyyy";
 
-            dataGridView1.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Thời gian nộp bài", DataPropertyName = "EndExamTime", ReadOnly = true });
-            dataGridView1.Columns[dataGridView1.Columns.Count - 1].DefaultCellStyle.Format = "HH:mm dd-MM-yyyy";
+            ExamResultListView.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Thời gian nộp bài", DataPropertyName = "EndExamTime", ReadOnly = true });
+            ExamResultListView.Columns[ExamResultListView.Columns.Count - 1].DefaultCellStyle.Format = "HH:mm dd-MM-yyyy";
 
-            dataGridView1.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Số câu đúng", Name = "SoCauDung", DataPropertyName = "CorrectAnswerCount", ReadOnly = true });
-            dataGridView1.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Điểm", Name = "Score", DataPropertyName = "FinalScore", ReadOnly = true });
+            ExamResultListView.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Số câu đúng", Name = "SoCauDung", DataPropertyName = "CorrectAnswerCount", ReadOnly = true });
+            ExamResultListView.Columns.Add(new DataGridViewTextBoxColumn() { HeaderText = "Điểm", Name = "Score", DataPropertyName = "FinalScore", ReadOnly = true });
 
             DataGridViewButtonColumn JoinTestBtn = new DataGridViewButtonColumn();
             JoinTestBtn.HeaderText = "Hành động";
             JoinTestBtn.Name = "Action";
             JoinTestBtn.Text = "Chi tiết";
             JoinTestBtn.UseColumnTextForButtonValue = true;
-            dataGridView1.Columns.Add(JoinTestBtn);
+            ExamResultListView.Columns.Add(JoinTestBtn);
         }
 
         public void SetExamEntity(Test Entity)
@@ -102,16 +102,16 @@ namespace OnlineExamSystem.Presentation.UITest.UIStudentTest.OnExam.AfterExam
                             .ToList();
             label2.Text = "Tổng số bài: " + ResultDtos.Count;
             // Bind the resultDtos list to the DataGridView
-            dataGridView1.DataSource = ResultDtos;
+            ExamResultListView.DataSource = ResultDtos;
         }
 
         private void ExamResultList_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex == dataGridView1.Columns["Action"].Index && e.RowIndex >= 0)
+            if (e.ColumnIndex == ExamResultListView.Columns["Action"].Index && e.RowIndex >= 0)
             {
                 // xac dinh du lieu can truyen vao form Quan ly lop
                 // ID lop
-                DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
+                DataGridViewRow row = ExamResultListView.Rows[e.RowIndex];
                 string STT = row.Cells[0].Value.ToString();
                 int STT_INT = Convert.ToInt32(STT);
                 TestTakerResultForDisplay ElementSelected = ResultDtos.Find(R => R.STT == STT_INT);

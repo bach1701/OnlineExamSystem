@@ -52,7 +52,6 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Bài kiểm tra";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // label2
             // 
@@ -98,7 +97,7 @@
             this.button1.TabIndex = 4;
             this.button1.Text = "Bắt đầu làm bài";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.button1.Click += new System.EventHandler(this.BtnRequestStartExam_Click);
             // 
             // LbAllowTime
             // 

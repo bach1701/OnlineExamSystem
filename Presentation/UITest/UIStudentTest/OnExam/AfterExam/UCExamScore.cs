@@ -26,10 +26,6 @@ namespace OnlineExamSystem.Presentation.UITest.UIStudentTest.OnExam
             BtnViewDetails.Visible = false;
         }
 
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
         public void SetScore(decimal Score, decimal MaxScore)
         {
             LbScore.Text = "Điểm số: " + Score + "/" + MaxScore;

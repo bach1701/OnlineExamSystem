@@ -36,12 +36,12 @@ namespace OnlineExamSystem.PresentationLayer.UIClass
             TxtStudentBirthday.Text = StudentToEdit.Birthday.ToString();
             CbStudentGender.SelectedIndex = (int)StudentToEdit.Gender;
         }
-        private void button1_Click(object sender, EventArgs e)
+        private void BtnCancelModifyStudentInfo_Click(object sender, EventArgs e)
         {
             Globals.MainForm.GoBack();
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void BtnSaveStudentInfo_Click(object sender, EventArgs e)
         {
             DateTime StudentBirthday = TxtStudentBirthday.Value;
 
@@ -80,7 +80,7 @@ namespace OnlineExamSystem.PresentationLayer.UIClass
             EditStudentSuccessful?.Invoke(this, EventArgs.Empty);
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void BtnRequestResetPass_Click(object sender, EventArgs e)
         {
             string NewPassword = StudentToEdit.NumericIdentification;
             StudentToEdit.HashedPassword = Helper.HashPassword(NewPassword);
@@ -90,7 +90,7 @@ namespace OnlineExamSystem.PresentationLayer.UIClass
             {
                 MessageBox.Show("Khong the luu du lieu");
             }
-            MessageBox.Show("Da reset mat khau.");
+            MessageBox.Show("Đã reset mật khẩu.");
         }
     }
 }

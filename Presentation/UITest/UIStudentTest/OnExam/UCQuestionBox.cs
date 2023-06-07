@@ -130,6 +130,16 @@ namespace OnlineExamSystem.Presentation.UITest.UIStudentTest.Exam
             Color LightGreen = Color.FromArgb(255, 204, 229, 204);
             Color LightRed = Color.FromArgb(255, 255, 204, 204);
 
+            // @FIXME bi bug o radio button, chua biet fix ntn
+
+            foreach (UIAnswer State in AnswersList)
+            {
+                if (State.ReadCheckbox)
+                    State.CheckboxChecked.Click += Control_Click;
+                else
+                    State.RadioChecked.Click += Control_Click;
+            }
+
             foreach (Answer A in QuestionResponse.Question.AnswerOptions)
             {
                 // Find the corresponding UIAnswer object
@@ -243,6 +253,19 @@ namespace OnlineExamSystem.Presentation.UITest.UIStudentTest.Exam
             groupBox1.Location = new Point(groupBox1.Location.X, newY);
             groupBox1.Size = new Size(groupBox1.Size.Width, OptionsCount * 57 + 15);
             this.Size = new Size(1880, 70 + (int)textSize.Height + (OptionsCount * 57) + 15 );
+        }
+
+        // Single event handler for all controls
+        private void Control_Click(object sender, EventArgs e)
+        {
+            if (sender is CheckBox checkBox)
+            {
+                checkBox.Checked = !checkBox.Checked;
+            }
+            else if (sender is RadioButton radioButton)
+            {
+                radioButton.Checked = !radioButton.Checked;
+            }
         }
     }
 }

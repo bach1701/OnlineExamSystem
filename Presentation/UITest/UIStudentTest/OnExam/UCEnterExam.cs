@@ -55,15 +55,9 @@ namespace OnlineExamSystem.Presentation.UITest.UIStudentTest
             LbStatus.Text = status;
             AlignCenterLabel();
         }
-        private void label1_Click(object sender, EventArgs e)
-        {
 
-        }
-
-        private void button1_Click(object sender, EventArgs e)
+        private void BtnRequestStartExam_Click(object sender, EventArgs e)
         {
-            //RequestSpawnTestUI?.Invoke(this, EventArgs.Empty);
-            
             string ErrorMessage = "";
             bool CanJoin = ExamManager.RequestDoTest(TxtPassword.Text, ref ErrorMessage);
             if (CanJoin)
@@ -73,8 +67,7 @@ namespace OnlineExamSystem.Presentation.UITest.UIStudentTest
             else
             {
                 SetStatus(ErrorMessage);
-            }
-            
+            }        
         }
     }
 }

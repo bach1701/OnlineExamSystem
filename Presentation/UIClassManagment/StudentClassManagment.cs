@@ -125,13 +125,6 @@ namespace OnlineExamSystem.PresentationLayer
             }
         }
 
-
-
-        private void lbClassName_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void TxtSearchStudentByName_Enter(object sender, EventArgs e)
         {
             if (TxtSearchStudentByName.Text.Length > 0)

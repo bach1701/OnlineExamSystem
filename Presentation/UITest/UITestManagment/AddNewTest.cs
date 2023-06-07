@@ -56,13 +56,13 @@ namespace OnlineExamSystem.Presentation.UITest.UITestManagment
                 }
                 CbClassSelection.SelectedIndex = 0;
             }
-            
+
         }
 
         private void BtnAddClassToLV_Click(object sender, EventArgs e)
         {
             int index = CbClassSelection.SelectedIndex;
-            if (index != -1) 
+            if (index != -1)
             {
                 Class SelectedClass = TeachingClasses[index];
 
@@ -75,18 +75,13 @@ namespace OnlineExamSystem.Presentation.UITest.UITestManagment
                     CanDoExamClass.Add(SelectedClass);
                     BtnAddClassToLV.Text = "Xóa lớp";
                 }
-                else 
+                else
                 {
                     ListViewCanDoExamClass.Items.Remove(existingItem);
                     CanDoExamClass.Remove(SelectedClass);
                     BtnAddClassToLV.Text = "Thêm lớp";
                 }
             }
-        }
-
-        private void panel1_Paint(object sender, PaintEventArgs e)
-        {
-
         }
 
         private bool ValidateFormInformation()
@@ -151,7 +146,7 @@ namespace OnlineExamSystem.Presentation.UITest.UITestManagment
                 MessageBox.Show("Vui lòng thêm ít nhất một câu hỏi!");
                 return false;
             }
-            foreach (Control item in flowLayoutPanel1.Controls) 
+            foreach (Control item in flowLayoutPanel1.Controls)
             {
                 UCAddNewQuestion QuestionForm = item as UCAddNewQuestion;
                 if (QuestionForm != null)
@@ -391,7 +386,7 @@ namespace OnlineExamSystem.Presentation.UITest.UITestManagment
             }
             return MaxScore;
         }
-       
+
         private void NewQuestionBtn(object sender, EventArgs e)
         {
             NewQuestionForm();
@@ -431,7 +426,7 @@ namespace OnlineExamSystem.Presentation.UITest.UITestManagment
             OnFormLeave?.Invoke(this, EventArgs.Empty);
         }
         ////////////////////////////////////// EDIT EXIST TEST ///////////////////////////////////////////
-        
+
         public void SetModifyingTest(Test TestObject)
         {
             ModifyingTestObj = TestObject;
@@ -456,7 +451,7 @@ namespace OnlineExamSystem.Presentation.UITest.UITestManagment
             CheckBoxSwapQandA.Checked = T.SwapQuestionAndAnswersOrder;
             CheckBoxAllowSeeQandA.Checked = T.StudentCanSeeAnswersAfterDone;
             CheckBoxAllowSeeFinalScore.Checked = T.StudentCanSeeFinalScore;
-            
+
 
             foreach (Question Q in T.Questions)
             {

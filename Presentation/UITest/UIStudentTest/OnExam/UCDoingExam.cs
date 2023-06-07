@@ -39,17 +39,11 @@ namespace OnlineExamSystem.Presentation.UITest.UIStudentTest.Exam
 
             InitializeComponent();
 
-            LoadTestInformation();
             SetAvatar();
             LoadTestInfoOntoUI();
             AlignCenterLabel();
 
             LoadTestQuestion();
-        }
-        // call to database, do the suffer, ...
-        public void LoadTestInformation()
-        {
-
         }
         public void LoadTestInfoOntoUI()
         {
